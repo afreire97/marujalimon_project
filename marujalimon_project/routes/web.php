@@ -6,7 +6,7 @@ use App\Http\Middleware\CoordinadorMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/dashboard', function () {
@@ -25,7 +25,6 @@ Route::middleware(['auth', CoordinadorMiddleware::class])->group(function () {
 
 
     Route::get('/voluntarios', [VoluntarioController::class, 'index'])->name('voluntarios.index');
-    // Route::get('/', [VoluntarioController::class, 'index']);
     Route::get('/voluntarios/create', [VoluntarioController::class, 'create'])->name('voluntarios.create');
 
     Route::get('/voluntarios/{voluntario}/coordinadores', [VoluntarioController::class, 'obtenerCoordinador']);

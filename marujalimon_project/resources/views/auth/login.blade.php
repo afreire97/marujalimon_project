@@ -75,7 +75,7 @@
                     </div>
 
                     <div class="mb-40px pb-40px text-dark">
-                        Not a member yet? Click <a href="/register/v3" class="text-primary">here</a> to register.
+                       No eres miembro? Haz click<a href="{{route('register')}}" class="text-primary"> aquí</a> para registrarte.
                     </div>
 
                     <hr class="bg-gray-600 opacity-2" />
