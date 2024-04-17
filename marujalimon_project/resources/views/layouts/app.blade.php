@@ -19,7 +19,6 @@
 	<script src="https://kit.fontawesome.com/5405ceca9d.js" crossorigin="anonymous"></script>
 
 
-
 	<!-- ================== BEGIN BASE CSS STYLE ================== -->
 <!-- Enlace al archivo vendor.min.css -->
 <link href="{{ asset('css/blog/vendor.min.css') }}" rel="stylesheet" />
@@ -27,96 +26,85 @@
 <!-- Enlace al archivo app.min.css -->
 <link href="{{ asset('css/blog/app.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/blog/layout.css') }}" rel="stylesheet" />
+<link rel="stylesheet" href="{{asset('css/estilos_voluntario_form.css')}}">
 
 <link rel="stylesheet" href="{{asset('css/estilos_voluntario_form.css')}}">
 </head>
 
+
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-        @include('layouts.navigation')
-
-        <!-- Page Heading -->
-        {{-- @if (isset($header))
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
+      <!-- Page Content -->
+<!-- begin #header -->
+<div id="header" class="header navbar navbar-default navbar-expand-lg navbar-fixed-top ">
+    <!-- begin container -->
+    <div class="container">
+        <!-- begin navbar-brand -->
+        <a href="{{route('voluntarios.index')}}" class="navbar-brand">
+            <span class="brand-logo"></span>
+            <span class="brand-text">
+                MARUJALIMON
+            </span>
+        </a>
+        <!-- end navbar-brand -->
+        <!-- begin navbar-toggle -->
+        <button type="button" class="navbar-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#header-navbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <!-- end navbar-toggle -->
+        <!-- begin navbar-collapse -->
+        <div class="collapse navbar-collapse" id="header-navbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" data-bs-toggle="dropdown">VOLUNTARIOS<b class="caret"></b></a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ route('voluntarios.create')}}">Añadir nuevo voluntario</a>
+                        <a class="dropdown-item" href="index_inverse_header.html">Page with Inverse Header</a>
+                        <a class="dropdown-item" href="index.html">Default Header</a>
                     </div>
-                </header>
-            @endif --}}
+                </li>
+                <li class="dropdown">
+                    <a href="#" data-bs-toggle="dropdown">POSTS <b class="caret"></b></a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="post_grid.html">Page with Grid View Blog Post</a>
+                        <a class="dropdown-item" href="post_without_sidebar.html">Page without Sidebar</a>
+                    </div>
+                </li>
+                <li><a href="about_me.html">ABOUT ME</a></li>
+                <li><a href="contact_us.html">CONTACT US</a></li>
+                <li><a href="https://wrapbootstrap.com/theme/color-admin-admin-template-front-end-WB0N89JMK">PURCHASE</a></li>
+                <li class="dropdown">
+                    @guest
+                        <a href="#" class="nav-link" data-bs-toggle="dropdown">Login/Register <b class="caret"></b></a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="{{ route('login') }}">Login</a>
+                            <a class="dropdown-item" href="{{ route('register') }}">Register</a>
+                        </div>
+                    @else
+                        <a href="#" class="nav-link" data-bs-toggle="dropdown">{{ Auth::user()->name }} <b class="caret"></b></a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button class="btn dropdown-item" type="submit">Logout</button>
+                            </form>
+                        </div>
+                    @endguest
+                </li>
+            </ul>
 
-        <!-- Page Content -->
-        <!-- begin #header -->
-        <div id="header" class="header navbar navbar-default navbar-expand-lg navbar-fixed-top ">
-            <!-- begin container -->
-            <div class="container">
-                <!-- begin navbar-brand -->
-                <a href="{{ route('voluntarios.index') }}" class="navbar-brand">
-                    <span class="brand-logo"></span>
-                    <span class="brand-text">
-                        MARUJALIMON
-                    </span>
-                </a>
-                <!-- end navbar-brand -->
-                <!-- begin navbar-toggle -->
-                <button type="button" class="navbar-toggle collapsed" data-bs-toggle="collapse"
-                    data-bs-target="#header-navbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <!-- end navbar-toggle -->
-                <!-- begin navbar-collapse -->
-                <div class="collapse navbar-collapse" id="header-navbar">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
-                            <a href="#" data-bs-toggle="dropdown">VOLUNTARIOS<b class="caret"></b></a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{{ route('voluntarios.create') }}">Añadir nuevo
-                                    voluntario</a>
-                                <a class="dropdown-item" href="index_inverse_header.html">Page with Inverse Header</a>
-                                <a class="dropdown-item" href="index.html">Default Header</a>
-                            </div>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" data-bs-toggle="dropdown">POSTS <b class="caret"></b></a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="post_grid.html">Page with Grid View Blog Post</a>
-                                <a class="dropdown-item" href="post_without_sidebar.html">Page without Sidebar</a>
-                            </div>
-                        </li>
-                        <li><a href="about_me.html">ABOUT ME</a></li>
-                        <li><a href="contact_us.html">CONTACT US</a></li>
-                        <li><a
-                                href="https://wrapbootstrap.com/theme/color-admin-admin-template-front-end-WB0N89JMK">PURCHASE</a>
-                        </li>
-                        <li class="dropdown">
-                            @guest
-                                <a href="#" class="nav-link" data-bs-toggle="dropdown">Login/Register <b
-                                        class="caret"></b></a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="{{ route('login') }}">Login</a>
-                                    <a class="dropdown-item" href="{{ route('register') }}">Register</a>
-                                </div>
-                            @else
-                                <a href="#" class="nav-link" data-bs-toggle="dropdown">{{ Auth::user()->name }} <b
-                                        class="caret"></b></a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a>
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button class="btn dropdown-item" type="submit">Logout</button>
-                                    </form>
-                                </div>
-                            @endguest
-                        </li>
-                    </ul>
-
-                </div>
-                <!-- end navbar-collapse -->
-            </div>
-            <!-- end container -->
         </div>
-        <!-- end #header -->
+        <!-- end navbar-collapse -->
+    </div>
+    <!-- end container -->
+</div>
+<!-- end #header -->
+
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+
+
+
 
 
         <div class="">{{ $slot }}</div>
