@@ -1,47 +1,93 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@extends('layouts.default', [
+    'paceTop' => true,
+    'appSidebarHide' => true,
+    'appHeaderHide' => true,
+    'appContentClass' => 'p-0'
+])
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+@section('title', 'Login Page')
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+@section('content')
+    <!-- BEGIN login -->
+    <div class="login login-with-news-feed">
+        <!-- BEGIN news-feed -->
+        <div class="news-feed">
+            <div class="news-image" style="background-image: url({{ asset('img/login-bg/login-bg-11.jpg') }})"></div>
+            <div class="news-caption">
+                <h4 class="caption-title"><b>Color</b> Admin App</h4>
+                <p>
+                    Download the Color Admin app for iPhone®, iPad®, and Android™. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                </p>
+            </div>
         </div>
+        <!-- END news-feed -->
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+        <!-- BEGIN login-container -->
+        <div class="login-container">
+            <!-- BEGIN login-header -->
+            <div class="login-header mb-30px">
+                <div class="brand">
+                    <div class="d-flex align-items-center">
+                        <span class="logo"></span>
+                        <b>Color</b> Admin
+                    </div>
+                    <small>Bootstrap 5 Responsive Admin Template</small>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-sign-in-alt"></i>
+                </div>
+            </div>
+            <!-- END login-header -->
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            <!-- BEGIN login-content -->
+            <div class="login-content">
+                <!-- Session Status -->
+                <x-auth-session-status class="mb-4" :status="session('status')" />
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                <form method="POST" action="{{ route('login') }}" class="fs-13px">
+                    @csrf
+
+                    <div class="form-floating mb-15px">
+                        <x-text-input id="emailAddress" class="form-control h-45px fs-13px" type="email" name="email" :value="old('email')" placeholder="Email Address" required autofocus autocomplete="username" />
+                        <label for="emailAddress" class="d-flex align-items-center fs-13px text-gray-600">Email Address</label>
+                    </div>
+
+                    <div class="form-floating mb-15px">
+                        <x-text-input id="password" class="form-control h-45px fs-13px" type="password" name="password" placeholder="Password" required autocomplete="current-password" />
+                        <label for="password" class="d-flex align-items-center fs-13px text-gray-600">Password</label>
+                    </div>
+
+                    <div class="form-check mb-30px">
+                        <input class="form-check-input" type="checkbox" value="1" id="rememberMe" name="remember">
+                        <label class="form-check-label" for="rememberMe">
+                            Remember Me
+                        </label>
+                    </div>
+
+                    @if (Route::has('password.request'))
+                        <a href="{{ route('password.request') }}" class="text-primary">Forgot your password?</a>
+                    @endif
+
+                    <div class="mb-15px">
+                        <x-primary-button type="submit" class="btn btn-theme d-block h-45px w-100 btn-lg fs-14px">
+                            Sign me in
+                        </x-primary-button>
+                    </div>
+
+                    <div class="mb-40px pb-40px text-dark">
+                        Not a member yet? Click <a href="/register/v3" class="text-primary">here</a> to register.
+                    </div>
+
+                    <hr class="bg-gray-600 opacity-2" />
+
+                    <div class="text-gray-600 text-center text-gray-500-darker mb-0">
+                        &copy; Color Admin All Right Reserved 2023
+                    </div>
+                </form>
+            </div>
+            <!-- END login-content -->
         </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+        <!-- END login-container -->
+    </div>
+    <!-- END login -->
+@endsection

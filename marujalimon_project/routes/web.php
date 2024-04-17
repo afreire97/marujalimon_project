@@ -48,7 +48,6 @@ Route::middleware(['auth', CoordinadorMiddleware::class])->group(function () {
 
 
 
-
 });
 
 require __DIR__.'/auth.php';
