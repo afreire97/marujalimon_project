@@ -108,7 +108,7 @@
 
 
 
-        <div class="">{{ $slot }}</div>
+        <div class="bg-white dark:bg-gray-800 " >{{ $slot }}</div>
 
         <!-- begin #footer -->
 
