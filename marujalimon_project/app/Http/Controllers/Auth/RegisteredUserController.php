@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Coordinador;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -31,22 +32,31 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'string', 'in:admin,coordinador'], // Validar el campo de rol
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'dni' => ['required', 'string', 'max:255'], // Validar el campo del DNI
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role, // Asignar el rol proporcionado por el usuario
+            'is_coordinador' => $request->has('is_coordinador') && $request->is_coordinador,
         ]);
+
+        // Si el usuario es coordinador, crear un coordinador asociado a él
+        if ($user->is_coordinador) {
+            $coordinador = new Coordinador([
+                'COO_nombre' => $user->name,
+                'COO_dni' => $request->dni, // Asignar el DNI proporcionado por el usuario
+            ]);
+            $user->coordinador()->save($coordinador);
+        }
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect()->route('dashboard');
     }
 }
