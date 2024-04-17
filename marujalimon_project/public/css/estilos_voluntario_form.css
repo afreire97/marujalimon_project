@@ -253,3 +253,12 @@ body {
     background-color: #3490dc; /* Color de fondo para la página activa */
     border-color: #3490dc; /* Color del borde para la página activa */
 }
+
+.swal-confirm-btn {
+    margin-right: 65px; /* Aumenta la separación a la derecha */
+}
+
+/* Estilos para el botón de cancelar */
+.swal-cancel-btn {
+    margin-left: 65px; /* Aumenta la separación a la izquierda */
+}
