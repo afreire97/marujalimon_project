@@ -1,0 +1,16 @@
+
+.paginacion {
+    position: relative;
+    width: 100%;
+    height: 100px;
+
+
+}
+.paginacion p {
+    margin: 1%;
+}
+.paginacion svg{
+    width: 2.9%;
+}
+
+

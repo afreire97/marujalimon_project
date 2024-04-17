@@ -1,0 +1,255 @@
+:root {
+    /* Colores predeterminados */
+    --color-primary: #008080; /* Azul predeterminado */
+    --color-primary-dark: #027272; /* Azul oscuro predeterminado */
+    --border-focus: #80bdff; /* Color de borde al enfocar */
+    --box-shadow-focus: rgba(0, 123, 255, 0.25); /* Sombra de caja al enfocar */
+    --btn-bg-secondary: #6c757d; /* Fondo de botón secundario */
+    --btn-border-secondary: #6c757d; /* Borde de botón secundario */
+}
+
+/* Clases de tema específico */
+.card-header {
+    background-color: teal;
+}
+
+.theme-red {
+    --color-primary: #dc3e32; /* Rojo */
+    --color-primary-dark: #d32f2f; /* Rojo oscuro */
+    --border-focus: #f44336;
+    --box-shadow-focus: rgba(244, 67, 54, 0.25);
+}
+
+.theme-pink {
+    --color-primary: #e91e63; /* Rosa */
+    --color-primary-dark: #c2185b; /* Rosa oscuro */
+    --border-focus: #e91e63;
+    --box-shadow-focus: rgba(233, 30, 99, 0.25);
+}
+
+.theme-orange {
+    --color-primary: #ff9800; /* Naranja */
+    --color-primary-dark: #f57c00; /* Naranja oscuro */
+    --border-focus: #ff9800;
+    --box-shadow-focus: rgba(255, 152, 0, 0.25);
+}
+
+.theme-yellow {
+    --color-primary: #edda33; /* Amarillo */
+    --color-primary-dark: #fbc02d; /* Amarillo oscuro */
+    --border-focus: #ffeb3b;
+    --box-shadow-focus: rgba(255, 235, 59, 0.25);
+}
+
+.theme-lime {
+    --color-primary: #cddc39; /* Lima */
+    --color-primary-dark: #afb42b; /* Lima oscuro */
+    --border-focus: #cddc39;
+    --box-shadow-focus: rgba(205, 220, 57, 0.25);
+}
+
+.theme-green {
+    --color-primary: #4caf50; /* Verde */
+    --color-primary-dark: #388e3c; /* Verde oscuro */
+    --border-focus: #4caf50;
+    --box-shadow-focus: rgba(76, 175, 80, 0.25);
+}
+
+.theme-aqua {
+    --color-primary: #05b4cb; /* Aqua */
+    --color-primary-dark: #0097a7; /* Aqua oscuro */
+    --border-focus: #00bcd4;
+    --box-shadow-focus: rgba(0, 188, 212, 0.25);
+}
+
+.theme-blue {
+    --color-primary: #2196f3; /* Azul */
+    --color-primary-dark: #1976d2; /* Azul oscuro */
+    --border-focus: #2196f3;
+    --box-shadow-focus: rgba(33, 150, 243, 0.25);
+}
+
+.theme-purple {
+    --color-primary: #3f51b5; /* Índigo */
+    --color-primary-dark: #303f9f; /* Índigo oscuro */
+    --border-focus: #3f51b5;
+    --box-shadow-focus: rgba(63, 81, 181, 0.25);
+
+}
+
+.theme-indigo {
+    --color-primary: #9c27b0; /* Morado */
+    --color-primary-dark: #7b1fa2; /* Morado oscuro */
+    --border-focus: #9c27b0;
+    --box-shadow-focus: rgba(156, 39, 176, 0.25);
+}
+
+.theme-grey {
+    --color-primary: #607d8b; /* Gris */
+    --color-primary-dark: #455a64; /* Gris oscuro */
+    --border-focus: #607d8b;
+    --box-shadow-focus: rgba(96, 125, 139, 0.25);
+}
+
+
+.container {
+    max-width: 1200px; /* Ajusta según tus necesidades */
+    margin: auto;
+}
+
+body {
+    margin-top: 100px;
+    margin: 100px 70px 100px 70px;
+}
+
+.card {
+    border-radius: 0.25rem;
+}
+
+
+.card-body, .card-footer {
+    padding: 2rem;
+}
+
+.form-control, .form-select {
+    border-radius: 0.25rem;
+    border: 1px solid #ced4da;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 0.2rem var(--box-shadow-focus);
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary-dark);
+    padding: 10px 20px;
+    font-size: 1.25rem;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+}
+
+.btn-secondary {
+    background-color: var(--btn-bg-secondary);
+    border-color: var(--btn-border-secondary);
+    padding: 10px 20px;
+    font-size: 1.25rem;
+}
+
+.btn {
+    border-radius: 0.25rem;
+    margin: 0 0.25rem;
+    transition: opacity 0.3s ease;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.shipping-policy {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.25rem;
+}
+
+.shipping-policy h5 {
+    margin-bottom: 0.5rem;
+}
+
+.shipping-policy ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.shipping-policy ul li::before {
+    content: '• ';
+    color: var(--color-primary);
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .card-footer {
+        flex-direction: column-reverse;
+        padding: 1rem;
+    }
+
+    .btn {
+        width: 100%;
+        margin-top: 0.5rem;
+        font-size: 1rem;
+    }
+}
+
+.theme-red .card-header, .theme-red.bg-primary {
+    background-color: var(--color-primary); /* Rojo */
+}
+
+.theme-purple .card-header, .theme-purple.bg-primary {
+    background-color: var(--color-primary); /* Morado */
+}
+
+.theme-aqua .card-header, .theme-aqua.bg-primary {
+    background-color: var(--color-primary); /* Aqua */
+}
+
+.theme-blue .card-header, .theme-blue.bg-primary {
+    background-color: var(--color-primary); /* Azul */
+}
+
+.theme-green .card-header, .theme-green.bg-primary {
+    background-color: var(--color-primary); /* Verde */
+}
+
+.theme-indigo .card-header, .theme-indigo.bg-primary {
+    background-color: var(--color-primary); /* Índigo */
+}
+
+.theme-lime .card-header, .theme-lime.bg-primary {
+    background-color: var(--color-primary); /* Lima */
+}
+
+.theme-orange .card-header, .theme-orange.bg-primary {
+    background-color: var(--color-primary); /* Naranja */
+}
+
+.theme-pink .card-header, .theme-pink.bg-primary {
+    background-color: var(--color-primary); /* Rosa */
+}
+
+.theme-yellow .card-header, .theme-yellow.bg-primary {
+    background-color: var(--color-primary); /* Amarillo */
+}
+
+.theme-grey .card-header, .theme-grey.bg-primary {
+    background-color: var(--color-primary); /* Gris */
+}
+
+
+
+
+.pagination {
+    font-size: 14px; /* Tamaño de fuente */
+}
+
+.pagination > li > a,
+.pagination > li > span {
+    padding: 6px 12px; /* Ajusta el espaciado interior */
+}
+
+.pagination > .active > a {
+    background-color: #3490dc; /* Color de fondo para la página activa */
+    border-color: #3490dc; /* Color del borde para la página activa */
+}
