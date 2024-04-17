@@ -7,6 +7,7 @@ use App\Models\Delegacion;
 use App\Models\ImagenPerfil;
 use App\Models\Voluntario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 
@@ -17,12 +18,23 @@ class VoluntarioController extends Controller
      * Display a listing of the resource.
      */
 
-    public function index()
-    {
-        $voluntarios = Voluntario::orderBy('created_at', 'desc')->paginate(15);
-        return view('voluntarios.listar_voluntarios_card', ['voluntarios' => $voluntarios]);
-    }
+     public function index()
+     {
+         // Obtenemos al usuario autenticado actualmente
+         $user = Auth::user();
 
+         // Verificamos si el usuario es coordinador
+         if ($user->is_coordinador) {
+             // Si es coordinador, obtenemos los voluntarios asociados a ese coordinador
+             $voluntarios = $user->coordinador->voluntarios()->orderBy('created_at', 'desc')->paginate(15);
+         } else {
+             // Si no es coordinador, simplemente obtenemos todos los voluntarios
+             $voluntarios = Voluntario::orderBy('created_at', 'desc')->paginate(15);
+         }
+
+         // Retornamos la vista con los voluntarios obtenidos
+         return view('voluntarios.listar_voluntarios_card', ['voluntarios' => $voluntarios]);
+     }
     /**
      * Display the specified resource.
      */
