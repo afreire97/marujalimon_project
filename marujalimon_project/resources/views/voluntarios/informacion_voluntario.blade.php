@@ -18,12 +18,19 @@
                     <h2 class="my-0">Información del voluntario</h2>
                 </div>
                 <div class="row g-0">
-                    <div class="col-md-4 d-flex align-items-center p-3">
-                        @if ($voluntario->imagenPerfil && $voluntario->imagenPerfil->IMG_path)
-                        <img src="{{ asset($voluntario->imagenPerfil->IMG_path) }}" class="img-fluid" style="max-height: 250px; max-width: 100%; border-radius: 5px;" alt="Imagen de perfil">
-                        @endif
+                    <div class="col-md-4 p-3">
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            @if ($voluntario->imagenPerfil && $voluntario->imagenPerfil->IMG_path)
+                            <!-- Asegúrate de que la imagen ocupe hasta el máximo ancho disponible sin ser estirada -->
+                            <img src="{{ asset($voluntario->imagenPerfil->IMG_path) }}" class="img-fluid" style="border-radius: 5px; max-width: 100%; height: auto;" alt="Imagen de perfil">
+                            @endif
+                        </div>
+                        <!-- Un div separado para el botón, fuera del div de la imagen -->
+                        <div style="text-align: center; padding-top: 10px;"> <!-- Agrega un poco de espacio entre la imagen y el botón -->
+                            <a href="{{ route('voluntario.edit_form', ['voluntario' => $voluntario]) }}" class="btn btn-primary">Editar Perfil</a>
+                        </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-8" style="position: relative;"> <!-- Añade posición relativa aquí -->
                         <div class="card-body">
                             <h3 class="card-title">{{ $voluntario->VOL_nombre }} {{ $voluntario->VOL_apellidos }}</h3>
                             <div class="mb-3">
@@ -31,7 +38,7 @@
                             </div>
                             <div class="mb-3">
                                 <i class="bi bi-calendar3 me-2"></i><strong>Fecha de nacimiento:</strong>
-                                {{ $voluntario->VOL_fecha_nac }}
+                                {{ date('d-m-Y', strtotime($voluntario->VOL_fecha_nac)) }}
                             </div>
                             <div class="mb-3">
                                 <i class="bi bi-geo-alt-fill me-2"></i><strong>Dirección:</strong>
@@ -80,19 +87,17 @@
                             </div>
                             @endif
                         </div> <!-- Fin del div card-body -->
+                        <div style="position: absolute; top: 0; right: 0; padding: 10px;">
+                            <form id="deleteForm" action="{{ route('voluntario.destroy', ['voluntario' => $voluntario]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-danger" onclick="confirmDelete()">Eliminar Perfil</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer text-muted">
-                    <div class="d-flex justify-content-between">
-                        <!-- Botón Editar Perfil con margen a la derecha -->
-                        <a href="{{ route('voluntario.edit_form', ['voluntario' => $voluntario]) }}" class="btn btn-primary" style="margin-right: 250px;">Editar Perfil</a>
-                        <!-- Botón Eliminar Perfil con margen a la izquierda -->
-                        <form id="deleteForm" action="{{ route('voluntario.destroy', ['voluntario' => $voluntario]) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" class="btn btn-danger" onclick="confirmDelete()">Eliminar Perfil</button>
-                        </form>
-                    </div>
+                    
                 </div>
                 <div class="row">
                     <div class="col-12 px-4 py-2">
