@@ -49,25 +49,44 @@
 			<!-- begin navbar-collapse -->
 			<div class="collapse navbar-collapse" id="header-navbar">
 				<ul class="nav navbar-nav navbar-right">
-					<li class="dropdown">
-						<a href="#" data-bs-toggle="dropdown">VOLUNTARIOS<b class="caret"></b></a>
-						<div class="dropdown-menu">
-							<a class="dropdown-item" href="{{route('voluntarios.create')}}">Añadir nuevo voluntario</a>
-							<a class="dropdown-item" href="index_inverse_header.html">Page with Inverse Header</a>
-							<a class="dropdown-item" href="index.html">Default Header</a>
-						</div>
-					</li>
-					<li class="dropdown">
-						<a href="#" data-bs-toggle="dropdown">POSTS <b class="caret"></b></a>
-						<div class="dropdown-menu">
-							<a class="dropdown-item" href="post_grid.html">Page with Grid View Blog Post</a>
-							<a class="dropdown-item" href="post_without_sidebar.html">Page without Sidebar</a>
-						</div>
-					</li>
-					<li><a href="about_me.html">ABOUT ME</a></li>
-					<li><a href="contact_us.html">CONTACT US</a></li>
-					<li><a href="https://wrapbootstrap.com/theme/color-admin-admin-template-front-end-WB0N89JMK">PURCHASE</a></li>
-				</ul>
+                    <li class="dropdown">
+                        <a href="#" data-bs-toggle="dropdown">VOLUNTARIOS<b class="caret"></b></a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ route('voluntarios.create')}}">Añadir nuevo voluntario</a>
+                            <a class="dropdown-item" href="index_inverse_header.html">Page with Inverse Header</a>
+                            <a class="dropdown-item" href="index.html">Default Header</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" data-bs-toggle="dropdown">POSTS <b class="caret"></b></a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="post_grid.html">Page with Grid View Blog Post</a>
+                            <a class="dropdown-item" href="post_without_sidebar.html">Page without Sidebar</a>
+                        </div>
+                    </li>
+                    <li><a href="about_me.html">ABOUT ME</a></li>
+                    <li><a href="contact_us.html">CONTACT US</a></li>
+                    <li><a href="https://wrapbootstrap.com/theme/color-admin-admin-template-front-end-WB0N89JMK">PURCHASE</a></li>
+                    <li class="dropdown">
+                        @guest
+                            <a href="#" class="nav-link" data-bs-toggle="dropdown">Login/Register <b class="caret"></b></a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item" href="{{ route('login') }}">Login</a>
+                                <a class="dropdown-item" href="{{ route('register') }}">Register</a>
+                            </div>
+                        @else
+                            <a href="#" class="nav-link" data-bs-toggle="dropdown">{{ Auth::user()->name }} <b class="caret"></b></a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button class="btn dropdown-item" type="submit">Logout</button>
+                                </form>
+                            </div>
+                        @endguest
+                    </li>
+                </ul>
+
 			</div>
 			<!-- end navbar-collapse -->
 		</div>
