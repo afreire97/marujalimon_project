@@ -1,0 +1,14 @@
+admin->
+
+
+LISTAR COORDINADORES, saber cuantos voluntarios tiene asignados
+
+grafica de voluntarios por horas
+
+
+
+GRAFICA DE VOLUNTARIOS CON TAREAS REALIZADAS
+ACCESO A LISTADO DE VOLUNTARIOS, filtrar estos voluntarios por tareas
+
+
+
