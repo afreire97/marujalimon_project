@@ -6,11 +6,12 @@ use App\Models\Coordinador;
 use App\Models\Delegacion;
 use App\Models\ImagenPerfil;
 use App\Models\Voluntario;
+use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
-
 
 class VoluntarioController extends Controller
 {
@@ -18,23 +19,23 @@ class VoluntarioController extends Controller
      * Display a listing of the resource.
      */
 
-     public function index()
-     {
-         // Obtenemos al usuario autenticado actualmente
-         $user = Auth::user();
+    public function index()
+    {
+        // Obtenemos al usuario autenticado actualmente
+        $user = Auth::user();
 
-         // Verificamos si el usuario es coordinador
-         if ($user->is_coordinador) {
-             // Si es coordinador, obtenemos los voluntarios asociados a ese coordinador
-             $voluntarios = $user->coordinador->voluntarios()->orderBy('created_at', 'desc')->paginate(15);
-         } else {
-             // Si no es coordinador, simplemente obtenemos todos los voluntarios
-             $voluntarios = Voluntario::orderBy('created_at', 'desc')->paginate(15);
-         }
+        // Verificamos si el usuario es coordinador
+        if ($user->is_coordinador) {
+            // Si es coordinador, obtenemos los voluntarios asociados a ese coordinador
+            $voluntarios = $user->coordinador->voluntarios()->orderBy('created_at', 'desc')->paginate(15);
+        } else {
+            // Si no es coordinador, simplemente obtenemos todos los voluntarios
+            $voluntarios = Voluntario::orderBy('created_at', 'desc')->paginate(15);
+        }
 
-         // Retornamos la vista con los voluntarios obtenidos
-         return view('voluntarios.listar_voluntarios_card', ['voluntarios' => $voluntarios]);
-     }
+        // Retornamos la vista con los voluntarios obtenidos
+        return view('voluntarios.listar_voluntarios_card', ['voluntarios' => $voluntarios]);
+    }
     /**
      * Display the specified resource.
      */
@@ -87,6 +88,30 @@ class VoluntarioController extends Controller
 
 
     }
+
+
+    public function mostrarHorasPorMes(Request $request, Voluntario $voluntario)
+    {
+        // Obtener el año del formulario
+        $ano = $request->input('ano');
+
+        // Calcular las horas por mes para el voluntario y el año especificado
+        $horasPorMes = $voluntario->calcularHorasPorMes($ano);
+
+        // Verificar si hay resultados
+        $tieneResultados = !empty($horasPorMes);
+
+        // Devolver los resultados en formato JSON
+        return new JsonResponse([
+
+           'horasPorMes' => $horasPorMes,
+
+        ]);
+    }
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -221,15 +246,15 @@ class VoluntarioController extends Controller
 
 
     public function destroy(Voluntario $voluntario)
-{
-    // Eliminar el voluntario
-    $voluntario->delete();
+    {
+        // Eliminar el voluntario
+        $voluntario->delete();
 
 
-    return redirect()->route('voluntarios.index')->with('success', 'Voluntario eliminado correctamente');
+        return redirect()->route('voluntarios.index')->with('success', 'Voluntario eliminado correctamente');
 
 
-}
+    }
 
 
     public function getInfo(Voluntario $voluntario)
@@ -285,86 +310,86 @@ class ValidacionUtils
         ]);
     }
     public static function validarDatosFormularioUpdate(Request $request)
-{
-    $data = $request->all();
-    $booleanFields = [
-        'VOL_tiene_usuario',
-        'VOL_autoriza_datos',
-        'VOL_dispo_dot',
-        'VOL_dispo_cubierta',
-        'VOL_autoriza_uso_imagen',
-        'VOL_autoriza_uso_imagen_cubierto',
-        'VOL_for_for_inicial',
-        'VOL_for_mayores',
-        'VOL_for_menores',
-        'VOL_for_discapacidad',
-        'VOL_for_otras',
-    ];
+    {
+        $data = $request->all();
+        $booleanFields = [
+            'VOL_tiene_usuario',
+            'VOL_autoriza_datos',
+            'VOL_dispo_dot',
+            'VOL_dispo_cubierta',
+            'VOL_autoriza_uso_imagen',
+            'VOL_autoriza_uso_imagen_cubierto',
+            'VOL_for_for_inicial',
+            'VOL_for_mayores',
+            'VOL_for_menores',
+            'VOL_for_discapacidad',
+            'VOL_for_otras',
+        ];
 
-    foreach ($booleanFields as $field) {
-        if (isset($data[$field])) {
-            $data[$field] = $data[$field] == '1' ? true : false;
+        foreach ($booleanFields as $field) {
+            if (isset($data[$field])) {
+                $data[$field] = $data[$field] == '1' ? true : false;
+            }
         }
+
+        // Reglas de validación para los campos del formulario
+        $rules = [
+            'VOL_nombre' => 'required|string|max:255',
+            'VOL_apellidos' => 'required|string|max:255',
+            'VOL_dni' => [
+                'required',
+                'string',
+                Rule::unique('voluntarios', 'VOL_dni')->ignore($request->voluntario->VOL_id, 'VOL_id'),
+            ],
+            'VOL_fecha_nac' => 'required|date',
+            'VOL_domicilio' => 'required|string|max:255',
+            'VOL_cp' => 'required|string|max:5',
+            'VOL_tel1' => 'required|string|max:9',
+            'VOL_sexo' => 'required|string|in:Masculino,Femenino,Otro',
+            'VOL_mail' => 'required|string|email|max:255',
+            'VOL_fecha_baja' => 'nullable|date',
+            'VOL_col_pref' => 'nullable|string|max:255',
+            'VOL_carnet' => 'nullable|string|max:255',
+            'VOL_seguro' => 'nullable|string|max:255',
+            'VOL_seguro_exento' => 'nullable|string|max:255',
+            'VOL_cdns' => 'nullable|string|max:255',
+            'VOL_cdns_pdf' => 'nullable|string|max:255',
+            'VOL_curso' => 'nullable|string|max:255',
+            'VOL_demandas' => 'nullable|string|max:255',
+            'VOL_lugar_voluntariado' => 'nullable|string|max:255',
+            'VOL_dias_semana_dispo.*' => 'nullable|string|in:Lunes,Martes,Miércoles,Jueves,Viernes,Sábado,Domingo',
+            'imagen_perfil' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validación de la imagen de perfil
+            'imagen_perfil.image' => 'El archivo debe ser una imagen.',
+            'imagen_perfil.mimes' => 'El archivo debe ser de tipo: jpeg, png, jpg o gif.',
+            'imagen_perfil.max' => 'El tamaño máximo del archivo es de 2048 kilobytes (2MB).',
+        ];
+
+        $messages = [
+            'VOL_nombre.required' => 'El campo :attribute es obligatorio.',
+            'VOL_apellidos.required' => 'El campo :attribute es obligatorio.',
+            'VOL_dni.required' => 'El campo :attribute es obligatorio.',
+            'VOL_fecha_nac.required' => 'El campo :attribute es obligatorio.',
+            'VOL_domicilio.required' => 'El campo :attribute es obligatorio.',
+            'VOL_cp.required' => 'El campo :attribute es obligatorio.',
+            'VOL_tel1.required' => 'El campo :attribute es obligatorio.',
+            'VOL_sexo.required' => 'El campo :attribute es obligatorio.',
+            'VOL_mail.required' => 'El campo :attribute es obligatorio.',
+            'VOL_fecha_baja.required' => 'El campo :attribute es obligatorio.',
+            'VOL_col_pref.required' => 'El campo :attribute es obligatorio.',
+            'VOL_dni.unique' => 'El :attribute ya está en uso.',
+            'VOL_mail.email' => 'Por favor, introduce una dirección de correo electrónico válida en el campo :attribute.',
+            'VOL_cp.regex' => 'El campo :attribute debe contener 5 dígitos numéricos.',
+            'VOL_tel1.regex' => 'El campo :attribute debe contener 9 dígitos numéricos.',
+            'imagen_perfil' => [
+                'image' => 'El archivo debe ser una imagen.',
+                'mimes' => 'El archivo debe ser de tipo: jpeg, png, jpg o gif.',
+                'max' => 'El tamaño máximo del archivo es de 2048 kilobytes (2MB).',
+            ],
+            // mensajes de validación personalizados...
+        ];
+
+        return $request->validate($rules, $messages);
     }
-
-    // Reglas de validación para los campos del formulario
-    $rules = [
-        'VOL_nombre' => 'required|string|max:255',
-        'VOL_apellidos' => 'required|string|max:255',
-        'VOL_dni' => [
-            'required',
-            'string',
-            Rule::unique('voluntarios', 'VOL_dni')->ignore($request->voluntario->VOL_id, 'VOL_id'),
-        ],
-        'VOL_fecha_nac' => 'required|date',
-        'VOL_domicilio' => 'required|string|max:255',
-        'VOL_cp' => 'required|string|max:5',
-        'VOL_tel1' => 'required|string|max:9',
-        'VOL_sexo' => 'required|string|in:Masculino,Femenino,Otro',
-        'VOL_mail' => 'required|string|email|max:255',
-        'VOL_fecha_baja' => 'nullable|date',
-        'VOL_col_pref' => 'nullable|string|max:255',
-        'VOL_carnet' => 'nullable|string|max:255',
-        'VOL_seguro' => 'nullable|string|max:255',
-        'VOL_seguro_exento' => 'nullable|string|max:255',
-        'VOL_cdns' => 'nullable|string|max:255',
-        'VOL_cdns_pdf' => 'nullable|string|max:255',
-        'VOL_curso' => 'nullable|string|max:255',
-        'VOL_demandas' => 'nullable|string|max:255',
-        'VOL_lugar_voluntariado' => 'nullable|string|max:255',
-        'VOL_dias_semana_dispo.*' => 'nullable|string|in:Lunes,Martes,Miércoles,Jueves,Viernes,Sábado,Domingo',
-        'imagen_perfil' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validación de la imagen de perfil
-        'imagen_perfil.image' => 'El archivo debe ser una imagen.',
-        'imagen_perfil.mimes' => 'El archivo debe ser de tipo: jpeg, png, jpg o gif.',
-        'imagen_perfil.max' => 'El tamaño máximo del archivo es de 2048 kilobytes (2MB).',
-    ];
-
-    $messages = [
-        'VOL_nombre.required' => 'El campo :attribute es obligatorio.',
-        'VOL_apellidos.required' => 'El campo :attribute es obligatorio.',
-        'VOL_dni.required' => 'El campo :attribute es obligatorio.',
-        'VOL_fecha_nac.required' => 'El campo :attribute es obligatorio.',
-        'VOL_domicilio.required' => 'El campo :attribute es obligatorio.',
-        'VOL_cp.required' => 'El campo :attribute es obligatorio.',
-        'VOL_tel1.required' => 'El campo :attribute es obligatorio.',
-        'VOL_sexo.required' => 'El campo :attribute es obligatorio.',
-        'VOL_mail.required' => 'El campo :attribute es obligatorio.',
-        'VOL_fecha_baja.required' => 'El campo :attribute es obligatorio.',
-        'VOL_col_pref.required' => 'El campo :attribute es obligatorio.',
-        'VOL_dni.unique' => 'El :attribute ya está en uso.',
-        'VOL_mail.email' => 'Por favor, introduce una dirección de correo electrónico válida en el campo :attribute.',
-        'VOL_cp.regex' => 'El campo :attribute debe contener 5 dígitos numéricos.',
-        'VOL_tel1.regex' => 'El campo :attribute debe contener 9 dígitos numéricos.',
-        'imagen_perfil' => [
-            'image' => 'El archivo debe ser una imagen.',
-            'mimes' => 'El archivo debe ser de tipo: jpeg, png, jpg o gif.',
-            'max' => 'El tamaño máximo del archivo es de 2048 kilobytes (2MB).',
-        ],
-        // mensajes de validación personalizados...
-    ];
-
-    return $request->validate($rules, $messages);
-}
 
 
 }
