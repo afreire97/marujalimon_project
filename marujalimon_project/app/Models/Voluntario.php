@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -45,6 +46,36 @@ class Voluntario extends Model
         return $this->horas()
                     ->whereBetween('HOR_fecha_inicio', [$fechaInicio, $fechaFin])
                     ->sum('HOR_horas');
+    }
+
+    public function calcularHorasPorMes($ano)
+    {
+        // Obtener todas las horas del año especificado para el voluntario
+        $horasDelAno = $this->horas()
+            ->whereYear('HOR_fecha_inicio', $ano)
+            ->get();
+
+        // Inicializar el array para almacenar los totales de horas por mes
+        $horasPorMes = [];
+
+        // Calcular el total de horas por mes
+        foreach (range(1, 12) as $mes) {
+            $horasPorMes[$this->nombreMes($mes)] = $horasDelAno
+                ->whereBetween('HOR_fecha_inicio', [
+                    Carbon::createFromDate($ano, $mes, 1)->startOfMonth(),
+                    Carbon::createFromDate($ano, $mes, 1)->endOfMonth()
+                ])
+                ->sum('HOR_horas');
+        }
+
+        // Retornar el array con los totales de horas por mes
+        return $horasPorMes;
+    }
+
+    // Método para obtener el nombre del mes a partir de su número
+    public function nombreMes($numeroMes)
+    {
+        return \DateTime::createFromFormat('!m', $numeroMes)->format('F');
     }
 
     public function imagenPerfil(){
