@@ -262,3 +262,12 @@ body {
 .swal-cancel-btn {
     margin-left: 65px; /* Aumenta la separación a la izquierda */
 }
+
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Suaviza la transición de la transformación y la sombra */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Levanta la tarjeta */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Aumenta la sombra para dar efecto de elevación */
+}
