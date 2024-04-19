@@ -129,12 +129,7 @@
                 <div class="card-footer text-muted">
 
                 </div>
-                {{-- <div class="row">
-                    <div class="col-12 px-4 py-2">
-                        <canvas id="monthlyChart" style="display: block;"></canvas>
-                        <canvas id="weeklyChart" style="display: none;"></canvas>
-                    </div>
-                </div> --}}
+
                 <div class="row" id="chartContainer" style="display: none;">
                     <div class="col-12 px-4 py-2">
                         <canvas id="monthlyChart"></canvas>
