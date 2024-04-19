@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('HOR_voluntario_id')->constrained('voluntarios', 'VOL_id')->onDelete('cascade');
             $table->integer('HOR_horas'); // Agrega un campo para la cantidad de horas
             $table->dateTime('HOR_fecha_inicio'); // Campo para guardar la fecha de inicio de la actividad
+            $table->foreignId('HOR_tarea_id')->constrained('tareas', 'TAR_id')->onDelete('cascade');
 
             $table->timestamps();
         });

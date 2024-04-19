@@ -51,10 +51,7 @@ class Voluntario extends Model
         return $this->hasOne(ImagenPerfil::class, 'IMG_voluntario_id');
     }
 
-    public function tareas()
-    {
-        return $this->belongsToMany(Tarea::class, 'tarea_voluntario', 'TAR_VOL_voluntario_id', 'TAR_VOL_tarea_id');
-    }
+
 
 
 }

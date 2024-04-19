@@ -82,7 +82,7 @@ class VoluntarioController extends Controller
 
         $totalHoras = $voluntario->calcularHorasEntreFechas($fechaInicio, $fechaFin);
 
-        return view('voluntarios.formulario_horas', ['voluntario' => $voluntario, 'totalHoras' => $totalHoras]);
+        return view('voluntarios.informacion_voluntario', ['voluntario' => $voluntario, 'totalHoras' => $totalHoras]);
 
 
 

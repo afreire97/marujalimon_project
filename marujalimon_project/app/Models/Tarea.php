@@ -14,9 +14,15 @@ class Tarea extends Model
     public function lugar(){
         return $this->belongsTo(Lugar::class, 'TAR_lugar_id');
     }
-    public function voluntarios()
-{
-    return $this->belongsToMany(Voluntario::class, 'tarea_voluntario', 'TAR_VOL_tarea_id', 'TAR_VOL_voluntario_id');
-}
+
+    public function horas(){
+
+
+        return $this->hasMany(Horas::class, 'TAR_hora_id');
+
+
+
+    }
+
 
 }
