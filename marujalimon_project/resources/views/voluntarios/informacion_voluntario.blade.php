@@ -14,7 +14,7 @@
 
         <div class="container my-5">
             <div class="card mx-auto border-0 shadow-lg animate__animated animate__fadeIn" style="max-width: 1940px;">
-                <div class="card-header bg-primary text-white text-center">
+                <div class="card-header text-white text-center">
                     <h2 class="my-0">Información del voluntario</h2>
                 </div>
                 <div class="row g-0">
@@ -62,33 +62,30 @@
                             </div>
                             <hr class="my-4"> <!-- Puedes usar un separador para distinguir claramente las secciones -->
                             <h5>Calcular Horas de Voluntariado</h5>
-                            <form action="{{ route('calcularHoras', ['voluntario' => $voluntario]) }}" method="post">
+                            <form id="calculoHorasForm" action="{{ route('calcularHoras', ['voluntario' => $voluntario]) }}" method="post">
                                 @csrf
-
-                                <fieldset>
-
-                                    <div class="row mb-3">
-                                        <label for="fecha_inicio" class="col-sm-2 col-form-label">Fecha de inicio</label>
-                                        <div class="col-sm-10">
-                                            <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio">
-                                        </div>
+                                <div class="row mb-3">
+                                    <label for="fecha_inicio" class="col-md-4 col-form-label">Fecha de inicio:</label>
+                                    <div class="col-md-8">
+                                        <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
                                     </div>
-
-                                    <div class="row mb-3">
-                                        <label for="fecha_fin" class="col-sm-2 col-form-label">Fecha de fin</label>
-                                        <div class="col-sm-10">
-                                            <input type="date" class="form-control" id="fecha_fin" name="fecha_fin">
-                                        </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="fecha_fin" class="col-md-4 col-form-label">Fecha de fin:</label>
+                                    <div class="col-md-8">
+                                        <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
                                     </div>
-
+                                </div>
+                                <div class="d-grid gap-2">
                                     <button type="submit" class="btn btn-primary">Calcular horas</button>
-                                </fieldset>
+                                </div>
                             </form>
-
+                            <!-- Resultado del cálculo de horas, si existe -->
                             @if(isset($totalHoras))
-                                <p>Total de horas realizadas: {{$totalHoras}}</p>
+                            <div id="totalHorasDiv" class="alert alert-info mt-3" style="display: none;">
+                                Total de horas realizadas: {{$totalHoras}}
+                            </div>
                             @endif
-
                         </div> <!-- Fin del div card-body -->
                         <div style="position: absolute; top: 0; right: 0; padding: 10px;">
                             <form id="deleteForm" action="{{ route('voluntario.destroy', ['voluntario' => $voluntario]) }}" method="POST">
@@ -229,6 +226,7 @@
                         cancelButtonColor: '#3085d6',
                         confirmButtonText: '¡Sí, eliminar!',
                         cancelButtonText: 'Cancelar',
+                        focusCancel: true, // Foco en el botón de cancelar
                         customClass: {
                             confirmButton: 'swal-confirm-btn',
                             cancelButton: 'swal-cancel-btn'
@@ -239,13 +237,15 @@
                                 '¡Eliminado!',
                                 'El voluntario ha sido eliminado.',
                                 'success'
-                            );
-                            // Enviar el formulario después de mostrar el mensaje de éxito
-                            document.getElementById('deleteForm').submit();
+                            ).then(() => {
+                                // Enviar el formulario después de mostrar el mensaje de éxito
+                                document.getElementById('deleteForm').submit();
+                            });
                         }
                     })
                 }
             </script>
+
             <!-- Agrega esto en la sección de tus scripts si aún no tienes jQuery -->
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
