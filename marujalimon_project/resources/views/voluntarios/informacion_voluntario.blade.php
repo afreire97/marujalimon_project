@@ -62,32 +62,32 @@
                             </div>
                             <hr class="my-4"> <!-- Puedes usar un separador para distinguir claramente las secciones -->
                             <h5>Calcular Horas de Voluntariado</h5>
-    <form id="calculoHorasForm" action="{{ route('calcularHoras', ['voluntario' => $voluntario]) }}" method="post">
-        @csrf
-        <div class="row mb-3">
-            <label for="fecha_inicio" class="col-md-4 col-form-label">Fecha de inicio:</label>
-            <div class="col-md-8">
-                <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="fecha_fin" class="col-md-4 col-form-label">Fecha de fin:</label>
-            <div class="col-md-8">
-                <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
-            </div>
-        </div>
-        <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-primary">Calcular horas</button>
-        </div>
-    </form>
+                            <form id="calculoHorasForm" action="{{ route('calcularHoras', ['voluntario' => $voluntario]) }}" method="post">
+                                @csrf
+                                <div class="row mb-3">
+                                    <label for="fecha_inicio" class="col-md-4 col-form-label">Fecha de inicio:</label>
+                                    <div class="col-md-8">
+                                        <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="fecha_fin" class="col-md-4 col-form-label">Fecha de fin:</label>
+                                    <div class="col-md-8">
+                                        <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary">Calcular horas</button>
+                                </div>
+                            </form>
 
-    <!-- Aquí se mostrará el resultado después de enviar el formulario -->
-    @if(session('totalHoras'))
-        <div class="alert alert-info mt-3">
-            Total de horas realizadas: {{ session('totalHoras') }}
-        </div>
-    @endif
-</div>
+                            <!-- Aquí se mostrará el resultado después de enviar el formulario -->
+                            @if(session('totalHoras'))
+                            <div class="alert alert-info mt-3">
+                                Total de horas realizadas: {{ session('totalHoras') }}
+                            </div>
+                            @endif
+                        </div>
                         <div style="position: absolute; top: 0; right: 0; padding: 10px;">
                             <form id="deleteForm" action="{{ route('voluntario.destroy', ['voluntario' => $voluntario]) }}" method="POST">
                                 @csrf
@@ -141,10 +141,10 @@
 
                     // Data for the weekly chart
                     var weeklyData = {
-                        labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
+                        labels: ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
                         datasets: [{
                             label: 'Horas Voluntariado',
-                            data: [5, 10, 4, 2],
+                            data: [5, 10, 4, 2, 7, 8, 3],
                             backgroundColor: 'rgba(255, 206, 86, 0.2)',
                             borderColor: 'rgba(255, 206, 86, 1)',
                             borderWidth: 1
