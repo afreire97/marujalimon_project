@@ -35,6 +35,7 @@
                                 class="btn btn-primary">Editar Perfil</a>
                         </div>
                     </div>
+
                     <div class="col-md-8" style="position: relative;"> <!-- Añade posición relativa aquí -->
                         <div class="card-body">
                             <h3 class="card-title">{{ $voluntario->VOL_nombre }} {{ $voluntario->VOL_apellidos }}</h3>
