@@ -27,9 +27,10 @@
                         </div>
                         <!-- Un div separado para el botón, fuera del div de la imagen -->
                         <div style="text-align: center; padding-top: 10px;"> <!-- Agrega un poco de espacio entre la imagen y el botón -->
-                            <a href="{{ route('voluntario.edit_form', ['voluntario' => $voluntario]) }}" class="btn btn-primary">Editar Perfil</a>
+                            <a href="{{ route('voluntario.edit_form', ['voluntario' => $voluntario]) }}" class="btn btn-primary" style="width: 100%;">Editar Perfil</a>
                         </div>
                     </div>
+
                     <div class="col-md-8" style="position: relative;"> <!-- Añade posición relativa aquí -->
                         <div class="card-body">
                             <h3 class="card-title">{{ $voluntario->VOL_nombre }} {{ $voluntario->VOL_apellidos }}</h3>
@@ -86,7 +87,7 @@
                             </form>
 
                             @if(isset($totalHoras))
-                                <p>Total de horas realizadas: {{$totalHoras}}</p>
+                            <p>Total de horas realizadas: {{$totalHoras}}</p>
                             @endif
 
                         </div> <!-- Fin del div card-body -->
