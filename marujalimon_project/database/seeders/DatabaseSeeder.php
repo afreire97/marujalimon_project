@@ -18,18 +18,28 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
+        // Crear un usuario coordinador
+        $usuario = User::factory()->create([
+            'name' => 'aaron',
+            'email' => 'aaron@mail.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt('password'), // Usa bcrypt para encriptar la contraseña
+            'is_coordinador' => true, // Establecer el usuario como coordinador
+            // Puedes agregar más atributos según sea necesario
+        ]);
 
-
-        User::factory(1)->create();
+        $coordinador = Coordinador::factory()->create([
+            'COO_nombre' => fake()->name(),
+            'COO_dni' => fake()->randomNumber(8),
+            'user_id' => $usuario->id,
+        ]);
 
         // Crear provincias, coordinadores y delegaciones
         Provincia::factory(6)->create();
-        $coordinadores = Coordinador::factory(1)->create();
         $delegaciones = Delegacion::factory(4)->create();
 
         // Asignar coordinadores a delegaciones
-        $delegaciones->each(function ($delegacion) use ($coordinadores) {
-            $coordinador = $coordinadores->random();
+        $delegaciones->each(function ($delegacion) use ($coordinador) {
             $delegacion->coordinadores()->attach($coordinador);
         });
 
@@ -67,13 +77,7 @@ class DatabaseSeeder extends Seeder
         // Crear errores
         Error::factory(27)->create();
 
-        // Crear horas de voluntariado
-        $voluntarios->each(function ($voluntario) {
-            \App\Models\Horas::factory()->count(rand(1, 5))->create([
-                'HOR_voluntario_id' => $voluntario->VOL_id
-            ]);
-
-        });
+        // Crear lugares
         $lugares = Lugar::factory(10)->create();
 
         // Crear tareas y asignarlas a lugares
@@ -82,9 +86,25 @@ class DatabaseSeeder extends Seeder
             $tarea->lugar()->associate($lugar)->save();
         });
 
-        // Asignar tareas a voluntarios
-        Tarea::all()->each(function ($tarea) use ($voluntarios) {
-            $tarea->voluntarios()->attach($voluntarios->random(rand(1, 5))->pluck('VOL_id'));
+        // Crear horas de voluntariado y asignar una tarea a cada hora
+        $voluntarios->each(function ($voluntario) {
+            $horas = Horas::factory()->count(rand(1, 5))->create([
+                'HOR_voluntario_id' => $voluntario->VOL_id
+            ]);
+
+            // Asignar una tarea aleatoria a cada hora
+            $horas->each(function ($hora) {
+                $tarea = Tarea::inRandomOrder()->first(); // Obtener una tarea aleatoria
+                if ($tarea) { // Verificar si se obtuvo una tarea válida
+                    $hora->HOR_tarea_id = $tarea->TAR_id; // Corregir el nombre del campo de tarea_id
+                    $hora->save();
+                } else {
+                    // Si no se obtiene una tarea válida, puedes manejarlo de acuerdo a tu lógica
+                    // Por ejemplo, puedes lanzar una excepción, ignorar la hora o asignar un valor predeterminado
+                }
+            });
         });
+
+
     }
 }

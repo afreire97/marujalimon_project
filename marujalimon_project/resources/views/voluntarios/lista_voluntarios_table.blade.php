@@ -29,7 +29,7 @@
             </thead>
             <tbody>
                 @foreach($voluntarios as $voluntario)
-                <tr class="{{ $voluntario->tareas()->count() > 0 ? 'table-success' : 'table-warning' }}">
+                <tr >
                     <td>{{ $voluntario->VOL_id }}</td>
                     <td>{{ $voluntario->VOL_nombre }}</td>
                     <td>{{ $voluntario->VOL_apellidos }}</td>
