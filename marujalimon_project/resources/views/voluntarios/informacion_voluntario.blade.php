@@ -155,7 +155,7 @@
                     var ano = document.getElementById('ano').value;
 
                     // Enviar una solicitud AJAX al servidor para obtener los datos de horas por mes
-                    fetch('{{ route('mostrarHorasPorMes', ['voluntario' => $voluntario]) }}', {
+                    fetch(`{{ route('mostrarHorasPorMes', ['voluntario' => $voluntario]) }}`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
