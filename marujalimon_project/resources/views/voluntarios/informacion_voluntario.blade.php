@@ -1,10 +1,11 @@
 <x-layout>
 
     @if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
     @endif
+
 
     <div class="">
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -19,15 +20,19 @@
                 </div>
                 <div class="row g-0">
                     <div class="col-md-4 p-3">
-                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <div
+                            style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                             @if ($voluntario->imagenPerfil && $voluntario->imagenPerfil->IMG_path)
-                            <!-- Asegúrate de que la imagen ocupe hasta el máximo ancho disponible sin ser estirada -->
-                            <img src="{{ asset($voluntario->imagenPerfil->IMG_path) }}" class="img-fluid" style="border-radius: 5px; max-width: 100%; height: auto;" alt="Imagen de perfil">
+                                <!-- Asegúrate de que la imagen ocupe hasta el máximo ancho disponible sin ser estirada -->
+                                <img src="{{ asset($voluntario->imagenPerfil->IMG_path) }}" class="img-fluid"
+                                    style="border-radius: 5px; max-width: 100%; height: auto;" alt="Imagen de perfil">
                             @endif
                         </div>
                         <!-- Un div separado para el botón, fuera del div de la imagen -->
-                        <div style="text-align: center; padding-top: 10px;"> <!-- Agrega un poco de espacio entre la imagen y el botón -->
-                            <a href="{{ route('voluntario.edit_form', ['voluntario' => $voluntario]) }}" class="btn btn-primary">Editar Perfil</a>
+                        <div style="text-align: center; padding-top: 10px;">
+                            <!-- Agrega un poco de espacio entre la imagen y el botón -->
+                            <a href="{{ route('voluntario.edit_form', ['voluntario' => $voluntario]) }}"
+                                class="btn btn-primary">Editar Perfil</a>
                         </div>
                     </div>
                     <div class="col-md-8" style="position: relative;"> <!-- Añade posición relativa aquí -->
@@ -60,7 +65,8 @@
                                 <i class="bi bi-envelope-fill me-2"></i><strong>Correo Electrónico:</strong>
                                 {{ $voluntario->VOL_mail }}
                             </div>
-                            <hr class="my-4"> <!-- Puedes usar un separador para distinguir claramente las secciones -->
+                            <hr class="my-4">
+                            <!-- Puedes usar un separador para distinguir claramente las secciones -->
                             <form action="{{ route('calcularHoras', ['voluntario' => $voluntario]) }}" method="post">
                                 @csrf
 
@@ -68,9 +74,11 @@
                                     <legend>Introduce el período de tiempo para calcular las horas realizadas</legend>
 
                                     <div class="row mb-3">
-                                        <label for="fecha_inicio" class="col-sm-2 col-form-label">Fecha de inicio</label>
+                                        <label for="fecha_inicio" class="col-sm-2 col-form-label">Fecha de
+                                            inicio</label>
                                         <div class="col-sm-10">
-                                            <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio">
+                                            <input type="date" class="form-control" id="fecha_inicio"
+                                                name="fecha_inicio">
                                         </div>
                                     </div>
 
@@ -85,16 +93,35 @@
                                 </fieldset>
                             </form>
 
-                            @if(isset($totalHoras))
-                                <p>Total de horas realizadas: {{$totalHoras}}</p>
+                            @if (isset($totalHoras))
+                                <p>Total de horas realizadas: {{ $totalHoras }}</p>
                             @endif
+
+                            <form action="{{ route('mostrarHorasPorMes', ['voluntario' => $voluntario]) }}"
+                                method="POST" id="calcularHorasForm" data-voluntario="{{$voluntario}}>
+                                @csrf
+                                <div class="row mb-3">
+                                    <label for="ano" class="col-md-4 col-form-label">Año:</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="ano" name="ano"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary">Calcular horas por mes</button>
+                                </div>
+                            </form>
+
 
                         </div> <!-- Fin del div card-body -->
                         <div style="position: absolute; top: 0; right: 0; padding: 10px;">
-                            <form id="deleteForm" action="{{ route('voluntario.destroy', ['voluntario' => $voluntario]) }}" method="POST">
+                            <form id="deleteForm"
+                                action="{{ route('voluntario.destroy', ['voluntario' => $voluntario]) }}"
+                                method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="button" class="btn btn-danger" onclick="confirmDelete()">Eliminar Perfil</button>
+                                <button type="button" class="btn btn-danger" onclick="confirmDelete()">Eliminar
+                                    Perfil</button>
                             </form>
                         </div>
                     </div>
@@ -102,10 +129,15 @@
                 <div class="card-footer text-muted">
 
                 </div>
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-12 px-4 py-2">
                         <canvas id="monthlyChart" style="display: block;"></canvas>
                         <canvas id="weeklyChart" style="display: none;"></canvas>
+                    </div>
+                </div> --}}
+                <div class="row" id="chartContainer" style="display: none;">
+                    <div class="col-12 px-4 py-2">
+                        <canvas id="monthlyChart"></canvas>
                     </div>
                 </div>
 
@@ -115,72 +147,56 @@
                 </div>
             </div>
 
+
+
+
             <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    // Initial chart status
-                    var chartStatus = 'monthly';
+                document.getElementById('calcularHorasForm').addEventListener('submit', function(event) {
+                    // Evitar el envío del formulario
+                    event.preventDefault();
 
-                    // Ensure the canvas elements are present before attempting to get contexts
-                    var monthlyCanvas = document.getElementById('monthlyChart');
-                    var weeklyCanvas = document.getElementById('weeklyChart');
-                    if (!monthlyCanvas || !weeklyCanvas) {
-                        console.error('Canvas elements not found!');
-                        return; // Stop the script if the canvas elements are not found
-                    }
-                    var monthlyCtx = monthlyCanvas.getContext('2d');
-                    var weeklyCtx = weeklyCanvas.getContext('2d');
-                    // Data for the monthly chart
-                    var monthlyData = {
-                        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                        datasets: [{
-                            label: 'Horas Voluntariado',
-                            data: [12, 19, 3, 5, 7, 8, 2, 13, 6, 10, 2, 6],
-                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        }]
-                    };
+                    // Obtener el año del formulario
+                    var ano = document.getElementById('ano').value;
 
-                    // Data for the weekly chart
-                    var weeklyData = {
-                        labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
-                        datasets: [{
-                            label: 'Horas Voluntariado',
-                            data: [5, 10, 4, 2],
-                            backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                            borderColor: 'rgba(255, 206, 86, 1)',
-                            borderWidth: 1
-                        }]
-                    };
+                    // Enviar una solicitud AJAX al servidor para obtener los datos de horas por mes
+                    fetch('{{ route('mostrarHorasPorMes', ['voluntario' => $voluntario]) }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                ano: ano
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Mostrar el contenedor del gráfico
+                            document.getElementById('chartContainer').style.display = 'block';
 
-                    // Initial chart configuration for the monthly data
-                    var currentChart = new Chart(monthlyCtx, {
-                        type: 'bar',
-                        data: monthlyData,
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
+                            // Obtener el contexto del lienzo para el gráfico mensual
+                            var monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+
+                            // Destruir el gráfico anterior si existe
+                            if (window.monthlyChart && typeof window.monthlyChart.destroy === 'function') {
+                                window.monthlyChart.destroy();
                             }
-                        }
-                    });
 
-                    // Toggle button functionality
-                    document.getElementById('toggleChart').addEventListener('click', function() {
-                        if (chartStatus === 'monthly') {
-                            // Destroy the current chart before creating a new one
-                            if (currentChart) {
-                                currentChart.destroy();
-                            }
-                            // Ensure the weekly canvas is displayed and the monthly canvas is hidden
-                            monthlyCanvas.style.display = 'none';
-                            weeklyCanvas.style.display = 'block';
-
-                            // Create the weekly chart
-                            currentChart = new Chart(weeklyCtx, {
+                            // Configurar el gráfico mensual
+                            window.monthlyChart = new Chart(monthlyCtx, {
                                 type: 'bar',
-                                data: weeklyData,
+                                data: {
+                                    labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+                                        'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                                    ],
+                                    datasets: [{
+                                        label: 'Horas Voluntariado (' + ano + ')',
+                                        data: Object.values(data.horasPorMes),
+                                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                        borderColor: 'rgba(54, 162, 235, 1)',
+                                        borderWidth: 1
+                                    }]
+                                },
                                 options: {
                                     scales: {
                                         y: {
@@ -189,35 +205,14 @@
                                     }
                                 }
                             });
-                            this.textContent = 'Ver datos mensuales';
-                            chartStatus = 'weekly';
-                        } else {
-                            // Destroy the current chart before creating a new one
-                            if (currentChart) {
-                                currentChart.destroy();
-                            }
-                            // Ensure the monthly canvas is displayed and the weekly canvas is hidden
-                            weeklyCanvas.style.display = 'none';
-                            monthlyCanvas.style.display = 'block';
-
-                            // Create the monthly chart
-                            currentChart = new Chart(monthlyCtx, {
-                                type: 'bar',
-                                data: monthlyData,
-                                options: {
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
-                                }
-                            });
-                            this.textContent = 'Ver datos semanales';
-                            chartStatus = 'monthly';
-                        }
-                    });
+                        })
+                        .catch(error => {
+                            console.error('Error al obtener los datos de horas por mes:', error);
+                        });
                 });
             </script>
+
+
             <script>
                 function confirmDelete() {
                     Swal.fire({
@@ -267,13 +262,13 @@
                             data: form.serialize(), // Serializa los datos del formulario
                             success: function(data) {
                                 // Actualiza la información de las horas en la página
-                                $('#totalHorasDiv').text("Total de horas realizadas: " + data.totalHoras);
+                                $('#totalHorasDiv').text("Total de horas realizadas: " + data
+                                    .totalHoras);
                             }
                         });
                     });
                 });
             </script>
-
 
 
 

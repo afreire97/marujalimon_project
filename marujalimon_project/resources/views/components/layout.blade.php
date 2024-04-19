@@ -7,6 +7,7 @@
 	<meta content="" name="description" />
 	<meta content="" name="author" />
 
+
 	<script src="https://kit.fontawesome.com/5405ceca9d.js" crossorigin="anonymous"></script>
 
 
@@ -20,6 +21,11 @@
 <link href="{{ asset('css/blog/layout.css') }}" rel="stylesheet" />
 
 <link rel="stylesheet" href="{{asset('css/estilos_voluntario_form.css')}}">
+
+
+
+
+
 
 
 
@@ -159,6 +165,8 @@
 
 <!-- Enlace al archivo app.min.js -->
 <script src="{{ asset('js/blog/app.min.js') }}"></script>
+<script src="{{ asset('js/card-table/switchCardTable.js') }}"></script>
+
 
 	<!-- ================== END core-js ================== -->
 
