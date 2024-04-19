@@ -11,6 +11,7 @@
 	<script src="https://kit.fontawesome.com/5405ceca9d.js" crossorigin="anonymous"></script>
 
 
+    <script src="{{ asset('tabla/assets/plugins/chart.umd.js') }}" ></script>
 
 	<!-- ================== BEGIN BASE CSS STYLE ================== -->
 <!-- Enlace al archivo vendor.min.css -->
@@ -38,7 +39,7 @@
 		<!-- begin container -->
 		<div class="container">
 			<!-- begin navbar-brand -->
-			<a href="{{route('voluntarios.index')}}" class="navbar-brand">
+			<a href="{{route('dashboard')}}" class="navbar-brand">
 				<span class="brand-logo"></span>
 				<span class="brand-text">
 					MARUJALIMON

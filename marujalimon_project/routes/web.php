@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CoordinadorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VoluntarioController;
 use App\Http\Middleware\CoordinadorMiddleware;
@@ -45,6 +46,12 @@ Route::middleware(['auth', CoordinadorMiddleware::class])->group(function () {
     Route::put('/voluntarios/{voluntario}', [VoluntarioController::class, 'update'])->name('voluntarios.update');
 
     Route::delete('/voluntarios/{voluntario}/delete', [VoluntarioController::class, 'destroy'])->name('voluntario.destroy');
+
+
+
+Route::get('/graficos', [CoordinadorController::class, 'cargarVistaGraficos'])->name('graficos');
+
+
 
 
 
