@@ -33,9 +33,9 @@
     var lineChart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
         datasets: [{
-          label: 'Dataset 1',
+          label: 'Horas totales voluntarios',
           borderColor: 'rgba(0, 0, 255, 1)', // Azul
           pointBackgroundColor: 'rgba(0, 0, 255, 1)', // Azul
           pointRadius: 4,
@@ -43,7 +43,7 @@
           backgroundColor: 'rgba(0, 0, 255, .3)', // Azul
           data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()]
         }, {
-          label: 'Dataset 2',
+          label: 'Tareas totales',
           borderColor: 'rgba(255, 0, 0, .75)', // Rojo
           pointBackgroundColor: 'rgba(0, 0, 0, 1)', // Puedes ajustar el color de los puntos según sea necesario
           pointRadius: 4,

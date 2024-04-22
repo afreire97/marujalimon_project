@@ -37,6 +37,10 @@ Route::middleware(['auth', CoordinadorMiddleware::class])->group(function () {
     Route::post('/voluntario/{voluntario}/horas', [VoluntarioController::class, 'calcularHoras'])->name('calcularHoras');
     Route::post('/voluntario/{voluntario}/horas-por-mes', [VoluntarioController::class, 'mostrarHorasPorMes'])->name('mostrarHorasPorMes');
 
+    Route::post('/horas-por-mes', 'TuControlador@mostrarHorasPorMes')->name('horas.por.mes');
+
+
+
     Route::get('/voluntarios/{voluntario}', [VoluntarioController::class, 'show'])->name('voluntarios.show');
 
     Route::get('/table', [VoluntarioController::class,'listarVoluntariosTabla'])->name('listarVoluntariosTabla');

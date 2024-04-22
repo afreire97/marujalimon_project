@@ -99,7 +99,6 @@ class VoluntarioController extends Controller
         $horasPorMes = $voluntario->calcularHorasPorMes($ano);
 
         // Verificar si hay resultados
-        $tieneResultados = !empty($horasPorMes);
 
         // Devolver los resultados en formato JSON
         return new JsonResponse([
@@ -108,6 +107,9 @@ class VoluntarioController extends Controller
 
         ]);
     }
+
+
+
 
 
 
