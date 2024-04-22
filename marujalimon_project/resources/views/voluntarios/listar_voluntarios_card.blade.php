@@ -22,8 +22,9 @@
         <!-- Tarjeta con nuevo estilo -->
         <div class="card h-100 border-0 shadow-sm" data-tilt>
             <!-- Imagen de perfil del voluntario -->
-            <img src="https://via.placeholder.com/150" class="card-img-top" alt="Imagen de perfil del voluntario">
-            
+            <img src="{{ $voluntario->imagenPerfil ? $voluntario->imagenPerfil->IMG_path : 'https://via.placeholder.com/150' }}" class="card-img-top" alt="Imagen de perfil del voluntario">
+
+
             <div class="card-body">
                 <h5 class="card-title">{{$voluntario->VOL_nombre}}</h5>
                 <p class="card-text">DNI: {{$voluntario->VOL_dni}}</p>
