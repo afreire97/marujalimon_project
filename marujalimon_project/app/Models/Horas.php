@@ -26,7 +26,7 @@ class Horas extends Model
 
     public function tarea()
     {
-        return $this->belongsTo(Tarea::class, 'TAR_id');
+        return $this->belongsTo(Tarea::class, 'HOR_tarea_id');
     }
 
 

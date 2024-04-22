@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CoordinadorController;
+use App\Http\Controllers\HorasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VoluntarioController;
 use App\Http\Middleware\CoordinadorMiddleware;
@@ -37,7 +38,7 @@ Route::middleware(['auth', CoordinadorMiddleware::class])->group(function () {
     Route::post('/voluntario/{voluntario}/horas', [VoluntarioController::class, 'calcularHoras'])->name('calcularHoras');
     Route::post('/voluntario/{voluntario}/horas-por-mes', [VoluntarioController::class, 'mostrarHorasPorMes'])->name('mostrarHorasPorMes');
 
-    Route::post('/horas-por-mes', 'TuControlador@mostrarHorasPorMes')->name('horas.por.mes');
+    Route::post('/dashboard',[HorasController::class, 'mostrarHorasPorMes'])->name('totalHorasVoluntarios');
 
 
 

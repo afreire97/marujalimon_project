@@ -27,7 +27,7 @@ class HorasFactory extends Factory
         return [
             'HOR_voluntario_id' => $voluntario->VOL_id,
             'HOR_horas' => fake()->numberBetween(1, 12), // Genera un número entre 1 y 12
-            'HOR_fecha_inicio' => fake()->dateTimeBetween('-1 year', 'now'), // Fecha aleatoria en el último año
+            'HOR_fecha_inicio' => fake()->dateTimeBetween('-4 year', 'now'), // Fecha aleatoria en el último año
             'HOR_tarea_id' => $tarea->TAR_id, // Asociar la tarea aleatoria
         ];
     }

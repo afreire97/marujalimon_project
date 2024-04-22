@@ -14,10 +14,10 @@ class HorasController extends Controller
     public function mostrarHorasPorMes(Request $request)
     {
         // Obtener el año del formulario
-        $ano = $request->input('ano');
+        $year = $request->input('year');
 
         // Calcular el total de horas para cada mes del año especificado
-        $totalHorasPorMes = Horas::calcularTotalHorasPorAno($ano);
+        $totalHorasPorMes = Horas::calcularTotalHorasPorAno($year);
 
         // Devolver los resultados en formato JSON
         return response()->json([
