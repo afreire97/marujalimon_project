@@ -10,6 +10,8 @@
 <!-- CSS de DataTables -->
 <link href="{{ asset('tabla/assets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('tabla/assets/plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -40,11 +42,12 @@
 
 
             <div class="card-body">
-                <h5 class="card-title">{{$voluntario->VOL_nombre}}</h5>
-                <p class="card-text">DNI: {{$voluntario->VOL_dni}}</p>
-                <a href="{{route('voluntarios.show', ['voluntario' => $voluntario])}}" class="btn btn-outline-primary  mb-1">Más información</a>
-                <a href="{{route('voluntario.edit_form', ['voluntario' => $voluntario])}}" class="btn btn-outline-primary ">Modificar</a>
-            </div>
+    <h5 class="card-title"><i class="fa fa-user" aria-hidden="true"></i> {{$voluntario->VOL_nombre}} {{$voluntario->VOL_apellidos}}</h5>
+    <p class="card-text"><i class="fa fa-id-card" aria-hidden="true"></i> DNI: {{$voluntario->VOL_dni}}</p>
+    <a href="{{route('voluntarios.show', ['voluntario' => $voluntario])}}" class="btn btn-primary">Más información</a>
+    <a href="{{route('voluntario.edit_form', ['voluntario' => $voluntario])}}" class="btn btn-primary">Modificar</a>
+</div>
+
         </div>
     </div>
     @endforeach
