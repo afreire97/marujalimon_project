@@ -7,6 +7,19 @@
 
 
     <link href="{{ asset('css/blog/card.list.css') }}" rel="stylesheet" />
+<!-- CSS de DataTables -->
+<link href="{{ asset('tabla/assets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" />
+<link href="{{ asset('tabla/assets/plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}" rel="stylesheet" />
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{ asset('tabla/assets/plugins/datatables.net/js/dataTables.min.js') }}"></script>
+<script src="{{ asset('tabla/assets/plugins/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+<script src="{{ asset('tabla/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('tabla/assets/plugins/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
+
+
+
 
     {{-- <a href="{{route('listarVoluntariosTabla')}}">Cambiar vista</a> --}}
 
@@ -93,10 +106,15 @@
     </div>
 
 
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+<script>
+    $('#data-table-default').DataTable({
+      responsive: true
+    });
+  </script>
 
 
 
 </x-layout>
 
 <!-- Bootstrap and Additional JS Scripts -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
