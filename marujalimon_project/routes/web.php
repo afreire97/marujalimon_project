@@ -52,6 +52,9 @@ Route::middleware(['auth', CoordinadorMiddleware::class])->group(function () {
 
     Route::delete('/voluntarios/{voluntario}/delete', [VoluntarioController::class, 'destroy'])->name('voluntario.destroy');
 
+    Route::post('/voluntarios/horas/agregar', [HorasController::class, 'añadirHoras'])->name('horas.añadir');
+
+
 
 
 Route::get('/graficos', [CoordinadorController::class, 'cargarVistaGraficos'])->name('graficos');
