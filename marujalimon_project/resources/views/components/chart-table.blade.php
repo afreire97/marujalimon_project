@@ -76,7 +76,9 @@
 
 
 
-    <div class="paginacion">
+    <div class="paginacion" id="paginacion">
+
+
         {{ $voluntarios->links() }}
 
     </div>
@@ -93,6 +95,8 @@
             responsive: true
         });
     </script>
+    <script src="{{ asset('js/card-table/switchCardTable.js') }}"></script>
+
 
 
 
