@@ -40,13 +40,10 @@ function randomScalingFactor() {
             <!-- Más tarjetas para otras funciones -->
         </div>
     </div>
+
+
     @include('components.line-chart', [
-        'chartId' => 'line-chart',
-        'labels' => ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        'dataset1Label' => 'Dataset 1',
-        'dataset1Data' => [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()],
-        'dataset2Label' => 'Dataset 2',
-        'dataset2Data' => [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()]
+
     ])
 
 </x-layout>

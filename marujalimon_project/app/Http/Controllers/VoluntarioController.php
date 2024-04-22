@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Coordinador;
 use App\Models\Delegacion;
+use App\Models\Horas;
 use App\Models\ImagenPerfil;
 use App\Models\Voluntario;
 use Carbon\Carbon;
@@ -90,6 +91,7 @@ class VoluntarioController extends Controller
     }
 
 
+
     public function mostrarHorasPorMes(Request $request, Voluntario $voluntario)
     {
         // Obtener el año del formulario
@@ -98,16 +100,15 @@ class VoluntarioController extends Controller
         // Calcular las horas por mes para el voluntario y el año especificado
         $horasPorMes = $voluntario->calcularHorasPorMes($ano);
 
-        // Verificar si hay resultados
+        // Calcular la media de horas por mes para todos los voluntarios
+        $mediaHorasPorMes = Horas::mediaHorasPorMes();
 
         // Devolver los resultados en formato JSON
         return new JsonResponse([
-
-           'horasPorMes' => $horasPorMes,
-
+            'horasPorMes' => $horasPorMes,
+            'mediaHorasPorMes' => $mediaHorasPorMes,
         ]);
     }
-
 
 
 

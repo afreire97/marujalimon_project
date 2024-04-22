@@ -166,7 +166,6 @@
 
 <!-- Enlace al archivo app.min.js -->
 <script src="{{ asset('js/blog/app.min.js') }}"></script>
-<script src="{{ asset('js/card-table/switchCardTable.js') }}"></script>
 
 
 	<!-- ================== END core-js ================== -->

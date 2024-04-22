@@ -26,7 +26,7 @@ class Horas extends Model
 
     public function tarea()
     {
-        return $this->belongsTo(Tarea::class, 'TAR_id');
+        return $this->belongsTo(Tarea::class, 'HOR_tarea_id');
     }
 
 
@@ -75,4 +75,34 @@ class Horas extends Model
 
         return $meses[$numeroMes];
     }
+
+    public static function mediaHorasPorMes()
+    {
+        // Inicializar array para almacenar la media de horas por mes
+        $mediaHorasPorMes = [];
+
+        // Iterar sobre cada mes del año
+        foreach (range(1, 12) as $mes) {
+            $nombreMes = self::nombreMes($mes);
+
+            // Obtener todas las horas del mes
+            $horasDelMes = self::whereMonth('HOR_fecha_inicio', $mes)->get();
+
+            // Calcular la suma total de horas del mes
+            $totalHorasMes = $horasDelMes->sum('HOR_horas');
+
+            // Calcular el número de registros del mes
+            $numRegistrosMes = $horasDelMes->count();
+
+            // Calcular la media de horas del mes (evitar división por cero)
+            $mediaHorasMes = $numRegistrosMes > 0 ? $totalHorasMes / $numRegistrosMes : 0;
+
+            // Almacenar la media de horas por mes en el array asociativo
+            $mediaHorasPorMes[$nombreMes] = $mediaHorasMes;
+        }
+
+        return $mediaHorasPorMes;
+    }
+
+
 }
