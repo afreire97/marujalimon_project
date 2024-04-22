@@ -14,9 +14,15 @@
                 <!-- Tarjeta con nuevo estilo -->
                 <div class="card h-100 border-0 shadow-sm" data-tilt>
                     <!-- Imagen de perfil del voluntario -->
-                    <img src="{{ $voluntario->imagenPerfil ? $voluntario->imagenPerfil->IMG_path : 'https://via.placeholder.com/150' }}"
+                    <img src="{{ $voluntario->imagenPerfil ?
+                        $voluntario->imagenPerfil->IMG_path : 'data:image/svg+xml,%3Csvg
+                        xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 448 512\'%3E%3Cpath
+                        fill=\'%23999\' d=\'M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96
+                        57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.4-46.6 16-72.9
+                        16s-50.7-5.6-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48
+                        48 48h352c26.5 0 48-21.5
+                        48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z\'/%3E%3C/svg%3E' }}"
                         class="card-img-top" alt="Imagen de perfil del voluntario">
-
 
                     <div class="card-body">
                         <h5 class="card-title">{{ $voluntario->VOL_nombre }}</h5>
@@ -84,19 +90,29 @@
     </div>
 
 
-
-
-
-
-
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+
+
+
+    <script src="{{ asset('tabla/assets/plugins/datatables.net-select/js/dataTables.select.min.js') }}"></script>
+
     <script>
-        $('#data-table-default').DataTable({
-            responsive: true
+        console.log("Inicializando DataTables...");
+        let table = $('#data-table-default').DataTable({
+            responsive: true,
+            select: {
+            style: 'multi'
+        }
+        });
+
+        // Agregar evento de escucha para la selección de filas
+        $('#data-table-default tbody').on('click', 'tr', function () {
+            console.log("Fila seleccionada:", table.row(this).data());
         });
     </script>
     <script src="{{ asset('js/card-table/switchCardTable.js') }}"></script>
 
+    {{-- <script src="{{ asset('tabla/assets/plugins/dataset.net-select/js/dataTables-select.js') }}"></script> --}}
 
 
 
