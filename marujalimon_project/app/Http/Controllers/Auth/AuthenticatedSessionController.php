@@ -28,7 +28,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('voluntarios.index');
+
+        return redirect()->route('voluntarios.dashboard');
     }
 
     /**
