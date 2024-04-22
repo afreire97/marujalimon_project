@@ -90,19 +90,29 @@
     </div>
 
 
-
-
-
-
-
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+
+
+
+    <script src="{{ asset('tabla/assets/plugins/datatables.net-select/js/dataTables.select.min.js') }}"></script>
+
     <script>
-        $('#data-table-default').DataTable({
-            responsive: true
+        console.log("Inicializando DataTables...");
+        let table = $('#data-table-default').DataTable({
+            responsive: true,
+            select: {
+            style: 'multi'
+        }
+        });
+
+        // Agregar evento de escucha para la selección de filas
+        $('#data-table-default tbody').on('click', 'tr', function () {
+            console.log("Fila seleccionada:", table.row(this).data());
         });
     </script>
     <script src="{{ asset('js/card-table/switchCardTable.js') }}"></script>
 
+    {{-- <script src="{{ asset('tabla/assets/plugins/dataset.net-select/js/dataTables-select.js') }}"></script> --}}
 
 
 

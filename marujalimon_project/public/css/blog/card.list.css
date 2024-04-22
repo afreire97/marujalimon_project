@@ -13,4 +13,8 @@
     width: 2.9%;
 }
 
+/* Estilo para filas seleccionadas */
+tr.selected {
+    background-color: #4a7be6; /* Cambia el color de fondo a verde */
+}
 
