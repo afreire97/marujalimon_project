@@ -6,6 +6,7 @@ use App\Models\Coordinador;
 use App\Models\Delegacion;
 use App\Models\Horas;
 use App\Models\ImagenPerfil;
+use App\Models\Tarea;
 use App\Models\Voluntario;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -20,23 +21,28 @@ class VoluntarioController extends Controller
      * Display a listing of the resource.
      */
 
-    public function index()
-    {
-        // Obtenemos al usuario autenticado actualmente
-        $user = Auth::user();
 
-        // Verificamos si el usuario es coordinador
-        if ($user->is_coordinador) {
-            // Si es coordinador, obtenemos los voluntarios asociados a ese coordinador
-            $voluntarios = $user->coordinador->voluntarios()->orderBy('created_at', 'desc')->paginate(15);
-        } else {
-            // Si no es coordinador, simplemente obtenemos todos los voluntarios
-            $voluntarios = Voluntario::orderBy('created_at', 'desc')->paginate(15);
-        }
+     public function index()
+     {
+         // Obtenemos al usuario autenticado actualmente
+         $user = Auth::user();
 
-        // Retornamos la vista con los voluntarios obtenidos
-        return view('voluntarios.listar_voluntarios_card', ['voluntarios' => $voluntarios]);
-    }
+         // Verificamos si el usuario es coordinador
+         if ($user->is_coordinador) {
+             // Si es coordinador, obtenemos los voluntarios asociados a ese coordinador
+             $voluntarios = $user->coordinador->voluntarios()->orderBy('created_at', 'desc')->paginate(15);
+         } else {
+             // Si no es coordinador, simplemente obtenemos todos los voluntarios
+             $voluntarios = Voluntario::orderBy('created_at', 'desc')->paginate(15);
+         }
+
+         // Obtener todas las tareas disponibles
+         $tareas = Tarea::all();
+
+         // Retornamos la vista con los voluntarios y las tareas obtenidas
+         return view('voluntarios.listar_voluntarios_card', ['voluntarios' => $voluntarios, 'tareas' => $tareas]);
+     }
+
     /**
      * Display the specified resource.
      */
