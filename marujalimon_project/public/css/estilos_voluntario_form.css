@@ -268,6 +268,30 @@ body {
 }
 
 .card:hover {
-    transform: translateY(-5px); /* Levanta la tarjeta */
+    transform: translateY(-12px); /* Levanta la tarjeta */
     box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Aumenta la sombra para dar efecto de elevación */
 }
+
+.btn-margin-right {
+    margin-right: 12px; /* Ajusta el margen a tu preferencia */
+}
+
+/* Estilo para la tarjeta */
+.card {
+    display: flex; /* Nuevo */
+    flex-direction: column; /* Nuevo */
+    height: 100%; /* Establece una altura si aún no la tiene */
+  }
+  
+  /* Estilo para la imagen */
+  .card-img-top {
+    width: 100%; /* Asegúrate de que la imagen no exceda la anchura de la tarjeta */
+    flex-grow: 15; /* Nuevo: permite que la imagen crezca */
+  }
+  
+  /* Estilo para el cuerpo de la tarjeta */
+  .card-body {
+    margin-top: auto; /* Nuevo: empuja el contenido hacia abajo */
+  }
+  
+

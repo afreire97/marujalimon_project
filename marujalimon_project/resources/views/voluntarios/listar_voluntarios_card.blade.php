@@ -10,6 +10,8 @@
 <!-- CSS de DataTables -->
 <link href="{{ asset('tabla/assets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('tabla/assets/plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -35,15 +37,17 @@
         <!-- Tarjeta con nuevo estilo -->
         <div class="card h-100 border-0 shadow-sm" data-tilt>
             <!-- Imagen de perfil del voluntario -->
-            <img src="{{ $voluntario->imagenPerfil ? $voluntario->imagenPerfil->IMG_path : 'https://via.placeholder.com/150' }}" class="card-img-top" alt="Imagen de perfil del voluntario">
+            <img src="{{ $voluntario->imagenPerfil ? $voluntario->imagenPerfil->IMG_path : 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 448 512\'%3E%3Cpath fill=\'%23999\' d=\'M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.4-46.6 16-72.9 16s-50.7-5.6-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z\'/%3E%3C/svg%3E' }}" class="card-img-top" alt="Imagen de perfil del voluntario">
+
 
 
             <div class="card-body">
-                <h5 class="card-title">{{$voluntario->VOL_nombre}}</h5>
-                <p class="card-text">DNI: {{$voluntario->VOL_dni}}</p>
-                <a href="{{route('voluntarios.show', ['voluntario' => $voluntario])}}" class="btn btn-outline-primary  mb-1">Más información</a>
-                <a href="{{route('voluntario.edit_form', ['voluntario' => $voluntario])}}" class="btn btn-outline-primary ">Modificar</a>
-            </div>
+    <h5 class="card-title"><i class="fa fa-user" aria-hidden="true"></i> {{$voluntario->VOL_nombre}} {{$voluntario->VOL_apellidos}}</h5>
+    <p class="card-text"><i class="fa fa-id-card" aria-hidden="true"></i> DNI: {{$voluntario->VOL_dni}}</p>
+    <a href="{{route('voluntarios.show', ['voluntario' => $voluntario])}}" class="btn btn-primary">Más información</a>
+    <a href="{{route('voluntario.edit_form', ['voluntario' => $voluntario])}}" class="btn btn-primary">Modificar</a>
+</div>
+
         </div>
     </div>
     @endforeach
