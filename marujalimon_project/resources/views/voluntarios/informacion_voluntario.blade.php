@@ -1,9 +1,9 @@
 <x-layout>
 
     @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
     @endif
 
 
@@ -20,21 +20,20 @@
                 </div>
                 <div class="row g-0">
                     <div class="col-md-4 p-3">
-                        <div
-                            style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                             @if ($voluntario->imagenPerfil && $voluntario->imagenPerfil->IMG_path)
-                                <!-- Asegúrate de que la imagen ocupe hasta el máximo ancho disponible sin ser estirada -->
-                                <img src="{{ asset($voluntario->imagenPerfil->IMG_path) }}" class="img-fluid"
-                                    style="border-radius: 5px; max-width: 100%; height: auto;" alt="Imagen de perfil">
+                            <!-- Imagen de perfil existente -->
+                            <img src="{{ asset($voluntario->imagenPerfil->IMG_path) }}" class="img-fluid" style="border-radius: 5px; max-width: 100%; height: auto;" alt="Imagen de perfil">
+                            @else
+                            <!-- Imagen placeholder de perfil -->
+                            <img src="{{ $voluntario->imagenPerfil ? $voluntario->imagenPerfil->IMG_path : 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 448 512\'%3E%3Cpath fill=\'%23999\' d=\'M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.4-46.6 16-72.9 16s-50.7-5.6-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z\'/%3E%3C/svg%3E' }}" class="card-img-top" alt="Imagen de perfil del voluntario">
                             @endif
                         </div>
-                        <!-- Un div separado para el botón, fuera del div de la imagen -->
                         <div style="text-align: center; padding-top: 10px;">
-                            <!-- Agrega un poco de espacio entre la imagen y el botón -->
-                            <a href="{{ route('voluntario.edit_form', ['voluntario' => $voluntario]) }}"
-                                class="btn btn-primary">Editar Perfil</a>
+                            <a href="{{ route('voluntario.edit_form', ['voluntario' => $voluntario]) }}" class="btn btn-primary">Editar Perfil</a>
                         </div>
                     </div>
+
 
                     <div class="col-md-8" style="position: relative;"> <!-- Añade posición relativa aquí -->
                         <div class="card-body">
@@ -78,8 +77,7 @@
                                         <label for="fecha_inicio" class="col-sm-2 col-form-label">Fecha de
                                             inicio</label>
                                         <div class="col-sm-10">
-                                            <input type="date" class="form-control" id="fecha_inicio"
-                                                name="fecha_inicio">
+                                            <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio">
                                         </div>
                                     </div>
 
@@ -95,53 +93,49 @@
                             </form>
 
                             @if (isset($totalHoras))
-                                <p>Total de horas realizadas: {{ $totalHoras }}</p>
+                            <p>Total de horas realizadas: {{ $totalHoras }}</p>
                             @endif
 
-                            <form action="{{ route('mostrarHorasPorMes', ['voluntario' => $voluntario]) }}"
-                                method="POST" id="calcularHorasForm" data-voluntario="{{$voluntario}}>
+                            <form action="{{ route('mostrarHorasPorMes', ['voluntario' => $voluntario]) }}" method="POST" id="calcularHorasForm" data-voluntario="{{$voluntario}}>
                                 @csrf
-                                <div class="row mb-3">
-                                    <label for="ano" class="col-md-4 col-form-label">Año:</label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" id="ano" name="ano"
-                                            required>
-                                    </div>
+                                <div class=" row mb-3">
+                                <label for="ano" class="col-md-4 col-form-label">Año:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="ano" name="ano" required>
                                 </div>
-                                <div class="d-grid gap-2">
-                                    <button type="submit" class="btn btn-primary">Calcular horas por mes</button>
-                                </div>
-                            </form>
-
-
-                        </div> <!-- Fin del div card-body -->
-                        <div style="position: absolute; top: 0; right: 0; padding: 10px;">
-                            <form id="deleteForm"
-                                action="{{ route('voluntario.destroy', ['voluntario' => $voluntario]) }}"
-                                method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button" class="btn btn-danger" onclick="confirmDelete()">Eliminar
-                                    Perfil</button>
-                            </form>
                         </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Calcular horas por mes</button>
+                        </div>
+                        </form>
+
+
+                    </div> <!-- Fin del div card-body -->
+                    <div style="position: absolute; top: 0; right: 0; padding: 10px;">
+                        <form id="deleteForm" action="{{ route('voluntario.destroy', ['voluntario' => $voluntario]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" class="btn btn-danger" onclick="confirmDelete()">Eliminar
+                                Perfil</button>
+                        </form>
                     </div>
-                </div>
-                <div class="card-footer text-muted">
-
-                </div>
-
-                <div class="row" id="chartContainer" style="display: none;">
-                    <div class="col-12 px-4 py-2">
-                        <canvas id="monthlyChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="card-footer text-muted text-center w-100">
-                    <!-- ... otros botones ... -->
-                    <button id="toggleChart" class="btn btn-secondary">Ver datos semanales</button>
                 </div>
             </div>
+            <div class="card-footer text-muted">
+
+            </div>
+
+            <div class="row" id="chartContainer" style="display: none;">
+                <div class="col-12 px-4 py-2">
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card-footer text-muted text-center w-100">
+                <!-- ... otros botones ... -->
+                <button id="toggleChart" class="btn btn-secondary">Ver datos semanales</button>
+            </div>
+        </div>
 
 
 
@@ -218,62 +212,62 @@
             </script>
 
 
-            <script>
-                function confirmDelete() {
-                    Swal.fire({
-                        title: '¿Estás seguro de que deseas eliminar a este voluntario?',
-                        text: "¡No podrás revertir esto!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
-                        confirmButtonText: '¡Sí, eliminar!',
-                        cancelButtonText: 'Cancelar',
-                        focusCancel: true, // Foco en el botón de cancelar
-                        customClass: {
-                            confirmButton: 'swal-confirm-btn',
-                            cancelButton: 'swal-cancel-btn'
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            Swal.fire(
-                                '¡Eliminado!',
-                                'El voluntario ha sido eliminado.',
-                                'success'
-                            ).then(() => {
-                                // Enviar el formulario después de mostrar el mensaje de éxito
-                                document.getElementById('deleteForm').submit();
-                            });
-                        }
-                    })
-                }
-            </script>
-
-            <!-- Agrega esto en la sección de tus scripts si aún no tienes jQuery -->
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-            <script>
-                $(document).ready(function() {
-                    // Cuando se envía el formulario para calcular horas
-                    $('form#calculoHorasForm').on('submit', function(e) {
-                        e.preventDefault(); // Previene el envío normal del formulario
-
-                        var form = $(this);
-                        var url = form.attr('action');
-
-                        $.ajax({
-                            type: "POST",
-                            url: url,
-                            data: form.serialize(), // Serializa los datos del formulario
-                            success: function(data) {
-                                // Actualiza la información de las horas en la página
-                                $('#totalHorasDiv').text("Total de horas realizadas: " + data
-                                    .totalHoras);
-                            }
+        <script>
+            function confirmDelete() {
+                Swal.fire({
+                    title: '¿Estás seguro de que deseas eliminar a este voluntario?',
+                    text: "¡No podrás revertir esto!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: '¡Sí, eliminar!',
+                    cancelButtonText: 'Cancelar',
+                    focusCancel: true, // Foco en el botón de cancelar
+                    customClass: {
+                        confirmButton: 'swal-confirm-btn',
+                        cancelButton: 'swal-cancel-btn'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                            '¡Eliminado!',
+                            'El voluntario ha sido eliminado.',
+                            'success'
+                        ).then(() => {
+                            // Enviar el formulario después de mostrar el mensaje de éxito
+                            document.getElementById('deleteForm').submit();
                         });
+                    }
+                })
+            }
+        </script>
+
+        <!-- Agrega esto en la sección de tus scripts si aún no tienes jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                // Cuando se envía el formulario para calcular horas
+                $('form#calculoHorasForm').on('submit', function(e) {
+                    e.preventDefault(); // Previene el envío normal del formulario
+
+                    var form = $(this);
+                    var url = form.attr('action');
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: form.serialize(), // Serializa los datos del formulario
+                        success: function(data) {
+                            // Actualiza la información de las horas en la página
+                            $('#totalHorasDiv').text("Total de horas realizadas: " + data
+                                .totalHoras);
+                        }
                     });
                 });
-            </script>
+            });
+        </script>
 
 
 
