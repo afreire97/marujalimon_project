@@ -13,7 +13,11 @@ function randomScalingFactor() {
                 <div class="row h-100 align-items-center">
                     <div class="col-lg-12 text-center">
                         <h1 class="display-4 text-primary font-weight-bold" id="welcomeMessage"></h1>
-                        <p class="lead mb-0 text-secondary">Explora lo que nuestro sistema tiene para ofrecer y comienza tu jornada.</p>
+                        <p class="lead mb-0 text-secondary">
+
+                            @if(Auth::check())
+                            <p>Bienvenido, {{ Str::upper(Auth::user()->name) }}. Explora lo que nuestro sistema tiene para ofrecer y comienza tu jornada</p>
+                            @endif
                     </div>
                 </div>
             @endauth
