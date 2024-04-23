@@ -2,6 +2,9 @@
     <button id="toggleViewButton" class="btn btn-primary">Cambiar Vista</button>
 </div>
 
+
+
+
 <!-- Tarjetas de voluntarios con nuevo estilo -->
 <div id="cardView" class="row row-cols-md-3 row-cols-lg-4 gx-1 mt-5">
     @foreach ($voluntarios as $voluntario)
@@ -33,11 +36,6 @@
     @endforeach
 </div>
 
-@if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
 
 <div id="addHoursForm">
     <form action="{{ route('horas.añadir') }}" method="POST">
