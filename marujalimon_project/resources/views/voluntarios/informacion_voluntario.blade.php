@@ -118,6 +118,8 @@
                             <p>Total de horas realizadas: {{ $totalHoras }}</p>
                             @endif
 
+                            <fieldset>
+
                             <form action="{{ route('mostrarHorasPorMes', ['voluntario' => $voluntario]) }}" method="POST" id="calcularHorasForm" data-voluntario="{{$voluntario}}>
                                 @csrf
                                 <div class=" row mb-3">
@@ -129,6 +131,8 @@
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">Calcular horas por mes</button>
                         </div>
+
+</fieldset>
                         </form>
 
 
