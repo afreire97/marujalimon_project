@@ -87,8 +87,9 @@
                                             <input type="date" class="form-control" id="fecha_fin" name="fecha_fin">
                                         </div>
                                     </div>
-
+                                    <div class="d-grid gap-2">
                                     <button type="submit" class="btn btn-primary">Calcular horas</button>
+                                    </div>
                                 </fieldset>
                             </form>
 
