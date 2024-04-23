@@ -22,13 +22,11 @@ class HorasFactory extends Factory
         $voluntario = Voluntario::inRandomOrder()->first();
 
         // Obtener una tarea aleatoria
-        $tarea = Tarea::inRandomOrder()->first();
 
         return [
             'HOR_voluntario_id' => $voluntario->VOL_id,
-            'HOR_horas' => fake()->numberBetween(1, 12), // Genera un número entre 1 y 12
-            'HOR_fecha_inicio' => fake()->dateTimeBetween('-4 year', 'now'), // Fecha aleatoria en el último año
-            'HOR_tarea_id' => $tarea->TAR_id, // Asociar la tarea aleatoria
+            'HOR_horas' => fake()->numberBetween(1, 4), // Genera un número entre 1 y 12
+
         ];
     }
 }

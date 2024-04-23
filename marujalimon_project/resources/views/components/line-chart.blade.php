@@ -4,6 +4,7 @@
 <script src="{{ asset('/js/graficos/highlight.min.js') }}"></script>
 <script src="{{ asset('/js/graficos/render.highlight.js') }}"></script>
 @endpush
+
 <div>
     <form id="year-form">
         <label for="year">Seleccione el año:</label>
@@ -20,12 +21,6 @@
     <canvas id="line-chart"></canvas>
 </div>
 
-<!-- Agrega aquí tus enlaces a scripts y otras dependencias -->
-<script src="{{ asset('/tabla/assets/plugins/chart.umd.js') }}"></script>
-<script src="{{ asset('/js/graficos/chart-js.demo.js') }}"></script>
-<script src="{{ asset('/js/graficos/highlight.min.js') }}"></script>
-<script src="{{ asset('/js/graficos/render.highlight.js') }}"></script>
-
 <script>
     document.addEventListener('DOMContentLoaded', async function() {
         const ctx = document.getElementById('line-chart').getContext('2d');
@@ -37,7 +32,7 @@
         // Función para cargar los datos del gráfico
         async function cargarDatos(year) {
             try {
-                const response = await fetch(`{{ route('totalHorasVoluntarios') }}`, {
+                const horasResponse = await fetch(`{{ route('totalHorasVoluntarios') }}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -48,11 +43,23 @@
                     })
                 });
 
-                if (!response.ok) {
-                    throw new Error('Error al obtener los datos de horas por mes');
+                const tareasResponse = await fetch(`{{ route('totalTareasPorMes') }}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        year: year
+                    })
+                });
+
+                if (!horasResponse.ok || !tareasResponse.ok) {
+                    throw new Error('Error al obtener los datos');
                 }
 
-                const data = await response.json();
+                const horasData = await horasResponse.json();
+                const tareasData = await tareasResponse.json();
 
                 // Limpiar el gráfico existente si existe
                 if (lineChart) {
@@ -63,7 +70,7 @@
                 lineChart = new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: Object.keys(data.totalHorasPorMes),
+                        labels: Object.keys(horasData.totalHorasPorMes),
                         datasets: [{
                             label: `Horas totales voluntarios (${year})`,
                             borderColor: 'rgba(0, 0, 255, 1)',
@@ -71,12 +78,20 @@
                             pointRadius: 4,
                             borderWidth: 2,
                             backgroundColor: 'rgba(0, 0, 255, .3)',
-                            data: Object.values(data.totalHorasPorMes)
+                            data: Object.values(horasData.totalHorasPorMes)
+                        }, {
+                            label: `Total de tareas (${year})`,
+                            borderColor: 'rgba(255, 0, 0, 1)',
+                            pointBackgroundColor: 'rgba(255, 0, 0, 1)',
+                            pointRadius: 4,
+                            borderWidth: 2,
+                            backgroundColor: 'rgba(255, 0, 0, .3)',
+                            data: Object.values(tareasData.totalTareasPorMes)
                         }]
                     }
                 });
             } catch (error) {
-                console.error('Error al obtener los datos de horas por mes:', error);
+                console.error('Error al obtener los datos:', error);
             }
         }
 
