@@ -83,8 +83,6 @@ class VoluntarioController extends Controller
     {
 
 
-
-
         $fechaInicio = $request->input('fecha_inicio');
         $fechaFin = $request->input('fecha_fin');
 
