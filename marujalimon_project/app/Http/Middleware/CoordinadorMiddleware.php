@@ -16,7 +16,7 @@ class CoordinadorMiddleware
     public function handle(Request $request, Closure $next)
     {
         if (!auth()->check() || !auth()->user()->is_coordinador) {
-            abort(403, "No tienes permisos para acceder a esta pagina");
+            abort(403, "No tienes permisos para acceder a esta pagina coordinador");
         }
 
         return $next($request);

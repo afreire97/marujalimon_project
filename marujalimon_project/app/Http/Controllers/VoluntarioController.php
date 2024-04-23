@@ -22,27 +22,37 @@ class VoluntarioController extends Controller
      */
 
 
-     public function index()
-     {
-         // Obtenemos al usuario autenticado actualmente
-         $user = Auth::user();
+    public function index()
+    {
+        // Obtenemos al usuario autenticado actualmente
+        $user = Auth::user();
 
-         // Verificamos si el usuario es coordinador
-         if ($user->is_coordinador) {
-             // Si es coordinador, obtenemos los voluntarios asociados a ese coordinador
-             $voluntarios = $user->coordinador->voluntarios()->orderBy('created_at', 'desc')->paginate(15);
-         } else {
-             // Si no es coordinador, simplemente obtenemos todos los voluntarios
-             $voluntarios = Voluntario::orderBy('created_at', 'desc')->paginate(15);
-         }
+        // Verificamos si el usuario es administrador
+        if ($user->is_admin) {
+            // Si es administrador, obtenemos todos los voluntarios con paginación
+            $voluntarios = Voluntario::orderBy('created_at', 'desc')->paginate();
+            $voluntarios_all = Voluntario::all();
+        } else {
+            // Verificamos si el usuario está asociado a un coordinador
+            if ($user->is_coordinador && $user->coordinador) { // Verificar si $user->coordinador no es null
+                // Si está asociado a un coordinador, obtenemos todos los voluntarios asociados a ese coordinador con paginación
+                $voluntarios = $user->coordinador->voluntarios()->orderBy('created_at', 'desc')->paginate();
+                $voluntarios_all = $user->coordinador->voluntarios()->get();
+            } else {
+                // Manejar el caso en el que el usuario no está asociado a ningún coordinador
+                // Aquí puedes devolver una lista vacía o un mensaje de error según sea necesario
+                $voluntarios = collect(); // Lista vacía
 
-         // Obtener todas las tareas disponibles
-         $tareas = Tarea::all();
+            }
+        }
 
-         // Retornamos la vista con los voluntarios y las tareas obtenidas
-         return view('voluntarios.listar_voluntarios_card', ['voluntarios' => $voluntarios, 'tareas' => $tareas]);
-     }
+        // Obtener todas las tareas disponibles
+        $tareas = Tarea::all();
 
+
+        // Retornamos la vista con los voluntarios y las tareas obtenidas
+        return view('voluntarios.listar_voluntarios_card', ['voluntarios' => $voluntarios, 'tareas' => $tareas, 'voluntarios_all' => $voluntarios_all]);
+    }
     /**
      * Display the specified resource.
      */

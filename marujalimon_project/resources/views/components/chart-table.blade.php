@@ -80,7 +80,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($voluntarios as $voluntario)
+                @foreach ($voluntarios_all as $voluntario)
                 <tr>
                     <td>{{ $voluntario->VOL_id }}</td>
                     <td>{{ $voluntario->VOL_nombre }}</td>
@@ -99,9 +99,12 @@
     </div>
 </div>
 
-<div class="paginacion" id="paginacion">
-    {{ $voluntarios->links() }}
-</div>
+@if ($voluntarios->count() > 0)
+    <div class="paginacion" id="paginacion">
+        {{ $voluntarios->links() }}
+    </div>
+@endif
+
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('tabla/assets/plugins/datatables.net-select/js/dataTables.select.min.js') }}"></script>

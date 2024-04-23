@@ -1,5 +1,4 @@
-
-    @extends('layouts.default', [
+@extends('layouts.default', [
     'paceTop' => true,
     'appSidebarHide' => true,
     'appHeaderHide' => true,
@@ -43,46 +42,68 @@
                         <label class="mb-2" for="name">Name <span class="text-danger">*</span></label>
                         <div class="row gx-3">
                             <div class="col-md-6 mb-2 mb-md-0">
-                                <input type="text" class="form-control fs-13px" placeholder="First name" name="name" :value="old('name')" required autofocus autocomplete="given-name" />
+                                <input type="text" class="form-control fs-13px" placeholder="First name" name="name"
+                                    :value="old('name')" required autofocus autocomplete="given-name" />
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control fs-13px" placeholder="DNI" name="dni" :value="old('dni')" required autocomplete="family-name" />
+                                <input type="text" class="form-control fs-13px" placeholder="DNI" name="dni"
+                                    :value="old('dni')" required autocomplete="family-name" />
                             </div>
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <label class="mb-2" for="email">Email <span class="text-danger">*</span></label>
-                        <input type="email" class="form-control fs-13px" placeholder="Email address" name="email" :value="old('email')" required autocomplete="email" />
+                        <input type="email" class="form-control fs-13px" placeholder="Email address" name="email"
+                            :value="old('email')" required autocomplete="email" />
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
                     <div class="mb-3">
                         <label class="mb-2" for="password">Password <span class="text-danger">*</span></label>
-                        <input type="password" class="form-control fs-13px" placeholder="Password" name="password" required autocomplete="new-password" />
+                        <input type="password" class="form-control fs-13px" placeholder="Password" name="password" required
+                            autocomplete="new-password" />
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
 
                     <div class="mb-3">
-                        <label class="mb-2" for="password_confirmation">Confirm Password <span class="text-danger">*</span></label>
-                        <input type="password" class="form-control fs-13px" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password" />
+                        <label class="mb-2" for="password_confirmation">Confirm Password <span
+                                class="text-danger">*</span></label>
+                        <input type="password" class="form-control fs-13px" placeholder="Confirm Password"
+                            name="password_confirmation" required autocomplete="new-password" />
                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                     </div>
 
                     <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" value="1" id="is_coordinador" name="is_coordinador">
+                        <input class="form-check-input" type="radio" value="administrador" id="is_admin" name="role">
+                        <label class="form-check-label" for="is_admin">
+                            Administrador
+                        </label>
+                        <x-input-error :messages="$errors->get('is_admin')" class="mt-2" />
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="radio" value="coordinador" id="is_coordinador"
+                            name="role">
                         <label class="form-check-label" for="is_coordinador">
                             Coordinador
                         </label>
                         <x-input-error :messages="$errors->get('is_coordinador')" class="mt-2" />
                     </div>
 
+
+
                     <div class="flex items-center justify-end mt-3">
-                        <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
+                        <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                            href="{{ route('login') }}">
                             {{ __('Already registered?') }}
                         </a>
-                        <button type="submit" class="btn btn-theme d-block btn-lg h-45px fs-13px ms-4">{{ __('Register') }}</button>
+                        <button type="submit"
+                            class="btn btn-theme d-block btn-lg h-45px fs-13px ms-4">{{ __('Register') }}</button>
                     </div>
+
+
+
+
                 </form>
 
             </div>
