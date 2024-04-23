@@ -45,7 +45,6 @@ Route::middleware(['auth', CoordinadorMiddleware::class])->group(function () {
 
     Route::get('/voluntarios/{voluntario}', [VoluntarioController::class, 'show'])->name('voluntarios.show');
 
-    Route::get('/table', [VoluntarioController::class,'listarVoluntariosTabla'])->name('listarVoluntariosTabla');
     Route::post('/voluntarios/create', [VoluntarioController::class, 'store'])->name('storeVoluntario');
     Route::get('/voluntario/{voluntario}/info', [VoluntarioController::class, 'getInfo'])->name('info');
     Route::get('/voluntario/{voluntario}/edit', [VoluntarioController::class, 'edit'])->name('voluntario.edit_form');
