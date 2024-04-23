@@ -7,22 +7,23 @@ function randomScalingFactor() {
 
 
 <x-layout>
-    <header class="bg-light py-5 mb-4">
-        <div class="container h-100">
-            @auth
-                <div class="row h-100 align-items-center">
-                    <div class="col-lg-12 text-center">
-                        <h1 class="display-4 text-primary font-weight-bold" id="welcomeMessage"></h1>
-                        <p class="lead mb-0 text-secondary">
+<header class="bg-light py-5 mb-4">
+    <div class="container h-100">
+        @auth
+            <div class="row h-100 align-items-center">
+                <div class="col-lg-12 text-center">
+                    <!-- Mensaje de bienvenida con animación -->
+                    <h1 class="display-4 text-primary font-weight-bold" id="welcomeMessage">Bienvenido a {{ Str::upper(Auth::user()->name) }}</h1>
+                    <p class="lead mb-0 text-secondary" id="dynamicText"></p>
 
-                            @if(Auth::check())
-                            <p>Bienvenido, {{ Str::upper(Auth::user()->name) }}. Explora lo que nuestro sistema tiene para ofrecer y comienza tu jornada</p>
-                            @endif
-                    </div>
+                    @if(Auth::check())
+                    <p>Explora lo que nuestro sistema tiene para ofrecer y comienza tu jornada.</p>
+                    @endif
                 </div>
-            @endauth
-        </div>
-    </header>
+            </div>
+        @endauth
+    </div>
+</header>
 
     <!-- Sección de tarjetas con efecto de inclinación -->
     <div class="container">
@@ -64,5 +65,17 @@ function randomScalingFactor() {
     @include('components.line-chart', [
 
     ])
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    // Animación inicial para el mensaje de bienvenida
+    welcomeMessage.style.opacity = 0;
+    window.requestAnimationFrame(function() {
+        welcomeMessage.style.transition = 'opacity 5s';
+        welcomeMessage.style.opacity = 1;
+    });
+});
+</script>
 
 </x-layout>
