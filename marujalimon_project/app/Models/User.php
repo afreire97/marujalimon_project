@@ -45,7 +45,7 @@ class User extends Authenticatable
     }
     public function coordinador()
     {
-        return $this->hasOne(Coordinador::class, 'user_id', 'id');
+        return $this->hasOne(Coordinador::class, 'user_id');
     }
     public function isCoordinador()
     {
