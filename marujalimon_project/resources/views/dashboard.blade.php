@@ -42,6 +42,25 @@ function randomScalingFactor() {
         </div>
     </div>
 
+    @if(auth()->check() && auth()->user()->is_admin)
+    <div class="col">
+        <div class="card h-100 border-0 shadow-sm" data-tilt>
+            <div class="card-body">
+                <h5 class="card-title text-primary">Listar Coordinadores <i class="fa fa-users"></i></h5>
+                <p class="card-text">Accede a la lista de coordinadores y gestiona su información.</p>
+                <a href="{{ route('coordinadores.index') }}" class="btn btn-outline-primary stretched-link">Ver Coordinadores</a>
+            </div>
+        </div>
+    </div>
+    @endif
+
+
+
+
+
+
+
+
 
     @include('components.line-chart', [
 

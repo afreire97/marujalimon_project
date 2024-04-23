@@ -5,6 +5,8 @@ use App\Http\Controllers\HorasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TareasController;
 use App\Http\Controllers\VoluntarioController;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\AdminOrCoordMiddleware;
 use App\Http\Middleware\CoordinadorMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -23,8 +25,9 @@ Route::middleware('auth')->group(function () {
 });
 
 
+Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
 
-Route::middleware(['auth', CoordinadorMiddleware::class])->group(function () {
+
 
 
     Route::get('/voluntarios', [VoluntarioController::class, 'index'])->name('voluntarios.index');
@@ -39,7 +42,7 @@ Route::middleware(['auth', CoordinadorMiddleware::class])->group(function () {
     Route::post('/voluntario/{voluntario}/horas', [VoluntarioController::class, 'calcularHoras'])->name('calcularHoras');
     Route::post('/voluntario/{voluntario}/horas-por-mes', [VoluntarioController::class, 'mostrarHorasPorMes'])->name('mostrarHorasPorMes');
 
-    Route::post('/dashboard',[HorasController::class, 'mostrarHorasPorMes'])->name('totalHorasVoluntarios');
+    Route::post('/dashboard', [HorasController::class, 'mostrarHorasPorMes'])->name('totalHorasVoluntarios');
 
 
 
@@ -59,12 +62,19 @@ Route::middleware(['auth', CoordinadorMiddleware::class])->group(function () {
 
 
 
-Route::get('/graficos', [CoordinadorController::class, 'cargarVistaGraficos'])->name('graficos');
+    Route::get('/graficos', [CoordinadorController::class, 'cargarVistaGraficos'])->name('graficos');
 
 
+    Route::get('/coordinadores', [CoordinadorController::class, 'index'])->name('coordinadores.index');
 
 
 
 });
 
-require __DIR__.'/auth.php';
+
+
+
+
+
+
+require __DIR__ . '/auth.php';
