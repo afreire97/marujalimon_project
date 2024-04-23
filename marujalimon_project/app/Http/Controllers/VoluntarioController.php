@@ -273,13 +273,7 @@ class VoluntarioController extends Controller
         return view('voluntarios.info_voluntario_view', ['voluntario' => $voluntario]);
     }
 
-    public function listarVoluntariosTabla()
-    {
 
-        $voluntarios = Voluntario::all();
-
-        return view('voluntarios.lista_voluntarios_table', ['voluntarios' => $voluntarios]);
-    }
 }
 class ValidacionUtils
 {
