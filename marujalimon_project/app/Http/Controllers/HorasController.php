@@ -26,6 +26,14 @@ class HorasController extends Controller
         ]);
     }
 
+    public function mostrarTareasPorMes(Request $request){
+
+        $year = $request->input('year');
+
+
+
+
+    }
 
 
     public function añadirHoras(Request $request)
@@ -44,22 +52,19 @@ class HorasController extends Controller
         $horas = $request->input('horas');
         $tareaId = $request->input('tarea_id');
 
-        // Crear una nueva hora con los datos del formulario
-        $hora = new Horas();
-        $hora->HOR_voluntario_id = $voluntarioId;
-        $hora->HOR_horas = $horas;
-        $hora->HOR_fecha_inicio = now();
-        $hora->HOR_tarea_id = $tareaId;
+        // // Crear una nueva hora con los datos del formulario
+        // $hora = new Horas();
+        // $hora->HOR_voluntario_id = $voluntarioId;
+        // $hora->HOR_horas = $horas;
+        // $hora->HOR_fecha_inicio = now();
+        // $hora->HOR_tarea_id = $tareaId;
 
-        // Guardar la hora en la base de datos
-        $hora->save();
+        // // Guardar la hora en la base de datos
+        // $hora->save();
 
-        // Devolver un mensaje de éxito
-        return response()->json([
-           'message' => 'Hora agregada exitosamente',
-        ]);
-        $horas = $request->input('horas');
-        $tareaId = $request->input('tarea_id');
+
+        // $horas = $request->input('horas');
+        // $tareaId = $request->input('tarea_id');
 
         // Agregar horas al voluntario
         $resultado = Horas::agregarHorasVoluntario($voluntarioId, $horas, $tareaId);
@@ -73,7 +78,7 @@ class HorasController extends Controller
             $request->session()->flash('error', 'No se pudieron añadir las horas.');
         }
 
-        return redirect()->route('voluntarios.show', $voluntarioId);
+        return redirect()->route('voluntarios.index', $voluntarioId);
     }
 
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\CoordinadorController;
 use App\Http\Controllers\HorasController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TareasController;
 use App\Http\Controllers\VoluntarioController;
 use App\Http\Middleware\CoordinadorMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -54,6 +55,8 @@ Route::middleware(['auth', CoordinadorMiddleware::class])->group(function () {
 
     Route::post('/voluntarios/horas/agregar', [HorasController::class, 'añadirHoras'])->name('horas.añadir');
 
+
+    Route::post('/totalTareasPorMes', [TareasController::class, 'totalTareasPorMes'])->name('totalTareasPorMes');
 
 
 

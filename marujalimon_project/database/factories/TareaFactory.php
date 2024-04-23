@@ -21,6 +21,7 @@ class TareaFactory extends Factory
             'TAR_nombre' => fake()->word(),
             'TAR_descripcion' => fake()->sentence(7),
             'TAR_lugar_id' => Lugar::inRandomOrder()->first()->LUG_id,
+            'created_at' => fake()->dateTimeBetween('-4 year', 'now'),
         ];
     }
 }
