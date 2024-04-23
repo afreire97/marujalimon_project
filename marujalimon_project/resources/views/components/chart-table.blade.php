@@ -24,9 +24,9 @@
                     <h5 class="card-title">{{ $voluntario->VOL_nombre }}</h5>
                     <p class="card-text">DNI: {{ $voluntario->VOL_dni }}</p>
                     <a href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}"
-                        class="btn btn-outline-primary  mb-1">Más información</a>
+                        class="btn btn-primary">Más información</a>
                     <a href="{{ route('voluntario.edit_form', ['voluntario' => $voluntario]) }}"
-                        class="btn btn-outline-primary ">Modificar</a>
+                        class="btn btn-primary ">Modificar</a>
                 </div>
             </div>
         </div>
