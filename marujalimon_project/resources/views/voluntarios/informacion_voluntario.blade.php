@@ -65,6 +65,28 @@
                                 <i class="bi bi-envelope-fill me-2"></i><strong>Correo Electrónico:</strong>
                                 {{ $voluntario->VOL_mail }}
                             </div>
+
+
+                            @foreach ($voluntario->observaciones as $observacion)
+
+
+                           <label for="">{{$observacion->created_at}}</label> <p>{{$observacion->OBS_contenido}}</p>
+
+
+                            @endforeach
+
+                            @foreach ($voluntario->errores as $error
+                            )
+
+
+                           <label for="">{{$error->created_at}}</label> <p class="text-danger">{{$error->ERR_descripcion}}</p>
+
+
+                            @endforeach
+
+
+
+
                             <hr class="my-4">
                             <!-- Puedes usar un separador para distinguir claramente las secciones -->
                             <form action="{{ route('calcularHoras', ['voluntario' => $voluntario]) }}" method="post">
