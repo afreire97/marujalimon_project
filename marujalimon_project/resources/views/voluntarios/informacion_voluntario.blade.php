@@ -41,6 +41,21 @@
                             <div class="mb-3">
                                 <i class="bi bi-person-fill me-2"></i><strong>DNI:</strong> {{ $voluntario->VOL_dni }}
                             </div>
+
+                            @foreach ($voluntario->observaciones as $observacion)
+
+
+                                <p>{{$observacion->OBS_contenido}}</p>
+
+
+                            @endforeach
+
+
+
+
+
+
+
                             <div class="mb-3">
                                 <i class="bi bi-calendar3 me-2"></i><strong>Fecha de nacimiento:</strong>
                                 {{ date('d-m-Y', strtotime($voluntario->VOL_fecha_nac)) }}
