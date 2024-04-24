@@ -1,5 +1,22 @@
 <x-layout>
 
+    <!-- En la parte superior de tu archivo blade -->
+@if(session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
+
+@if($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
     <div class="col-md-8" style="position: relative;"> <!-- Añade posición relativa aquí -->
         <div class="card-body">
             <h3 class="card-title">{{ $coordinador->COO_nombre }} {{ $coordinador->COO_apellidos }}</h3>
