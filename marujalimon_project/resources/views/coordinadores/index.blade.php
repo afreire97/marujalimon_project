@@ -1,3 +1,6 @@
-<div>
-    <!-- Smile, breathe, and go slowly. - Thich Nhat Hanh -->
-</div>
+<x-layout>
+
+
+
+
+</x-layout>
