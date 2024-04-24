@@ -1,29 +1,45 @@
 <?php
 // En la parte superior de tu archivo PHP, antes de usarla
-function randomScalingFactor() {
+function randomScalingFactor()
+{
     return mt_rand(0, 100);
 }
 ?>
 
 
 <x-layout>
-<header class="bg-light py-5 mb-4">
+<header class="bg-lava-lamp py-5 mb-4">
     <div class="container h-100">
         @auth
-            <div class="row h-100 align-items-center">
-                <div class="col-lg-12 text-center">
-                    <!-- Mensaje de bienvenida con animación -->
-                    <h1 class="display-4 text-primary font-weight-bold" id="welcomeMessage">Bienvenido a {{ Str::upper(Auth::user()->name) }}</h1>
-                    <p class="lead mb-0 text-secondary" id="dynamicText"></p>
-
-                    @if(Auth::check())
-                    <p>Explora lo que nuestro sistema tiene para ofrecer y comienza tu jornada.</p>
-                    @endif
-                </div>
+        <div class="rhombus-container left-rhombuses">
+            <!-- Rhombuses for the left side -->
+            <div class="rhombus"></div>
+            <div class="rhombus"></div>
+            <div class="rhombus"></div>
+        </div>
+        <div class="rhombus-container right-rhombuses">
+            <!-- Rhombuses for the right side -->
+            <div class="rhombus"></div>
+            <div class="rhombus"></div>
+            <div class="rhombus"></div>
+        </div>
+        <div class="row h-100 align-items-center header-content">
+            <div class="col-lg-12 text-center">
+                <h1 class="display-4 font-weight-bold text-primary" id="welcomeMessage">
+                    ¡Te damos la bienvenida, {{ ucfirst(strtolower(Auth::user()->name)) }}!
+                </h1>
+                <p class="lead mb-0 text-secondary" id="dynamicText"></p>
+                @if(Auth::check())
+                <p>Explora lo que nuestro sistema tiene para ofrecer y comienza tu jornada.</p>
+                @endif
             </div>
+        </div>
         @endauth
     </div>
 </header>
+
+
+
 
     <!-- Sección de tarjetas con efecto de inclinación -->
     <div class="container">
@@ -39,26 +55,19 @@ function randomScalingFactor() {
                 </div>
             </div>
             <!-- Más tarjetas para otras funciones -->
-        </div>
-    </div>
-
-    @if(auth()->check() && auth()->user()->is_admin)
-    <div class="col">
-        <div class="card h-100 border-0 shadow-sm" data-tilt>
-            <div class="card-body">
-                <h5 class="card-title text-primary">Listar Coordinadores <i class="fa fa-users"></i></h5>
-                <p class="card-text">Accede a la lista de coordinadores y gestiona su información.</p>
-                <a href="{{ route('coordinadores.index') }}" class="btn btn-outline-primary stretched-link">Ver Coordinadores</a>
+            @if(auth()->check() && auth()->user()->is_admin)
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm" data-tilt>
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Listar Coordinadores <i class="fa fa-users"></i></h5>
+                        <p class="card-text">Accede a la lista de coordinadores y gestiona su información.</p>
+                        <a href="{{ route('coordinadores.index') }}" class="btn btn-outline-primary stretched-link">Ver Coordinadores</a>
+                    </div>
+                </div>
             </div>
+            @endif
         </div>
     </div>
-    @endif
-
-
-
-
-
-
 
 
 
@@ -67,15 +76,15 @@ function randomScalingFactor() {
     ])
 
     <script>
-document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
 
-    // Animación inicial para el mensaje de bienvenida
-    welcomeMessage.style.opacity = 0;
-    window.requestAnimationFrame(function() {
-        welcomeMessage.style.transition = 'opacity 5s';
-        welcomeMessage.style.opacity = 1;
-    });
-});
-</script>
+            // Animación inicial para el mensaje de bienvenida
+            welcomeMessage.style.opacity = 0;
+            window.requestAnimationFrame(function() {
+                welcomeMessage.style.transition = 'opacity 6s';
+                welcomeMessage.style.opacity = 1;
+            });
+        });
+    </script>
 
 </x-layout>

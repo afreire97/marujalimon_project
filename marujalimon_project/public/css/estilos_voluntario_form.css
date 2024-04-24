@@ -294,4 +294,77 @@ body {
     margin-top: auto; /* Nuevo: empuja el contenido hacia abajo */
   }
   
+  
+  .pulse {
+    animation: pulseAnimation 2s infinite;
+  }
+  
+  @keyframes pulseAnimation {
+    0% {
+      box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(0, 123, 255, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+    }
+  }
+  @keyframes lavaLamp {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.bg-lava-lamp {
+    position: relative;
+    background: linear-gradient(270deg, #f8f9fa, #dee2e6, #adb5bd, #495057);
+    background-size: 200% 200%;
+    animation: lavaLamp 15s ease infinite;
+    overflow: hidden;
+}
+
+.header-content {
+    position: relative;
+    z-index: 1; /* Ensure the text appears above the background */
+}
+
+
+.rhombus-container {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    z-index: 0; /* Behind the text content */
+}
+
+.left-rhombuses {
+    left: 10px; /* Adjust as needed */
+}
+
+.right-rhombuses {
+    right: 10px; /* Adjust as needed */
+}
+
+.rhombus {
+    width: 50px; /* Smaller if needed */
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.7);
+    transform: rotate(45deg);
+    margin: 10px 0; /* Spacing between rhombuses */
+}
+
+.header-content {
+    position: relative;
+    z-index: 1; /* Ensures the text appears above the rhombuses */
+}
+
+/* Rest of your CSS... */
 
