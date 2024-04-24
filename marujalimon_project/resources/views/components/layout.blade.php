@@ -65,7 +65,7 @@
                         </div>
                     </li>
                     <li class="dropdown">
-                        <a href="#" data-bs-toggle="dropdown">POSTS <b class="caret"></b></a>
+                        <a href="#" data-bs-toggle="dropdown">COORDINADORES <b class="caret"></b></a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="post_grid.html">Page with Grid View Blog Post</a>
                             <a class="dropdown-item" href="post_without_sidebar.html">Page without Sidebar</a>

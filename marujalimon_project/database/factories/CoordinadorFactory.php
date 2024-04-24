@@ -24,6 +24,13 @@ class CoordinadorFactory extends Factory
             'COO_nombre' => fake()->name(),
             'COO_dni' => fake()->randomNumber(8),
             'user_id' => $usuario->id, // Asociar el ID del usuario obtenido
+            'COO_apellidos' => fake()->name(),
+            'COO_fecha_nac' => fake()->date(),
+            'COO_domicilio' => fake()->address(),
+            'COO_cp' => fake()->postcode(),
+            'COO_tel1' => fake()->phoneNumber(),
+            'COO_sexo' => fake()->randomElement(['Masculino', 'Femenino', 'Otro']),
+            'COO_mail' => fake()->unique()->email(),
 
 
 
