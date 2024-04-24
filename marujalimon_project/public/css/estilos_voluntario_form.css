@@ -344,7 +344,7 @@ body {
                                 #f1f3f5, 
                                 #f8f9fa);
     background-size: 200% 200%;
-    animation: lavaLamp 15s ease infinite;
+    animation: lavaLamp 10s ease infinite;
 }
 .col-lg-12.text-center {
     overflow: hidden; /* Esto evita que el fondo se salga de los límites del div */
