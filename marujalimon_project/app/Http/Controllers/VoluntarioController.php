@@ -6,6 +6,8 @@ use App\Models\Coordinador;
 use App\Models\Delegacion;
 use App\Models\Horas;
 use App\Models\ImagenPerfil;
+use App\Models\Observacion;
+use App\Models\Error;
 use App\Models\Tarea;
 use App\Models\Voluntario;
 use Carbon\Carbon;
@@ -58,6 +60,13 @@ class VoluntarioController extends Controller
      */
     public function show(Voluntario $voluntario)
     {
+
+
+        // $observaciones = $voluntario->observaciones;
+        // $errores = $voluntario->errores;
+
+
+
         return view('voluntarios.informacion_voluntario', ['voluntario' => $voluntario]);
     }
 
