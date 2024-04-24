@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Coordinador;
 use App\Models\Delegacion;
+use App\Models\ImagenPerfil;
 use App\Models\Tarea;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
 
@@ -73,20 +75,39 @@ class CoordinadorController extends Controller
     {
 
 
-        Log::debug("Data despues de la validacion:". implode(',', $request->all()));
-
-
         // Validar los datos del formulario
         $validatedData = $this->validateCoordinadorData($request, $coordinador);
-        Log::debug("Data despues de la validacion:". implode(',', $validatedData));
 
         // Procesar la actualización del coordinador
 
 
-        Log::debug("Coordinador antes de update:". $coordinador);
         $coordinador->update($validatedData);
+        if ($request->hasFile('imagen_perfil')) {
+            // Obtiene la imagen actual asociada al voluntario
+            $imagenPerfilActual = $coordinador->imagenPerfil;
 
-        Log::debug("Coordinador despues de update:". $coordinador);
+            // Si hay una imagen actual, elimínala y luego guarda la nueva
+            if ($imagenPerfilActual) {
+                Storage::delete($imagenPerfilActual->IMG_path);
+            }
+
+            // Guarda la nueva imagen proporcionada
+            $imagen = $request->file('imagen_perfil');
+            $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension();
+            $rutaImagen = $imagen->storeAs('public/img/imagenes_perfil', $nombreImagen);
+
+            // Actualiza la ruta de la imagen asociada al voluntario
+            if ($imagenPerfilActual) {
+                $imagenPerfilActual->update(['IMG_path' => str_replace('public/', '/storage/', $rutaImagen)]);
+            } else {
+                // Si no hay una imagen asociada, crea una nueva
+                $imagenPerfil = new ImagenPerfil();
+                $imagenPerfil->IMG_coordinador_id = $coordinador->COO_id;
+                $imagenPerfil->IMG_path = str_replace('public/', '/storage/', $rutaImagen); // Ajustar la ruta para ser accesible desde la web
+                $imagenPerfil->save();
+            }
+
+
 
 
 
@@ -95,32 +116,21 @@ class CoordinadorController extends Controller
         return redirect()->route('coordinador.show', ['coordinador' => $coordinador])
             ->with('success', '¡El coordinador ha sido actualizado exitosamente!');
     }
-
-    public function cargarVistaGraficos()
-    {
+}
 
 
 
 
-        return view('test_grafico');
-    }
+public function destroy(Coordinador $coordinador)
+{
+    // Eliminar el voluntario
+    $coordinador->delete();
 
 
+    return redirect()->route('coordinadores.index')->with('success', 'Voluntario eliminado correctamente');
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
     protected function validateCoordinadorData(Request $request, Coordinador $coordinador)
     {
@@ -146,6 +156,8 @@ class CoordinadorController extends Controller
                 Rule::unique('coordinadores', 'COO_mail')->ignore($coordinador->COO_mail, 'COO_mail'),
             ],
             'delegacion_id' => 'nullable|exists:delegaciones,DEL_id',
+            'imagen_perfil' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validación de la imagen de perfil
+
 
         ], [
             'COO_nombre.required' => 'El nombre del coordinador es obligatorio.',
@@ -155,7 +167,9 @@ class CoordinadorController extends Controller
             'COO_mail.email' => 'El correo electrónico debe ser válido.',
             'COO_mail.unique' => 'El correo electrónico ya está en uso.',
             'delegacion_id.exists' => 'La delegación seleccionada no es válida.',
-
+            'imagen_perfil.image' => 'El archivo debe ser una imagen.',
+            'imagen_perfil.mimes' => 'El archivo debe ser de tipo: jpeg, png, jpg o gif.',
+            'imagen_perfil.max' => 'El tamaño máximo del archivo es de 2048 kilobytes (2MB).',
         ]);
     }
 

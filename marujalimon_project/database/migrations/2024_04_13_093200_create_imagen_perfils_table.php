@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('imagen_perfiles', function (Blueprint $table) {
             $table->id('IMG_id');
-            $table->foreignId('IMG_voluntario_id')->constrained('voluntarios', 'VOL_id')->onDelete('cascade');
+            $table->foreignId('IMG_voluntario_id')->nullable()->constrained('voluntarios', 'VOL_id')->onDelete('cascade');
+            $table->foreignId('IMG_coordinador_id')->nullable()->constrained('coordinadores', 'COO_id')->onDelete('cascade');
             $table->string('IMG_path');
             $table->timestamps();
         });

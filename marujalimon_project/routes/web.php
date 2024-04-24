@@ -71,6 +71,7 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
     Route::get('/coordinador/{coordinador}', [CoordinadorController::class, 'show'])->name('coordinador.show');
     Route::get('/coordinadores/{coordinador}', [CoordinadorController::class, 'edit'])->name('coordinador.edit_form');
     Route::put('/coordinadores/{coordinador}', [CoordinadorController::class, 'update'])->name('coordinador.update');
+    Route::delete('/coordinadores/{coordinador}', [CoordinadorController::class, 'destroy'])->name('coordinador.destroy');
 
 
 

@@ -22,6 +22,7 @@ class Coordinador extends Model
         'COO_sexo',
         'COO_mail',
         'user_id',
+
     ];
 
     public function delegaciones()
@@ -35,4 +36,10 @@ class Coordinador extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+
+    public function imagenPerfil(){
+        return $this->hasOne(ImagenPerfil::class, 'IMG_coordinador_id');
+    }
+
 }
