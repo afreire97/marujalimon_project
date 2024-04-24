@@ -435,7 +435,21 @@ header {
     to { opacity: 1; }
 }
 
+.bg-light-gray {
+    background: radial-gradient(circle, #f8f9fa 70%, transparent 90%);
+    /* Asegúrate de que el color #f8f9fa coincida con el color de fondo de tu sitio */
+}
 
+
+.header-content {
+    padding-left: 75px;  /* Eliminar el padding a la izquierda */
+    padding-right: 75px; /* Eliminar el padding a la derecha */
+  }
+  /* Si necesitas ajustar márgenes o padding del encabezado */
+  .header {
+    margin: 0;  /* Ajustar los márgenes externos si son necesarios */
+    padding: 0; /* Ajustar el padding si es necesario */
+  }
 
 
 
