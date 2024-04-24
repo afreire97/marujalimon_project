@@ -25,7 +25,7 @@
                         @if ($name === 'COO_fecha_nac')
                             <input type="date" name="{{ $name }}" class="form-control" value="{{ $coordinador->$name }}">
                         @elseif ($name === 'COO_tel1')
-                            <input type="tel" name="{{ $name }}" class="form-control" pattern="[0-9]{9}" value="{{ $coordinador->$name }}">
+                            <input type="text" name="{{ $name }}" class="form-control"  value="{{ $coordinador->$name }}">
                         @elseif ($name === 'COO_cp')
                             <input type="text" name="{{ $name }}" class="form-control" pattern="[0-9]{5}" maxlength="5" value="{{ $coordinador->$name }}">
                         @elseif ($name === 'COO_sexo')
@@ -55,12 +55,15 @@
             </div>
 
             <!-- Campo para la imagen de perfil -->
-            {{-- <div class="mb-3 row">
-                <label class="col-md-4 col-form-label text-md-end">Imagen de Perfil <span class="text-danger">*</span></label>
+            <div class="mb-3 row">
+                <label class="col-md-4 col-form-label text-md-end">
+                    Imagen de Perfil <span class="text-danger">*</span>
+                </label>
                 <div class="col-md-6">
                     <input type="file" name="imagen_perfil" class="form-control" accept="image/*" required>
                 </div>
-            </div> --}}
+            </div>
+        </div>
         </div>
 
         <div class="card-footer text-end">

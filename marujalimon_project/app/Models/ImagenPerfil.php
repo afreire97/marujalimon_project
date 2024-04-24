@@ -16,4 +16,7 @@ class ImagenPerfil extends Model
     public function voluntario(){
         return $this->belongsTo(Voluntario::class, 'IMG_voluntario_id');
     }
+    public function coordinador(){
+        return $this->belongsTo(Voluntario::class, 'IMG_coordinador_id');
+    }
 }
