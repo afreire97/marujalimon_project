@@ -6,6 +6,7 @@ use App\Models\Coordinador;
 use App\Models\Delegacion;
 use App\Models\Horas;
 use App\Models\ImagenPerfil;
+use App\Models\Lugar;
 use App\Models\Observacion;
 use App\Models\Error;
 use App\Models\Tarea;
@@ -50,10 +51,10 @@ class VoluntarioController extends Controller
 
         // Obtener todas las tareas disponibles
         $tareas = Tarea::all();
-
+        $lugares = Lugar::all();
 
         // Retornamos la vista con los voluntarios y las tareas obtenidas
-        return view('voluntarios.listar_voluntarios_card', ['voluntarios' => $voluntarios, 'tareas' => $tareas, 'voluntarios_all' => $voluntarios_all]);
+        return view('voluntarios.listar_voluntarios_card', ['voluntarios' => $voluntarios, 'tareas' => $tareas, 'lugares' => $lugares,'voluntarios_all' => $voluntarios_all]);
     }
     /**
      * Display the specified resource.

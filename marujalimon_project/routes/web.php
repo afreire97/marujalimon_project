@@ -58,6 +58,9 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
     Route::post('/voluntarios/horas/agregar', [HorasController::class, 'añadirHoras'])->name('horas.añadir');
 
 
+
+
+
     Route::post('/totalTareasPorMes', [TareasController::class, 'totalTareasPorMes'])->name('totalTareasPorMes');
 
 
@@ -73,6 +76,12 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
     Route::put('/coordinadores/{coordinador}', [CoordinadorController::class, 'update'])->name('coordinador.update');
     Route::delete('/coordinadores/{coordinador}', [CoordinadorController::class, 'destroy'])->name('coordinador.destroy');
 
+
+
+
+
+    //RUTA DE TAREAS
+    Route::post('/voluntarios/tareas/agregar', [TareasController::class, 'agregar'])->name('tareas.agregar');
 
 
 });

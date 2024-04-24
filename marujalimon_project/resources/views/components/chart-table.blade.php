@@ -71,6 +71,34 @@
     </form>
 </div>
 
+
+
+<div id="addNuevaTarea">
+    <form action="{{ route('tareas.agregar') }}" method="POST">
+        @csrf
+        <input type="hidden" name="voluntariosSeleccionados" id="voluntariosSeleccionados" value="">
+
+        <label for="nueva_tarea">Nueva tarea:</label>
+        <input type="text" name="nueva_tarea" id="nueva_tarea" required>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea name="descripcion" id="descripcion" required></textarea>
+
+        <label for="tarea_id">Lugares disponibles:</label>
+        <select name="tarea_id" id="tarea_id" required>
+            @foreach ($lugares as $lugar)
+                <option value="{{ $lugar->LUG_id }}">{{ $lugar->LUG_nombre }}</option>
+            @endforeach
+        </select>
+
+        <button type="submit">Agregar</button>
+    </form>
+</div>
+
+
+
+
+
 <div id="tableView" class="table-responsive " style="display: none;">
     <!-- Contenido de la vista de tabla -->
     <div class="table-responsive">
