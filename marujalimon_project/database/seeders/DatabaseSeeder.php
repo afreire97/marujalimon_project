@@ -71,7 +71,7 @@ class DatabaseSeeder extends Seeder
         $lugares = Lugar::factory(10)->create();
 
         // Crear tareas y asignarlas a lugares
-        Tarea::factory(150)->create()->each(function ($tarea) use ($lugares) {
+        Tarea::factory(3)->create()->each(function ($tarea) use ($lugares) {
             $lugar = $lugares->random();
             $tarea->lugar()->associate($lugar)->save();
 
