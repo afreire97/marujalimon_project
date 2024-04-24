@@ -41,7 +41,6 @@ class RegisteredUserController extends Controller
 
         $role = $request->input('role');
 
-        Log::info("Esto es role:" . $role);
 
         if ($role === 'coordinador') {
             // El usuario es un coordinador
@@ -71,9 +70,17 @@ class RegisteredUserController extends Controller
         ]);
         // Si el usuario es coordinador, crear un coordinador asociado a él
         if ($user->is_coordinador) {
+
+
+            Log::info("Entramos en coordinador y vemos el email: " . $request->email);
+
+
+
+
             $coordinador = new Coordinador([
                 'COO_nombre' => $user->name,
                 'COO_dni' => $request->dni, // Asignar el DNI proporcionado por el usuario
+                'COO_mail'=>$request->email,
             ]);
             $user->coordinador()->save($coordinador);
         }

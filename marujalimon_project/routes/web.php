@@ -70,6 +70,7 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
     Route::get('/coordinadores', [CoordinadorController::class, 'index'])->name('coordinadores.index');
     Route::get('/coordinador/{coordinador}', [CoordinadorController::class, 'show'])->name('coordinador.show');
     Route::get('/coordinadores/{coordinador}', [CoordinadorController::class, 'edit'])->name('coordinador.edit_form');
+    Route::put('/coordinadores/{coordinador}', [CoordinadorController::class, 'update'])->name('coordinador.update');
 
 
 

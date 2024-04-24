@@ -12,8 +12,18 @@ class Coordinador extends Model
     protected $primaryKey = 'COO_id';
 
     protected $fillable = [
-        'COO_nombre', 'COO_dni', 'user_id', // Agregar 'user_id' como campo fillable
+        'COO_nombre',
+        'COO_apellidos',
+        'COO_dni',
+        'COO_fecha_nac',
+        'COO_domicilio',
+        'COO_cp',
+        'COO_tel1',
+        'COO_sexo',
+        'COO_mail',
+        'user_id',
     ];
+
     public function delegaciones()
     {
         return $this->belongsToMany(Delegacion::class, 'coordinador_delegacion', 'COO_DEL_delegacion_id', 'COO_DEL_coordinador_id');
