@@ -321,14 +321,37 @@ body {
         background-position: 0% 50%;
     }
 }
+@keyframes deployRhombuses {
+    0% {
+        transform: translateY(-100%) rotate(45deg) scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(-50%) rotate(45deg) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0) rotate(45deg) scale(1);
+        opacity: 1;
+    }
+}
 
 .bg-lava-lamp {
-    position: relative;
-    background: linear-gradient(270deg, #f8f9fa, #dee2e6, #adb5bd, #495057);
+    background: linear-gradient(270deg, 
+                                #f8f9fa, 
+                                #f1f3f5, 
+                                #f8f9fa, 
+                                #f1f3f5, 
+                                #f8f9fa);
     background-size: 200% 200%;
-    animation: lavaLamp 15s ease infinite;
-    overflow: hidden;
+    animation: lavaLamp 10s ease infinite;
 }
+.col-lg-12.text-center {
+    overflow: hidden; /* Esto evita que el fondo se salga de los límites del div */
+}
+
+
+
 
 .header-content {
     position: relative;
@@ -336,35 +359,100 @@ body {
 }
 
 
+header {
+    position: relative; /* Esto hace que sea el contenedor de referencia para los rombos */
+    background-color: #f8f9fa;
+    padding: 5rem 0; /* Ajusta el padding según sea necesario para dar espacio a los rombos */
+    margin-bottom: 4rem;
+    overflow: hidden; /* Esto asegurará que cualquier cosa fuera del header no se muestre */
+}
+
 .rhombus-container {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    z-index: 0; /* Behind the text content */
+    top: 50%; /* Esto centrará los rombos verticalmente en el header */
+    transform: translateY(-50%); /* Asegura que se centren perfectamente */
+    z-index: 1; /* Esto debería estar por encima del fondo, pero debajo del texto */
 }
 
 .left-rhombuses {
-    left: 10px; /* Adjust as needed */
+    left: 0; /* Alinea los rombos a la izquierda */
+    transform: translateY(-50%) translateX(-50%); /* Ajusta la posición horizontal si es necesario */
 }
 
 .right-rhombuses {
-    right: 10px; /* Adjust as needed */
+    right: 0; /* Alinea los rombos a la derecha */
+    transform: translateY(-50%) translateX(50%); /* Ajusta la posición horizontal si es necesario */
 }
 
 .rhombus {
-    width: 50px; /* Smaller if needed */
-    height: 50px;
-    background-color: rgba(255, 255, 255, 0.7);
-    transform: rotate(45deg);
-    margin: 10px 0; /* Spacing between rhombuses */
+    width: 60px;
+    height: 60px;
+    background-color: rgba(22, 103, 224, 0.7);
+    transform: translateY(-100%) rotate(45deg) scale(0);
+    opacity: 0;
+    animation: deployRhombuses 1.5s ease forwards;
 }
+.rhombus:nth-child(1) {
+    animation-delay: 0.5s;
+}
+
+.rhombus:nth-child(2) {
+    animation-delay: 1s;
+}
+
+.rhombus:nth-child(3) {
+    animation-delay: 1.5s;
+}
+
 
 .header-content {
     position: relative;
     z-index: 1; /* Ensures the text appears above the rhombuses */
 }
 
-/* Rest of your CSS... */
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+.typewriter p {
+    font-family: 'Satisfy', cursive; /* Fuente Satisfy */
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden; /* Esconde el texto hasta que la animación lo revele */
+    animation: typing 5s steps(72, end) 4s forwards; /* Empieza la animación tras 4 segundos */
+    max-width: 100%; /* Asegura que el párrafo no sea más ancho que su contenedor */
+}
+
+/* Efecto de entrada para el párrafo con un delay de 4s */
+.typewriter {
+    opacity: 0;
+    animation: fadeIn 1s ease 4s forwards; /* El fadeIn se retrasa para que comience junto con la animación de escritura */
+}
+
+/* Animación para el efecto de "fadeIn" */
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+.bg-light-gray {
+    background: radial-gradient(circle, #f8f9fa 70%, transparent 90%);
+    /* Asegúrate de que el color #f8f9fa coincida con el color de fondo de tu sitio */
+}
+
+
+.header-content {
+    padding-left: 75px;  /* Eliminar el padding a la izquierda */
+    padding-right: 75px; /* Eliminar el padding a la derecha */
+  }
+  /* Si necesitas ajustar márgenes o padding del encabezado */
+  .header {
+    margin: 0;  /* Ajustar los márgenes externos si son necesarios */
+    padding: 0; /* Ajustar el padding si es necesario */
+  }
+
+
+
+
+
 

@@ -8,35 +8,35 @@ function randomScalingFactor()
 
 
 <x-layout>
-<header class="bg-lava-lamp py-5 mb-4">
-    <div class="container h-100">
-        @auth
-        <div class="rhombus-container left-rhombuses">
-            <!-- Rhombuses for the left side -->
-            <div class="rhombus"></div>
-            <div class="rhombus"></div>
-            <div class="rhombus"></div>
-        </div>
-        <div class="rhombus-container right-rhombuses">
-            <!-- Rhombuses for the right side -->
-            <div class="rhombus"></div>
-            <div class="rhombus"></div>
-            <div class="rhombus"></div>
-        </div>
-        <div class="row h-100 align-items-center header-content">
-            <div class="col-lg-12 text-center">
-                <h1 class="display-4 font-weight-bold text-primary" id="welcomeMessage">
-                    ¡Te damos la bienvenida, {{ ucfirst(strtolower(Auth::user()->name)) }}!
-                </h1>
-                <p class="lead mb-0 text-secondary" id="dynamicText"></p>
-                @if(Auth::check())
-                <p>Explora lo que nuestro sistema tiene para ofrecer y comienza tu jornada.</p>
-                @endif
+<header class="bg-lava-lamp py-5 mb-4 header">
+    <div class="container-fluid h-100">
+            @auth
+            <div class="rhombus-container left-rhombuses">
+                <div class="rhombus"></div>
+                <div class="rhombus"></div>
+                <div class="rhombus"></div>
             </div>
+            <div class="rhombus-container right-rhombuses">
+                <div class="rhombus"></div>
+                <div class="rhombus"></div>
+                <div class="rhombus"></div>
+            </div>
+            <div class="row h-100 align-items-center header-content">
+            <div class="col-lg-12 text-center bg-light-gray">
+                    <h1 class="display-4 font-weight-bold text-primary" id="welcomeMessage"  style="padding-top:30px;">
+                        ¡Te damos la bienvenida, {{ ucfirst(strtolower(Auth::user()->name)) }}!
+                    </h1>
+                    <p class="lead mb-0 text-secondary" id="dynamicText"></p>
+                    @if(Auth::check())
+                    <div class="typewriter" style="padding-bottom:30px;">
+        <p>Explora lo que nuestro sistema tiene para ofrecer y comienza tu jornada.</p>
+                </div>
+                    @endif
+                </div>
+            </div>
+            @endauth
         </div>
-        @endauth
-    </div>
-</header>
+    </header>
 
 
 
@@ -81,7 +81,7 @@ function randomScalingFactor()
             // Animación inicial para el mensaje de bienvenida
             welcomeMessage.style.opacity = 0;
             window.requestAnimationFrame(function() {
-                welcomeMessage.style.transition = 'opacity 6s';
+                welcomeMessage.style.transition = 'opacity 8s';
                 welcomeMessage.style.opacity = 1;
             });
         });
