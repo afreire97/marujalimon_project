@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
 
 class RegisteredUserController extends Controller
 {
@@ -38,20 +39,27 @@ class RegisteredUserController extends Controller
         ]);
 
 
-        $role = $request->role;
+        $role = $request->input('role');
+
+        Log::info("Esto es role:" . $role);
 
         if ($role === 'coordinador') {
             // El usuario es un coordinador
             $is_coordinador = true;
             $is_admin = false;
-        } elseif ($role === 'administrador') {
-            // El usuario es un administrador
+
+
+
+
+        }
+        if ($role === 'administrador') {
+
+
+
+
+
             $is_coordinador = false;
             $is_admin = true;
-        } else {
-            // Manejar el caso en el que no se selecciona ningún rol
-            $is_coordinador = false;
-            $is_admin = false;
         }
 
         $user = User::create([

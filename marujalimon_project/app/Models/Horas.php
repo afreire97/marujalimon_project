@@ -103,20 +103,26 @@ class Horas extends Model
 
         return $mediaHorasPorMes;
     }
-    public static function agregarHorasVoluntario($voluntarioId, $horas, $tareaId)
+    public static function agregarHorasVoluntarios($voluntariosId, $horas, $tareaId)
     {
-        // Crear una nueva instancia de Horas
-        $nuevasHoras = new Horas();
+        $resultados = [];
 
-        // Asignar los valores
-        $nuevasHoras->HOR_voluntario_id = $voluntarioId;
-        $nuevasHoras->HOR_fecha_inicio = Carbon::now();
+        foreach ($voluntariosId as $voluntarioId) {
+            // Crear una nueva instancia de Horas
+            $nuevasHoras = new Horas();
 
-        $nuevasHoras->HOR_horas = $horas;
-        $nuevasHoras->HOR_tarea_id = $tareaId;
+            // Asignar los valores
+            $nuevasHoras->HOR_voluntario_id = $voluntarioId;
+            $nuevasHoras->HOR_fecha_inicio = Carbon::now();
+            $nuevasHoras->HOR_horas = $horas;
+            $nuevasHoras->HOR_tarea_id = $tareaId;
 
-        // Guardar en la base de datos
-        return $nuevasHoras->save();
+            // Guardar en la base de datos y almacenar el resultado en un array
+            $resultados[] = $nuevasHoras->save();
+        }
+
+        // Retornar un array con los resultados de la inserción para cada voluntario
+        return $resultados;
     }
 
 }

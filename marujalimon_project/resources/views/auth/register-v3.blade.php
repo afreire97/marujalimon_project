@@ -112,4 +112,17 @@
         <!-- END register-container -->
     </div>
     <!-- END register -->
+
+
+    <script>
+
+        let seleccion = document.getElementById('is_coordinador');
+        let seleccion2 = document.getElementById('is_admin');
+
+
+        console.log(seleccion);
+        console.log(seleccion2);
+
+
+    </script>
 @endsection

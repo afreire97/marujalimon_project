@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Horas;
 use App\Models\Voluntario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
+Log::info('Mensaje informativo');
+Log::error('Mensaje de error');
 
 class HorasController extends Controller
 {
@@ -26,7 +30,8 @@ class HorasController extends Controller
         ]);
     }
 
-    public function mostrarTareasPorMes(Request $request){
+    public function mostrarTareasPorMes(Request $request)
+    {
 
         $year = $request->input('year');
 
@@ -38,47 +43,29 @@ class HorasController extends Controller
 
     public function añadirHoras(Request $request)
     {
-        // Validar los datos del formulario (puedes agregar reglas de validación según sea necesario)
 
-        $request->validate([
-            'voluntarioId' => 'required|exists:voluntarios,VOL_id', // Validar que el ID del voluntario exista en la tabla 'voluntarios'
-            'horas' => 'required|integer', // Ejemplo de regla de validación para las horas
-            'tarea_id' => 'required|exists:tareas,TAR_id', // Validar que la tarea seleccionada exista en la tabla 'tareas'
-        ]);
 
         // Obtener los datos del formulario
+        $voluntariosIds = json_decode($request->input('voluntariosSeleccionados')); // Convertir la cadena JSON en un array PHP
 
-        $voluntarioId = $request->input('voluntarioId');
+
+
         $horas = $request->input('horas');
         $tareaId = $request->input('tarea_id');
 
-        // // Crear una nueva hora con los datos del formulario
-        // $hora = new Horas();
-        // $hora->HOR_voluntario_id = $voluntarioId;
-        // $hora->HOR_horas = $horas;
-        // $hora->HOR_fecha_inicio = now();
-        // $hora->HOR_tarea_id = $tareaId;
-
-        // // Guardar la hora en la base de datos
-        // $hora->save();
-
-
-        // $horas = $request->input('horas');
-        // $tareaId = $request->input('tarea_id');
-
-        // Agregar horas al voluntario
-        $resultado = Horas::agregarHorasVoluntario($voluntarioId, $horas, $tareaId);
+        // Agregar horas a los voluntarios
+        $resultados = Horas::agregarHorasVoluntarios($voluntariosIds, $horas, $tareaId);
 
         // Verificar el resultado y manejar los mensajes de éxito o error
-        if ($resultado) {
-            // Si las horas se agregaron correctamente, establecer mensaje de éxito
-            $request->session()->flash('success', 'Horas añadidas correctamente.');
-        } else {
+        if (in_array(false, $resultados, true)) {
             // Si hubo algún error, establecer mensaje de error
-            $request->session()->flash('error', 'No se pudieron añadir las horas.');
+            $request->session()->flash('error', 'No se pudieron añadir las horas para todos los voluntarios.');
+        } else {
+            // Si las horas se agregaron correctamente para todos los voluntarios, establecer mensaje de éxito
+            $request->session()->flash('success', 'Horas añadidas correctamente para todos los voluntarios.');
         }
 
-        return redirect()->route('voluntarios.index', $voluntarioId);
+        return redirect()->route('voluntarios.index');
     }
 
 

@@ -65,6 +65,8 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
     Route::get('/graficos', [CoordinadorController::class, 'cargarVistaGraficos'])->name('graficos');
 
 
+
+    //RUTA DE COORDINADORES
     Route::get('/coordinadores', [CoordinadorController::class, 'index'])->name('coordinadores.index');
 
 

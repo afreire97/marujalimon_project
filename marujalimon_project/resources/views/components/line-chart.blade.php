@@ -1,8 +1,7 @@
 @push('scripts')
-<script src="{{ asset('/tabla/assets/plugins/chart.umd.js') }}"></script>
-<script src="{{ asset('/js/graficos/chart-js.demo.js') }}"></script>
-<script src="{{ asset('/js/graficos/highlight.min.js') }}"></script>
-<script src="{{ asset('/js/graficos/render.highlight.js') }}"></script>
+    <script src="{{ asset('/tabla/assets/plugins/chart.umd.js') }}"></script>
+
+    <script src="{{ asset('/js/graficos/render.highlight.js') }}"></script>
 @endpush
 
 <div>
@@ -28,6 +27,11 @@
 
         const yearForm = document.getElementById('year-form');
         const yearSelect = document.getElementById('year');
+        Chart.defaults.color = 'rgba(' + app.color.componentColorRgb + ', .65)';
+        Chart.defaults.font.family = app.font.family;
+        Chart.defaults.font.weight = 500;
+        Chart.defaults.scale.grid.color = 'rgba(' + app.color.componentColorRgb + ', .15)';
+        Chart.defaults.scale.ticks.backdropColor = 'rgba(' + app.color.componentColorRgb + ', .160)';
 
         // Función para cargar los datos del gráfico
         async function cargarDatos(year) {
