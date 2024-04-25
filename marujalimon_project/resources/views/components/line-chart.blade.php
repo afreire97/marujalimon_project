@@ -4,17 +4,21 @@
     <script src="{{ asset('/js/graficos/render.highlight.js') }}"></script>
 @endpush
 
-<div>
-    <form id="year-form">
-        <label for="year">Seleccione el año:</label>
-        <select name="year" id="year">
-            @for ($i = date('Y'); $i >= 2010; $i--)
-                <option value="{{ $i }}">{{ $i }}</option>
-            @endfor
-        </select>
-        <button type="submit">Enviar</button>
-    </form>
+<div class="gradient-background">
+    <div style="max-width: 600px; margin: auto;">
+        <form id="year-form">
+            <label for="year">Seleccione el año:</label>
+            <select name="year" id="year">
+                @for ($i = date('Y'); $i >= 2010; $i--)
+                    <option value="{{ $i }}">{{ $i }}</option>
+                @endfor
+            </select>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
 </div>
+
+
 
 <div>
     <canvas id="line-chart"></canvas>
@@ -73,35 +77,58 @@
 
                 // Configurar el nuevo gráfico de líneas
                 lineChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: Object.keys(horasData.totalHorasPorMes),
-                        datasets: [{
-                            label: `Horas totales voluntarios (${year})`,
-                            borderColor: 'rgba(0, 0, 255, 1)',
-                            pointBackgroundColor: 'rgba(0, 0, 255, 1)',
-                            pointRadius: 4,
-                            borderWidth: 2,
-                            backgroundColor: 'rgba(0, 0, 255, .3)',
-                            data: Object.values(horasData.totalHorasPorMes)
-                        }, {
-                            label: `Total de tareas (${year})`,
-                            borderColor: 'rgba(255, 0, 0, 1)',
-                            pointBackgroundColor: 'rgba(255, 0, 0, 1)',
-                            pointRadius: 4,
-                            borderWidth: 2,
-                            backgroundColor: 'rgba(255, 0, 0, .3)',
-                            data: Object.values(tareasData.totalTareasPorMes)
-                        }]
-                    },
-                                options: {
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
-                                }
-                });
+    type: 'line',
+    data: {
+        labels: Object.keys(horasData.totalHorasPorMes),
+        datasets: [{
+            label: `Horas totales voluntarios (${year})`,
+            borderColor: 'rgba(0, 0, 255, 1)',
+            pointBackgroundColor: 'rgba(0, 0, 255, 1)',
+            pointRadius: 4,
+            borderWidth: 2,
+            backgroundColor: 'rgba(0, 0, 255, .3)',
+            data: Object.values(horasData.totalHorasPorMes)
+        }, {
+            label: `Total de tareas (${year})`,
+            borderColor: 'rgba(255, 0, 0, 1)',
+            pointBackgroundColor: 'rgba(255, 0, 0, 1)',
+            pointRadius: 4,
+            borderWidth: 2,
+            backgroundColor: 'rgba(255, 0, 0, .3)',
+            data: Object.values(tareasData.totalTareasPorMes)
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: '#767676' // Cambia el color del texto de los ticks del eje Y
+                },
+                grid: {
+                    color: '#e0e0e0' // Cambia el color de la cuadrícula del eje Y si deseas
+                }
+            },
+            x: {
+                ticks: {
+                    color: '#767676' // Cambia el color del texto de los ticks del eje X
+                },
+                grid: {
+                    color: '#e0e0e0' // Cambia el color de la cuadrícula del eje X si deseas
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: '#767676' // Asegúrate de que no hay punto y coma aquí
+                }
+            }
+        }
+    }
+});
+
+
             } catch (error) {
                 console.error('Error al obtener los datos:', error);
             }
