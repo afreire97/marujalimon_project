@@ -28,8 +28,6 @@ class TareasController extends Controller
 
 
 
-
-
     /**
      * Display a listing of the resource.
      */
@@ -51,7 +49,7 @@ class TareasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**

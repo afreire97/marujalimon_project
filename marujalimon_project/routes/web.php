@@ -4,6 +4,7 @@ use App\Http\Controllers\CoordinadorController;
 use App\Http\Controllers\HorasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TareasController;
+use App\Http\Controllers\TestingController;
 use App\Http\Controllers\VoluntarioController;
 use App\Http\Controllers\VoluntarioLogeadoController;
 use App\Http\Middleware\AdminMiddleware;
@@ -11,6 +12,7 @@ use App\Http\Middleware\AdminOrCoordMiddleware;
 use App\Http\Middleware\CoordinadorMiddleware;
 use App\Http\Middleware\VoluntarioMiddleware;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', function () {
     return view('auth.login');
@@ -26,12 +28,14 @@ Route::middleware('auth')->group(function () {
 });
 
 
+
+
+
 Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
 
-
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
     Route::get('/voluntarios', [VoluntarioController::class, 'index'])->name('voluntarios.index');
     Route::get('/voluntarios/create', [VoluntarioController::class, 'create'])->name('voluntarios.create');
@@ -61,6 +65,9 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
     Route::post('/voluntarios/horas/agregar', [HorasController::class, 'añadirHoras'])->name('horas.añadir');
 
 
+
+
+
     Route::post('/totalTareasPorMes', [TareasController::class, 'totalTareasPorMes'])->name('totalTareasPorMes');
 
 
@@ -78,7 +85,29 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
 
 
 
+
+
+    //RUTA DE TAREAS
+    Route::post('/voluntarios/tareas/agregar', [TareasController::class, 'agregar'])->name('tareas.agregar');
+
+
 });
+
+
+
+
+//RUTA PARA EL TESTEO
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -97,5 +126,7 @@ Route::middleware(VoluntarioMiddleware::class)->group(function () {
 });
 
 
+
+Route::get('/calendario', [TestingController::class, 'index'])->name('calendario.index');
 
 require __DIR__ . '/auth.php';
