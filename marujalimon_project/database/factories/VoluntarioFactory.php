@@ -34,7 +34,7 @@ class VoluntarioFactory extends Factory
             'VOL_mail' => fake()->unique()->email(),
 
             'VOL_dias_semana_dispo' => fake()->randomElement(['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo', null]),
-
+            'user_id' => null,
 
 
 

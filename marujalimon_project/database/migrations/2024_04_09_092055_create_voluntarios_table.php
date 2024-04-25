@@ -14,14 +14,24 @@ return new class extends Migration {
         Schema::create('voluntarios', function (Blueprint $table) {
             $table->id('VOL_id');
             $table->string('VOL_nombre');
-            $table->string('VOL_apellidos');
+
+            //nullable
+            $table->string('VOL_apellidos')->nullable();
+
+
             $table->string('VOL_dni')->unique();
-            $table->date('VOL_fecha_nac');
-            $table->string('VOL_domicilio');
-            $table->string('VOL_cp');
-            $table->string('VOL_tel1');
-            $table->enum('VOL_sexo', ['Masculino', 'Femenino', 'Otro']);
+            $table->date('VOL_fecha_nac')->nullable();
+            ;
+            $table->string('VOL_domicilio')->nullable();
+            $table->string('VOL_cp')->nullable();
+            $table->string('VOL_tel1')->nullable();
+            $table->enum('VOL_sexo', ['Masculino', 'Femenino', 'Otro'])->nullable();
             $table->string('VOL_mail')->unique();
+
+
+            //LUEGO ARREGLAR EL NULLABLE
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade'); // Relación con usuarios
+
 
             $table->timestamps();
 

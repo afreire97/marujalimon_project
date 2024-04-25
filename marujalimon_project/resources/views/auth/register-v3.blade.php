@@ -89,6 +89,14 @@
                         </label>
                         <x-input-error :messages="$errors->get('is_coordinador')" class="mt-2" />
                     </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="radio" value="voluntario" id="is_voluntario"
+                            name="role">
+                        <label class="form-check-label" for="is_voluntario">
+                            Voluntario
+                        </label>
+                        <x-input-error :messages="$errors->get('is_voluntario')" class="mt-2" />
+                    </div>
 
 
 
