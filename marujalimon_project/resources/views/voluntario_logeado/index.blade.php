@@ -81,7 +81,7 @@
                                 @csrf
 
                                 <fieldset>
-                                    <legend style="font-size: 20px;">Introduce el período de tiempo para calcular las horas realizadas</legend>
+                                    <legend style="font-size: 20px;">Indícanos tu disponibilidad</legend>
 
                                     <div class="row mb-3">
                                         <label for="fecha_inicio" class="col-sm-2 col-form-label">Fecha de
@@ -98,7 +98,7 @@
                                         </div>
                                     </div>
                                     <div class="d-grid gap-2">
-                                    <button type="submit" class="btn btn-primary">Calcular horas</button>
+                                    <button type="submit" class="btn btn-primary">¿Qué dias vas a venir?</button>
                                     </div>
                                 </fieldset>
                             </form>

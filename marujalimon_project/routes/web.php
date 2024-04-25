@@ -4,6 +4,7 @@ use App\Http\Controllers\CoordinadorController;
 use App\Http\Controllers\HorasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TareasController;
+use App\Http\Controllers\TestingController;
 use App\Http\Controllers\VoluntarioController;
 use App\Http\Controllers\VoluntarioLogeadoController;
 use App\Http\Middleware\AdminMiddleware;
@@ -11,6 +12,7 @@ use App\Http\Middleware\AdminOrCoordMiddleware;
 use App\Http\Middleware\CoordinadorMiddleware;
 use App\Http\Middleware\VoluntarioMiddleware;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', function () {
     return view('auth.login');
@@ -93,6 +95,22 @@ Route::get('/dashboard', function () {
 
 
 
+
+//RUTA PARA EL TESTEO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Route::middleware(VoluntarioMiddleware::class)->group(function () {
 
 
@@ -108,5 +126,7 @@ Route::middleware(VoluntarioMiddleware::class)->group(function () {
 });
 
 
+
+Route::get('/calendario', [TestingController::class, 'index'])->name('calendario.index');
 
 require __DIR__ . '/auth.php';
