@@ -26,12 +26,14 @@ Route::middleware('auth')->group(function () {
 });
 
 
+
+
+
 Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
 
-
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
     Route::get('/voluntarios', [VoluntarioController::class, 'index'])->name('voluntarios.index');
     Route::get('/voluntarios/create', [VoluntarioController::class, 'create'])->name('voluntarios.create');

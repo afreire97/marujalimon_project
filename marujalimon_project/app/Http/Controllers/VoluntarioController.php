@@ -9,6 +9,7 @@ use App\Models\Delegacion;
 use App\Models\Horas;
 use App\Models\ImagenPerfil;
 
+use App\Models\Lugar;
 use App\Models\Tarea;
 use App\Models\Voluntario;
 use Illuminate\Http\JsonResponse;
