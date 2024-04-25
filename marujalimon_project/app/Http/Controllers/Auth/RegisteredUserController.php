@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Coordinador;
 use App\Models\User;
+use App\Models\Voluntario;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -42,16 +43,17 @@ class RegisteredUserController extends Controller
         $role = $request->input('role');
 
 
+
         if ($role === 'coordinador') {
             // El usuario es un coordinador
             $is_coordinador = true;
             $is_admin = false;
+            Log::info('Role1: ' . $role);
 
 
 
 
-        }
-        if ($role === 'administrador') {
+        } elseif ($role === 'administrador') {
 
 
 
@@ -59,6 +61,15 @@ class RegisteredUserController extends Controller
 
             $is_coordinador = false;
             $is_admin = true;
+        } elseif ($role === 'voluntario') {
+
+
+
+
+
+            $is_coordinador = false;
+            $is_admin = false;
+            $is_voluntario = true;
         }
 
         $user = User::create([
@@ -67,28 +78,46 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'is_coordinador' => $is_coordinador,
             'is_admin' => $is_admin,
+            'is_voluntario' => $is_voluntario,
         ]);
         // Si el usuario es coordinador, crear un coordinador asociado a él
         if ($user->is_coordinador) {
 
 
-            Log::info("Entramos en coordinador y vemos el email: " . $request->email);
-
-
-
-
             $coordinador = new Coordinador([
                 'COO_nombre' => $user->name,
                 'COO_dni' => $request->dni, // Asignar el DNI proporcionado por el usuario
-                'COO_mail'=>$request->email,
+                'COO_mail' => $request->email,
             ]);
             $user->coordinador()->save($coordinador);
+        } if ($user->is_voluntario) {
+            $voluntarioData = [
+                'VOL_nombre' => $request->name,
+                'VOL_dni' => $request->dni,
+                'VOL_mail' => $request->email,
+            ];
+            $voluntario = new Voluntario($voluntarioData);
+
+
+            Log::info('Voluntario: ' . $voluntario);
+
+            $user->voluntario()->save($voluntario);
+
+            event(new Registered($user));
+
+            Auth::login($user);
+
+
+            return redirect()->route('voluntario_logeado.index', ['voluntario'=>$voluntario]);
+
         }
+            event(new Registered($user));
 
-        event(new Registered($user));
+            Auth::login($user);
 
-        Auth::login($user);
+            return redirect()->route('dashboard');
 
-        return redirect()->route('dashboard');
+
+
     }
 }

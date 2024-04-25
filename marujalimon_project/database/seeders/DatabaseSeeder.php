@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // Crear un usuario coordinador
-        $userAaron = User::factory()->create([
+        User::factory()->create([
             'name' => 'aaron',
             'email' => 'aaron@mail.com',
             'email_verified_at' => now(),
@@ -71,7 +71,7 @@ class DatabaseSeeder extends Seeder
         $lugares = Lugar::factory(10)->create();
 
         // Crear tareas y asignarlas a lugares
-        Tarea::factory(3)->create()->each(function ($tarea) use ($lugares) {
+        Tarea::factory(100)->create()->each(function ($tarea) use ($lugares) {
             $lugar = $lugares->random();
             $tarea->lugar()->associate($lugar)->save();
 

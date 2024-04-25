@@ -22,6 +22,7 @@ class Voluntario extends Model
         'VOL_tel1',
         'VOL_sexo',
         'VOL_mail',
+        'user_id',
     ];
 
 
@@ -80,6 +81,12 @@ class Voluntario extends Model
 
     public function imagenPerfil(){
         return $this->hasOne(ImagenPerfil::class, 'IMG_voluntario_id');
+    }
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
 

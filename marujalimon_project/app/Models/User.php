@@ -17,7 +17,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'password', 'is_coordinador', 'is_admin',
+        'name', 'email', 'password', 'is_coordinador', 'is_admin', 'is_voluntario',
+
     ];
 
 
@@ -50,5 +51,13 @@ class User extends Authenticatable
     public function isCoordinador()
     {
         return $this->is_coordinador;
+    }
+    public function voluntario()
+    {
+        return $this->hasOne(Voluntario::class, 'user_id');
+    }
+    public function isVoluntario()
+    {
+        return $this->is_voluntario;
     }
 }

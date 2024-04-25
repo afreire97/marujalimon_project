@@ -7,7 +7,14 @@ function randomScalingFactor()
 ?>
 
 
-<x-layout>
+<x-layout><br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
 <header class="bg-lava-lamp py-5 mb-4 header">
     <div class="container-fluid h-100">
             @auth
@@ -21,6 +28,7 @@ function randomScalingFactor()
                 <div class="rhombus"></div>
                 <div class="rhombus"></div>
             </div>
+
             <div class="row h-100 align-items-center header-content">
             <div class="col-lg-12 text-center bg-light-gray">
                     <h1 class="display-4 font-weight-bold text-primary" id="welcomeMessage"  style="padding-top:30px;">

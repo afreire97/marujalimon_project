@@ -31,7 +31,7 @@
         Chart.defaults.font.family = app.font.family;
         Chart.defaults.font.weight = 500;
         Chart.defaults.scale.grid.color = 'rgba(' + app.color.componentColorRgb + ', .15)';
-        Chart.defaults.scale.ticks.backdropColor = 'rgba(' + app.color.componentColorRgb + ', .160)';
+        Chart.defaults.scale.ticks.backdropColor = 'rgba(' + app.color.componentColorRgb + ', 0)';
 
         // Función para cargar los datos del gráfico
         async function cargarDatos(year) {
@@ -65,10 +65,11 @@
                 const horasData = await horasResponse.json();
                 const tareasData = await tareasResponse.json();
 
-                // Limpiar el gráfico existente si existe
-                if (lineChart) {
+                   // Limpiar el gráfico existente si existe
+                   if (lineChart) {
                     lineChart.destroy();
                 }
+
 
                 // Configurar el nuevo gráfico de líneas
                 lineChart = new Chart(ctx, {
@@ -92,7 +93,14 @@
                             backgroundColor: 'rgba(255, 0, 0, .3)',
                             data: Object.values(tareasData.totalTareasPorMes)
                         }]
-                    }
+                    },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
                 });
             } catch (error) {
                 console.error('Error al obtener los datos:', error);
