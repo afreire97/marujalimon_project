@@ -1,65 +1,92 @@
-/*
-Template Name: Color Admin - Responsive Admin Dashboard Template build with Twitter Bootstrap 5
-Version: 5.3.3
-Author: Sean Ngu
-Website: http://www.seantheme.com/color-admin/
-*/
-
 var handleCalendarDemo = function() {
-	// external events
-	var containerEl = document.getElementById('external-events');
-  var Draggable = FullCalendar.Interaction.Draggable;
-	new Draggable(containerEl, {
-    itemSelector: '.fc-event',
-    eventData: function(eventEl) {
-      return {
-        title: eventEl.innerText,
-        color: eventEl.getAttribute('data-color')
-      };
-    }
-  });
+    // Obtener el contenedor de eventos externos
+    var externalEventsContainer = document.getElementById('external-events');
 
-  // fullcalendar
+    // Variable para almacenar el evento seleccionado
+    var selectedEvent = null;
 
-  var d = new Date();
-	var month = d.getMonth() + 1;
-	    month = (month < 10) ? '0' + month : month;
-	var year = d.getFullYear();
-	var day = d.getDate();
-	var today = moment().startOf('day');
-  var calendarElm = document.getElementById('calendar');
-	var calendar = new FullCalendar.Calendar(calendarElm, {
-    headerToolbar: {
-      left: 'dayGridMonth,timeGridWeek,timeGridDay',
-      center: 'title',
-      right: 'prev,next today'
-    },
-    buttonText: {
-    	today:    'Today',
-			month:    'Month',
-			week:     'Week',
-			day:      'Day'
-    },
-    initialView: 'dayGridMonth',
-    editable: true,
-    droppable: true,
-  	themeSystem: 'bootstrap',
-  	events: []
-  });
+    // Inicializar los eventos arrastrables
+    var Draggable = FullCalendar.Interaction.Draggable;
+    var draggable = new Draggable(externalEventsContainer, {
+        itemSelector: '.fc-event',
+        eventData: function(eventEl) {
+            return {
+                title: eventEl.querySelector('.fc-event-text').innerText,
+                color: eventEl.getAttribute('data-color')
+            };
+        }
+    });
 
-	calendar.render();
+    // Obtener el contenedor del calendario
+    var calendarElm = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarElm, {
+        headerToolbar: {
+            left: 'dayGridMonth,timeGridWeek,timeGridDay',
+            center: 'title',
+            right: 'prev,next today'
+        },
+        buttonText: {
+            today: 'Today',
+            month: 'Month',
+            week: 'Week',
+            day: 'Day'
+        },
+        initialView: 'dayGridMonth',
+        editable: true,
+        droppable: true,
+
+
+        themeSystem: 'bootstrap',
+        events: [],
+
+        eventClick: function(info) {
+            selectedEvent = info.event;
+
+        },
+
+        eventDragStop: function(info) {
+            selectedEvent = info.event; // Almacenar el evento seleccionado
+
+            // Verificar si el evento se soltó sobre el contenedor de eliminación
+            var dropContainer = document.getElementById('drop-container');
+            var dropContainerRect = dropContainer.getBoundingClientRect();
+            if (
+                info.jsEvent.clientX >= dropContainerRect.left &&
+                info.jsEvent.clientX <= dropContainerRect.right &&
+                info.jsEvent.clientY >= dropContainerRect.top &&
+                info.jsEvent.clientY <= dropContainerRect.bottom
+            ) {
+                if (selectedEvent != null) {
+
+                        selectedEvent.setProp('display', 'none'); // Ocultar el evento
+
+                            selectedEvent.remove(); // Eliminar el evento del calendario después de un breve retraso
+                            selectedEvent = null; // Reiniciar el evento seleccionado
+
+                }
+            }
+        }
+    });
+
+
+
+    // Verificar si el ratón pasa por encima del contenedor de eliminación
+
+
+    // Renderizar el calendario
+    calendar.render();
 };
 
-var Calendar = function () {
-	"use strict";
-	return {
-		//main function
-		init: function () {
-			handleCalendarDemo();
-		}
-	};
+var Calendar = function() {
+    "use strict";
+    return {
+        //main function
+        init: function() {
+            handleCalendarDemo();
+        }
+    };
 }();
 
 $(document).ready(function() {
-	Calendar.init();
+    Calendar.init();
 });

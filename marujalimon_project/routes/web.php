@@ -128,5 +128,6 @@ Route::middleware(VoluntarioMiddleware::class)->group(function () {
 
 
 Route::get('/calendario', [TestingController::class, 'index'])->name('calendario.index');
+Route::get('/obtener-tareas-lugar/{lugarId}', [TestingController::class, 'obtenerTareasLugar'])->name('calendario.obtenerTareasLugar');
 
 require __DIR__ . '/auth.php';
