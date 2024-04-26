@@ -10,7 +10,7 @@
 
 /* Clases de tema específico */
 .card-header {
-    background-color: teal;
+    background-color: #008080;
 }
 
 .theme-red {
@@ -384,20 +384,196 @@ header {
     transform: translateY(-50%) translateX(50%); /* Ajusta la posición horizontal si es necesario */
 }
 
-.rhombus {
-    width: 60px;
-    height: 60px;
-    background-color: rgba(22, 103, 224, 0.7);
+.rhombus:nth-child(1) {
+    width: 75px;
+    height: 75px;
+    background-color: #4db8b8;
     transform: translateY(-100%) rotate(45deg) scale(0);
     opacity: 0;
     animation: deployRhombuses 1.5s ease forwards;
 }
+.rhombus:nth-child(2) {
+    width: 75px;
+    height: 75px;
+    background-color: #008080;
+    transform: translateY(-100%) rotate(45deg) scale(0);
+    opacity: 0;
+    animation: deployRhombuses 1.5s ease forwards;
+}
+.rhombus:nth-child(3) {
+    width: 75px;
+    height: 75px;
+    background-color: #006666;
+    transform: translateY(-100%) rotate(45deg) scale(0);
+    opacity: 0;
+    animation: deployRhombuses 1.5s ease forwards;
+}
+
+.theme-red .rhombus:nth-child(1) {
+    background-color: #f88c8c;/* Rojo claro */
+}
+
+.theme-red .rhombus:nth-child(2) {
+    background-color: #f33737; /* Rojo */
+}
+
+.theme-red .rhombus:nth-child(3) {
+    background-color: #580505; /* Rojo oscuro */
+}
+
+
+
+.theme-pink .rhombus:nth-child(1), .theme-pink.bg-primary {
+    background-color: #fcb2be; /* Rosa claro */
+}
+
+.theme-pink .rhombus:nth-child(2) {
+    background-color: #ff69b4; /* Rosa */
+}
+
+.theme-pink .rhombus:nth-child(3) {
+    background-color: #c71585; /* Rosa oscuro */
+}
+
+
+/* Tema Aqua */
+.theme-aqua .rhombus:nth-child(1), .theme-aqua.bg-primary {
+    background-color: #7fffd4; /* Aqua claro */
+}
+
+.theme-aqua .rhombus:nth-child(2) {
+    background-color: #5fbfbf; /* Aqua */
+}
+
+.theme-aqua .rhombus:nth-child(3) {
+    background-color: #417878; /* Aqua oscuro */
+}
+
+/* Tema Azul */
+.theme-blue .rhombus:nth-child(1), .theme-blue.bg-primary {
+    background-color: #89cff0; /* Azul claro */
+}
+
+.theme-blue .rhombus:nth-child(2) {
+    background-color: #0000ff; /* Azul */
+}
+
+.theme-blue .rhombus:nth-child(3) {
+    background-color: #00008b; /* Azul oscuro */
+}
+
+/* Tema Verde */
+.theme-green .rhombus:nth-child(1), .theme-green.bg-primary {
+    background-color: #98fb98; /* Verde claro */
+}
+
+.theme-green .rhombus:nth-child(2) {
+    background-color: #008000; /* Verde */
+}
+
+.theme-green .rhombus:nth-child(3) {
+    background-color: #004d00; /* Verde oscuro */
+}
+
+/* Tema Índigo */
+.theme-indigo .rhombus:nth-child(1), .theme-indigo.bg-primary {
+    background-color: #b3b3ff; /* Índigo claro */
+}
+
+.theme-indigo .rhombus:nth-child(2) {
+    background-color: #4b0082; /* Índigo */
+}
+
+.theme-indigo .rhombus:nth-child(3) {
+    background-color: #300059; /* Índigo oscuro */
+}
+
+/* Tema Lima */
+.theme-lime .rhombus:nth-child(1), .theme-lime.bg-primary {
+    background-color: #e6f0a3; /* Lima claro */
+}
+
+.theme-lime .rhombus:nth-child(2) {
+    background-color: #cddc39; /* Lima */
+}
+
+.theme-lime .rhombus:nth-child(3) {
+    background-color: #99aa00; /* Lima oscuro */
+}
+
+/* Tema Naranja */
+.theme-orange .rhombus:nth-child(1), .theme-orange.bg-primary {
+    background-color: #ffdab9; /* Naranja claro */
+}
+
+.theme-orange .rhombus:nth-child(2) {
+    background-color: #ff8c00; /* Naranja */
+}
+
+.theme-orange .rhombus:nth-child(3) {
+    background-color: #ff4500; /* Naranja oscuro */
+}
+
+/* Tema Morado */
+.theme-purple .rhombus:nth-child(1), .theme-purple.bg-primary {
+    background-color: #e6e6fa; /* Morado claro */
+}
+
+.theme-purple .rhombus:nth-child(2) {
+    background-color: #800080; /* Morado */
+}
+
+.theme-purple .rhombus:nth-child(3) {
+    background-color: #4b0082; /* Morado oscuro */
+}
+
+/* Tema Amarillo */
+.theme-yellow .rhombus:nth-child(1), .theme-yellow.bg-primary {
+    background-color: #ffffe0; /* Amarillo claro */
+}
+
+.theme-yellow .rhombus:nth-child(2) {
+    background-color: #ffff00; /* Amarillo */
+}
+
+.theme-yellow .rhombus:nth-child(3) {
+    background-color: #ffdf00; /* Amarillo oscuro */
+}
+
+/* Tema Gris */
+.theme-grey .rhombus:nth-child(1), .theme-grey.bg-primary {
+    background-color: #d3d3d3; /* Gris claro */
+}
+
+.theme-grey .rhombus:nth-child(2) {
+    background-color: #a9a9a9; /* Gris */
+}
+
+.theme-grey .rhombus:nth-child(3) {
+    background-color: #808080; /* Gris oscuro */
+}
+
+
+#welcomeMessage {
+    text-shadow: 
+        -1px 0 rgba(0, 0, 0, 0.4), 
+        0 1px rgba(0, 0, 0, 0.4), 
+        1px 0 rgba(0, 0, 0, 0.4), 
+        0 -1px rgba(0, 0, 0, 0.4);
+}
+
+
+
+
+
+
 .rhombus:nth-child(1) {
     animation-delay: 0.5s;
 }
 
 .rhombus:nth-child(2) {
     animation-delay: 1s;
+    
 }
 
 .rhombus:nth-child(3) {
@@ -450,6 +626,200 @@ header {
     margin: 0;  /* Ajustar los márgenes externos si son necesarios */
     padding: 0; /* Ajustar el padding si es necesario */
   }
+  .header {
+    z-index: 1; /* Lower z-index means it will be behind elements with a higher z-index */
+    position: relative; /* z-index works on positioned elements */
+    /* ... other styles ... */
+}
+#header {
+    position: fixed; /* Fixed position to keep it at the top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1030; /* Bootstrap often uses 1030 for navbars, but adjust as needed */
+    /* Other styles... */
+}
+p#fixedColorText {
+    color: #767676; /* Este es un color de gris medio que debería ser visible en fondos claros y oscuros */
+}
+
+.theme-red .text-custom-primary{
+    color: var(--color-primary); /* Rojo */
+}
+
+.theme-pink .text-custom-primary {
+    color: var(--color-primary); /* Rosa */
+}
+
+.theme-yellow .text-custom-primary {
+    color: var(--color-primary); /* Amarillo */
+}
+
+.theme-grey .text-custom-primary{
+    color: var(--color-primary); /* Gris */
+}
+
+.theme-aqua .text-custom-primary {
+    color: var(--color-primary); /* Aqua */
+}
+
+.theme-blue .text-custom-primary {
+    color: var(--color-primary); /* Azul */
+}
+
+.theme-green .text-custom-primary {
+    color: var(--color-primary); /* Verde */
+}
+
+.theme-indigo .text-custom-primary {
+    color: var(--color-primary); /* Índigo */
+}
+
+.theme-lime .text-custom-primary {
+    color: var(--color-primary); /* Lima */
+}
+
+.theme-orange .text-custom-primary {
+    color: var(--color-primary); /* Naranja */
+}
+
+.theme-purple .text-custom-primary {
+    color: var(--color-primary); /* Morado */
+}
+
+.theme-orange .btn-outline-custom-primary {
+    color: var(--color-primary); /* Naranja */
+    border-color: var(--color-primary); /* Naranja */
+}
+
+.theme-red .btn-outline-custom-primary {
+    color: var(--color-primary); /* Rojo */
+    border-color: var(--color-primary); /* Rojo */
+}
+
+.theme-pink .btn-outline-custom-primary {
+    color: var(--color-primary); /* Rosa */
+    border-color: var(--color-primary); /* Rosa */
+}
+
+.theme-yellow .btn-outline-custom-primary {
+    color: var(--color-primary); /* Amarillo */
+    border-color: var(--color-primary); /* Amarillo */
+}
+
+.theme-grey .btn-outline-custom-primary {
+    color: var(--color-primary); /* Gris */
+    border-color: var(--color-primary); /* Gris */
+}
+
+.theme-aqua .btn-outline-custom-primary {
+    color: var(--color-primary); /* Aqua */
+    border-color: var(--color-primary); /* Aqua */
+}
+
+.theme-blue .btn-outline-custom-primary {
+    color: var(--color-primary); /* Azul */
+    border-color: var(--color-primary); /* Azul */
+}
+
+.theme-green .btn-outline-custom-primary {
+    color: var(--color-primary); /* Verde */
+    border-color: var(--color-primary); /* Verde */
+}
+
+.theme-indigo .btn-outline-custom-primary {
+    color: var(--color-primary); /* Índigo */
+    border-color: var(--color-primary); /* Índigo */
+}
+
+.theme-lime .btn-outline-custom-primary {
+    color: var(--color-primary); /* Lima */
+    border-color: var(--color-primary); /* Lima */
+}
+
+.theme-purple .btn-outline-custom-primary {
+    color: var(--color-primary); /* Morado */
+    border-color: var(--color-primary); /* Morado */
+}/* Agrega esto a tu archivo CSS */
+#year-form {
+    max-width: 300px; /* Ajusta al ancho que prefieras */
+    margin: auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Sombra suave para resaltar el formulario */
+    border-radius: 8px; /* Bordes redondeados */
+    background: #fff; /* Fondo blanco o el color de fondo de tu preferencia */
+}
+
+#year-form label {
+    display: block;
+    margin-bottom: 8px; /* Espaciado entre la etiqueta y el select */
+    font-weight: bold;
+}
+
+#year-form select {
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    padding: 10px;
+    margin-bottom: 12px; /* Espaciado antes del botón */
+    border-radius: 4px;
+    border: 1px solid #ccc; /* Borde sutil */
+}
+
+#year-form button {
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    padding: 10px;
+    border-radius: 4px;
+    border: none;
+    background-color: #007bff; /* Color primario, elige uno que se ajuste a tu diseño */
+    color: white;
+    cursor: pointer; /* Cursor tipo pointer para indicar que es clickeable */
+    transition: background-color 0.3s; /* Transición suave de color */
+}
+
+#year-form button:hover {
+    background-color: #0056b3; /* Oscurece el botón al pasar el mouse por encima */
+}
+
+.card-body {
+    border-radius: 4px; /* Bordes redondeados para la tarjeta */
+
+}
+
+.card-body:hover {
+   
+    border-radius: 4px; /* Bordes redondeados para la tarjeta */
+}
+
+
+/* Agrega esto a tu archivo CSS */
+.gradient-background {
+    background: radial-gradient(circle, #f4f4f4, transparent);
+    padding: 20px;
+    border-radius: 15px; /* Agrega bordes redondeados si deseas */
+}
+
+    #form-container {
+        max-width: 600px;
+        margin: auto;
+        transition: transform 0.3s;
+    }
+    #form-container:hover {
+        transform: translateY(-12px);
+    }
+    #delayed-container {
+        display: block; /* Mantiene el espacio reservado, evitando saltos de contenido */
+        opacity: 0;
+        transition: opacity 2s ease; /* Ajusta la duración según desees */
+        visibility: hidden; /* Oculta inicialmente el contenido */
+    }
+    #chart-container {
+        opacity: 0;
+        transition: opacity 2s ease-in-out;
+    }
+      
+
+
+
+
 
 
 
