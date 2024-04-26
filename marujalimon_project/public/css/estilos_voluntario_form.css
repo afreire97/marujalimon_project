@@ -384,7 +384,15 @@ header {
     transform: translateY(-50%) translateX(50%); /* Ajusta la posición horizontal si es necesario */
 }
 
-.rhombus {
+.rhombus:nth-child(1) {
+    width: 75px;
+    height: 75px;
+    background-color: #4db8b8;
+    transform: translateY(-100%) rotate(45deg) scale(0);
+    opacity: 0;
+    animation: deployRhombuses 1.5s ease forwards;
+}
+.rhombus:nth-child(2) {
     width: 75px;
     height: 75px;
     background-color: #008080;
@@ -392,97 +400,159 @@ header {
     opacity: 0;
     animation: deployRhombuses 1.5s ease forwards;
 }
-
-.theme-red .rhombus, .theme-red.bg-primary {
-    background-color: var(--color-primary); /* Rojo */
+.rhombus:nth-child(3) {
+    width: 75px;
+    height: 75px;
+    background-color: #006666;
+    transform: translateY(-100%) rotate(45deg) scale(0);
+    opacity: 0;
+    animation: deployRhombuses 1.5s ease forwards;
 }
 
-.theme-pink .rhombus, .theme-pink.bg-primary {
-    background-color: var(--color-primary); /* Rosa */
+.theme-red .rhombus:nth-child(1) {
+    background-color: #f88c8c;/* Rojo claro */
 }
 
-.theme-aqua .rhombus, .theme-aqua.bg-primary {
-    background-color: var(--color-primary); /* Aqua */
+.theme-red .rhombus:nth-child(2) {
+    background-color: #f33737; /* Rojo */
 }
 
-.theme-blue .rhombus, .theme-blue.bg-primary {
-    background-color: var(--color-primary); /* Azul */
+.theme-red .rhombus:nth-child(3) {
+    background-color: #580505; /* Rojo oscuro */
 }
 
-.theme-green .rhombus, .theme-green.bg-primary {
-    background-color: var(--color-primary); /* Verde */
+
+
+.theme-pink .rhombus:nth-child(1), .theme-pink.bg-primary {
+    background-color: #fcb2be; /* Rosa claro */
 }
 
-.theme-indigo .rhombus, .theme-indigo.bg-primary {
-    background-color: var(--color-primary); /* Índigo */
+.theme-pink .rhombus:nth-child(2) {
+    background-color: #ff69b4; /* Rosa */
 }
 
-.theme-lime .rhombus, .theme-lime.bg-primary {
-    background-color: var(--color-primary); /* Lima */
+.theme-pink .rhombus:nth-child(3) {
+    background-color: #c71585; /* Rosa oscuro */
 }
 
-.theme-orange .rhombus, .theme-orange.bg-primary {
-    background-color: var(--color-primary); /* Naranja */
+
+/* Tema Aqua */
+.theme-aqua .rhombus:nth-child(1), .theme-aqua.bg-primary {
+    background-color: #7fffd4; /* Aqua claro */
 }
 
-.theme-purple .rhombus, .theme-purple.bg-primary {
-    background-color: var(--color-primary); /* Morado */
+.theme-aqua .rhombus:nth-child(2) {
+    background-color: #5fbfbf; /* Aqua */
 }
 
-.theme-yellow .rhombus, .theme-yellow.bg-primary {
-    background-color: var(--color-primary); /* Amarillo */
+.theme-aqua .rhombus:nth-child(3) {
+    background-color: #417878; /* Aqua oscuro */
 }
 
-.theme-grey .rhombus, .theme-grey.bg-primary {
-    background-color: var(--color-primary); /* Gris */
+/* Tema Azul */
+.theme-blue .rhombus:nth-child(1), .theme-blue.bg-primary {
+    background-color: #89cff0; /* Azul claro */
 }
 
-.theme-red #welcomeMessage {
-    color: var(--color-primary); /* Rojo */
+.theme-blue .rhombus:nth-child(2) {
+    background-color: #0000ff; /* Azul */
 }
 
-.theme-pink #welcomeMessage {
-    color: var(--color-primary); /* Rosa */
+.theme-blue .rhombus:nth-child(3) {
+    background-color: #00008b; /* Azul oscuro */
 }
 
-.theme-aqua #welcomeMessage {
-    color: var(--color-primary); /* Aqua */
+/* Tema Verde */
+.theme-green .rhombus:nth-child(1), .theme-green.bg-primary {
+    background-color: #98fb98; /* Verde claro */
 }
 
-.theme-blue #welcomeMessage {
-    color: var(--color-primary); /* Azul */
-}
-.theme-orange #welcomeMessage {
-    color: var(--color-primary); /* Naranja */
+.theme-green .rhombus:nth-child(2) {
+    background-color: #008000; /* Verde */
 }
 
-.theme-green #welcomeMessage {
-    color: var(--color-primary); /* Verde */
+.theme-green .rhombus:nth-child(3) {
+    background-color: #004d00; /* Verde oscuro */
 }
 
-.theme-indigo #welcomeMessage {
-    color: var(--color-primary); /* Índigo */
+/* Tema Índigo */
+.theme-indigo .rhombus:nth-child(1), .theme-indigo.bg-primary {
+    background-color: #b3b3ff; /* Índigo claro */
 }
 
-.theme-lime #welcomeMessage {
-    color: var(--color-primary); /* Lima */
+.theme-indigo .rhombus:nth-child(2) {
+    background-color: #4b0082; /* Índigo */
 }
 
-.theme-aqua #welcomeMessage {
-    color: var(--color-primary); /* Aqua */
+.theme-indigo .rhombus:nth-child(3) {
+    background-color: #300059; /* Índigo oscuro */
 }
 
-.theme-purple #welcomeMessage {
-    color: var(--color-primary); /* Morado */
+/* Tema Lima */
+.theme-lime .rhombus:nth-child(1), .theme-lime.bg-primary {
+    background-color: #e6f0a3; /* Lima claro */
 }
 
-.theme-yellow #welcomeMessage {
-    color: var(--color-primary); /* Amarillo */
+.theme-lime .rhombus:nth-child(2) {
+    background-color: #cddc39; /* Lima */
 }
 
-.theme-grey #welcomeMessage {
-    color: var(--color-primary); /* Gris */
+.theme-lime .rhombus:nth-child(3) {
+    background-color: #99aa00; /* Lima oscuro */
 }
+
+/* Tema Naranja */
+.theme-orange .rhombus:nth-child(1), .theme-orange.bg-primary {
+    background-color: #ffdab9; /* Naranja claro */
+}
+
+.theme-orange .rhombus:nth-child(2) {
+    background-color: #ff8c00; /* Naranja */
+}
+
+.theme-orange .rhombus:nth-child(3) {
+    background-color: #ff4500; /* Naranja oscuro */
+}
+
+/* Tema Morado */
+.theme-purple .rhombus:nth-child(1), .theme-purple.bg-primary {
+    background-color: #e6e6fa; /* Morado claro */
+}
+
+.theme-purple .rhombus:nth-child(2) {
+    background-color: #800080; /* Morado */
+}
+
+.theme-purple .rhombus:nth-child(3) {
+    background-color: #4b0082; /* Morado oscuro */
+}
+
+/* Tema Amarillo */
+.theme-yellow .rhombus:nth-child(1), .theme-yellow.bg-primary {
+    background-color: #ffffe0; /* Amarillo claro */
+}
+
+.theme-yellow .rhombus:nth-child(2) {
+    background-color: #ffff00; /* Amarillo */
+}
+
+.theme-yellow .rhombus:nth-child(3) {
+    background-color: #ffdf00; /* Amarillo oscuro */
+}
+
+/* Tema Gris */
+.theme-grey .rhombus:nth-child(1), .theme-grey.bg-primary {
+    background-color: #d3d3d3; /* Gris claro */
+}
+
+.theme-grey .rhombus:nth-child(2) {
+    background-color: #a9a9a9; /* Gris */
+}
+
+.theme-grey .rhombus:nth-child(3) {
+    background-color: #808080; /* Gris oscuro */
+}
+
 
 #welcomeMessage {
     text-shadow: 
@@ -503,6 +573,7 @@ header {
 
 .rhombus:nth-child(2) {
     animation-delay: 1s;
+    
 }
 
 .rhombus:nth-child(3) {
@@ -709,25 +780,16 @@ p#fixedColorText {
 }
 
 .card-body {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Sombra horizontal, sombra vertical, desenfoque, spread, color */
-    transition: box-shadow 0.3s; /* Efecto de transición suave para la sombra */
     border-radius: 4px; /* Bordes redondeados para la tarjeta */
 
 }
 
 .card-body:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); /* Sombra más pronunciada al pasar el mouse por encima */
-    .card-body {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Sombra horizontal, sombra vertical, desenfoque, spread, color */
-    transition: box-shadow 0.3s; /* Efecto de transición suave para la sombra */
+   
     border-radius: 4px; /* Bordes redondeados para la tarjeta */
 }
 
-.card-body:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); /* Sombra más pronunciada al pasar el mouse por encima */
-}
 
-}
 /* Agrega esto a tu archivo CSS */
 .gradient-background {
     background: radial-gradient(circle, #f4f4f4, transparent);
@@ -735,7 +797,25 @@ p#fixedColorText {
     border-radius: 15px; /* Agrega bordes redondeados si deseas */
 }
 
-
+    #form-container {
+        max-width: 600px;
+        margin: auto;
+        transition: transform 0.3s;
+    }
+    #form-container:hover {
+        transform: translateY(-12px);
+    }
+    #delayed-container {
+        display: block; /* Mantiene el espacio reservado, evitando saltos de contenido */
+        opacity: 0;
+        transition: opacity 2s ease; /* Ajusta la duración según desees */
+        visibility: hidden; /* Oculta inicialmente el contenido */
+    }
+    #chart-container {
+        opacity: 0;
+        transition: opacity 2s ease-in-out;
+    }
+      
 
 
 

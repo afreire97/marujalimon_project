@@ -4,26 +4,15 @@
     <script src="{{ asset('/js/graficos/render.highlight.js') }}"></script>
 @endpush
 
-<div class="gradient-background">
-    <div style="max-width: 600px; margin: auto;">
-        <form id="year-form">
-            <label for="year">Seleccione el año:</label>
-            <select name="year" id="year">
-                @for ($i = date('Y'); $i >= 2010; $i--)
-                    <option value="{{ $i }}">{{ $i }}</option>
-                @endfor
-            </select>
-            <button type="submit">Enviar</button>
-        </form>
-    </div>
-</div>
 
 
 
-<div>
+<div id="chart-container" class="hidden">
     <canvas id="line-chart"></canvas>
 </div>
 
+
+<!-- Dentro de tu vista Blade -->
 <script>
     document.addEventListener('DOMContentLoaded', async function() {
         const ctx = document.getElementById('line-chart').getContext('2d');
@@ -37,7 +26,6 @@
         Chart.defaults.scale.grid.color = 'rgba(' + app.color.componentColorRgb + ', .15)';
         Chart.defaults.scale.ticks.backdropColor = 'rgba(' + app.color.componentColorRgb + ', 0)';
 
-        // Función para cargar los datos del gráfico
         async function cargarDatos(year) {
             try {
                 const horasResponse = await fetch(`{{ route('totalHorasVoluntarios') }}`, {
@@ -69,80 +57,84 @@
                 const horasData = await horasResponse.json();
                 const tareasData = await tareasResponse.json();
 
-                   // Limpiar el gráfico existente si existe
-                   if (lineChart) {
+                if (lineChart) {
                     lineChart.destroy();
                 }
 
-
-                // Configurar el nuevo gráfico de líneas
                 lineChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: Object.keys(horasData.totalHorasPorMes),
-        datasets: [{
-            label: `Horas totales voluntarios (${year})`,
-            borderColor: 'rgba(0, 0, 255, 1)',
-            pointBackgroundColor: 'rgba(0, 0, 255, 1)',
-            pointRadius: 4,
-            borderWidth: 2,
-            backgroundColor: 'rgba(0, 0, 255, .3)',
-            data: Object.values(horasData.totalHorasPorMes)
-        }, {
-            label: `Total de tareas (${year})`,
-            borderColor: 'rgba(255, 0, 0, 1)',
-            pointBackgroundColor: 'rgba(255, 0, 0, 1)',
-            pointRadius: 4,
-            borderWidth: 2,
-            backgroundColor: 'rgba(255, 0, 0, .3)',
-            data: Object.values(tareasData.totalTareasPorMes)
-        }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    color: '#767676' // Cambia el color del texto de los ticks del eje Y
-                },
-                grid: {
-                    color: '#e0e0e0' // Cambia el color de la cuadrícula del eje Y si deseas
-                }
-            },
-            x: {
-                ticks: {
-                    color: '#767676' // Cambia el color del texto de los ticks del eje X
-                },
-                grid: {
-                    color: '#e0e0e0' // Cambia el color de la cuadrícula del eje X si deseas
-                }
-            }
-        },
-        plugins: {
-            legend: {
-                labels: {
-                    color: '#767676' // Asegúrate de que no hay punto y coma aquí
-                }
-            }
-        }
-    }
-});
+                    type: 'line',
+                    data: {
+                        labels: Object.keys(horasData.totalHorasPorMes),
+                        datasets: [{
+                            label: `Horas totales voluntarios (${year})`,
+                            borderColor: 'rgba(0, 0, 255, 1)',
+                            pointBackgroundColor: 'rgba(0, 0, 255, 1)',
+                            pointRadius: 4,
+                            borderWidth: 2,
+                            backgroundColor: 'rgba(0, 0, 255, .3)',
+                            data: Object.values(horasData.totalHorasPorMes)
+                        }, {
+                            label: `Total de tareas (${year})`,
+                            borderColor: 'rgba(255, 0, 0, 1)',
+                            pointBackgroundColor: 'rgba(255, 0, 0, 1)',
+                            pointRadius: 4,
+                            borderWidth: 2,
+                            backgroundColor: 'rgba(255, 0, 0, .3)',
+                            data: Object.values(tareasData.totalTareasPorMes)
+                        }]
+                    },
+                    options: {
+                        animation: {
+                            duration: 1500 // duración en milisegundos
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    color: '#767676'
+                                },
+                                grid: {
+                                    color: '#e0e0e0'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: '#767676'
+                                },
+                                grid: {
+                                    color: '#e0e0e0'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#767676'
+                                }
+                            }
+                        }
+                    }
+                });
 
+                // Delay the opacity change
+                setTimeout(function() {
+                    const chartContainer = document.getElementById('chart-container');
+                    chartContainer.style.opacity = "1";
+                }, 7000); // delay of 7 seconds
 
             } catch (error) {
                 console.error('Error al obtener los datos:', error);
             }
         }
 
-        // Manejar el envío del formulario
-        yearForm.addEventListener('submit', function(event) {
+        // Load the initial data
+        const currentYear = new Date().getFullYear();
+        await cargarDatos(currentYear);
+
+        yearForm.addEventListener('submit', async function(event) {
             event.preventDefault();
             const selectedYear = yearSelect.value;
-            cargarDatos(selectedYear);
+            await cargarDatos(selectedYear);
         });
-
-        // Cargar los datos para el año actual al cargar la página
-        const currentYear = new Date().getFullYear();
-        cargarDatos(currentYear);
     });
 </script>
