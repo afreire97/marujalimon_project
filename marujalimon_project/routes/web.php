@@ -7,9 +7,7 @@ use App\Http\Controllers\TareasController;
 use App\Http\Controllers\TestingController;
 use App\Http\Controllers\VoluntarioController;
 use App\Http\Controllers\VoluntarioLogeadoController;
-use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\AdminOrCoordMiddleware;
-use App\Http\Middleware\CoordinadorMiddleware;
 use App\Http\Middleware\VoluntarioMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +52,7 @@ Route::get('/dashboard', function () {
 
 
     Route::get('/voluntarios/{voluntario}', [VoluntarioController::class, 'show'])->name('voluntarios.show');
+
 
     Route::post('/voluntarios/create', [VoluntarioController::class, 'store'])->name('storeVoluntario');
     Route::get('/voluntario/{voluntario}/info', [VoluntarioController::class, 'getInfo'])->name('info');
