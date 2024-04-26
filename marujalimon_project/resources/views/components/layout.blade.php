@@ -20,7 +20,7 @@
 <!-- Enlace al archivo app.min.css -->
 <link href="{{ asset('css/blog/app.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/blog/layout.css') }}" rel="stylesheet" />
-
+<link rel="stylesheet" href="{{asset('css/calendar/styles_calendar.css')}}">
 <link rel="stylesheet" href="{{asset('css/estilos_voluntario_form.css')}}">
 
 
