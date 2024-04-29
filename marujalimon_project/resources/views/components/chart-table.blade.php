@@ -5,39 +5,37 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <!-- Tarjetas de voluntarios con nuevo estilo -->
-<div id="cardView" class="row row-cols-md-3 row-cols-lg-4 gx-1 mt-5">
+<div id="cardView" class="row mt-5">
     @foreach ($voluntarios as $voluntario)
-        <div class="col mb-4">
-            <!-- Tarjeta con nuevo estilo -->
-            <div class="card h-100 border-0 shadow-sm" data-tilt>
-                <!-- Imagen de perfil del voluntario -->
-                <img src="{{ $voluntario->imagenPerfil
-                    ? $voluntario->imagenPerfil->IMG_path
-                    : 'data:image/svg+xml,%3Csvg
-                                                                                                                                                                        xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 448 512\'%3E%3Cpath
-                                                                                                                                                                        fill=\'%23999\' d=\'M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96
-                                                                                                                                                                        57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.4-46.6 16-72.9
-                                                                                                                                                                        16s-50.7-5.6-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48
-                                                                                                                                                                        48 48h352c26.5 0 48-21.5
-                                                                                                                                                                        48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z\'/%3E%3C/svg%3E' }}"
-                    class="card-img-top" alt="Imagen de perfil del voluntario">
+        <div class="col col-custom mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <!-- Start of clickable image -->
+                <a href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}">
+                    <img src="{{ $voluntario->imagenPerfil ? $voluntario->imagenPerfil->IMG_path : 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg' }}"
+                         class="volunteer-card-img" alt="Imagen de perfil del voluntario">
+                </a>
+                <!-- End of clickable image -->
 
-                <div class="card-body">
-                    <h5 class="card-title">
+                <div class="volunteer-card-body">
+                    <h5 class="volunteer-card-title">
                         <i class="fas fa-user"></i> {{ $voluntario->VOL_nombre }} {{ $voluntario->VOL_apellidos }}
                     </h5>
-                    <p class="card-text">
+                    <p class="volunteer-card-text">
                         <i class="fas fa-id-card"></i> DNI: {{ $voluntario->VOL_dni }}
                     </p>
-                    <a href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}" class="btn btn-primary"
-                        style="margin-right: 12px;">Más información</a>
-                    <a href="{{ route('voluntario.edit_form', ['voluntario' => $voluntario]) }}"
-                        class="btn btn-primary ">Modificar</a>
+                    <div class="volunteer-card-buttons">
+                        <a href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}"
+                           class="volunteer-btn-primary btn btn-primary">Más información</a>
+                        <a href="{{ route('voluntario.edit_form', ['voluntario' => $voluntario]) }}"
+                           class="volunteer-btn-primary btn btn-primary">Modificar</a>
+                    </div>
                 </div>
             </div>
         </div>
     @endforeach
 </div>
+
+
 
 @if (session('success'))
     <div class="alert alert-success">
@@ -182,3 +180,25 @@
     });
 </script>
 <script src="{{ asset('js/card-table/switchCardTable.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var toggleButton = document.getElementById('toggleViewButton');
+    var addNuevaTareaForm = document.getElementById('addNuevaTarea');
+    var addHoursForm = document.getElementById('addHoursForm');
+    
+    // Assume that we start in the card view
+    var isCardView = true;
+
+    toggleButton.addEventListener('click', function() {
+        // Toggles a class on the body (or other logic you may have) to change the view
+        document.body.classList.toggle('cards-view');
+
+        // Toggle the state
+        isCardView = !isCardView;
+
+        // Based on the view, show or hide forms
+        addNuevaTareaForm.style.display = isCardView ? 'none' : 'block';
+        addHoursForm.style.display = isCardView ? 'none' : 'block'; // Or 'none' if you want this form to stay hidden
+    });
+});
+</script>
