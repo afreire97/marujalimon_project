@@ -11,10 +11,13 @@ use App\Models\ImagenPerfil;
 
 use App\Models\Lugar;
 use App\Models\Tarea;
+use App\Models\User;
 use App\Models\Voluntario;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class VoluntarioController extends Controller
@@ -55,6 +58,11 @@ class VoluntarioController extends Controller
         // Retornamos la vista con los voluntarios y las tareas obtenidas
         return view('voluntarios.listar_voluntarios_card', ['voluntarios' => $voluntarios, 'tareas' => $tareas, 'lugares' => $lugares,'voluntarios_all' => $voluntarios_all]);
     }
+
+
+
+
+
     /**
      * Display the specified resource.
      */
@@ -176,6 +184,19 @@ class VoluntarioController extends Controller
         $voluntario->VOL_mail = $request->input('VOL_mail');
         $voluntario->save();
 
+        $user = User::create([
+            'name' => $voluntario->VOL_nombre,
+            'email' =>  $voluntario->VOL_mail,
+            'password' => Hash::make($request->password),
+            'is_coordinador' => false,
+            'is_admin' => false,
+            'is_voluntario' => true,
+        ]);
+        $user->voluntario()->save($voluntario);
+
+        event(new Registered($user));
+
+
         // Asignar la delegación y el coordinador
         $voluntario->delegaciones()->attach($request->input('DEL_id'));
         $voluntario->coordinadores()->attach($request->input('COO_id'));
@@ -193,7 +214,7 @@ class VoluntarioController extends Controller
             $imagenPerfil->save();
         }
 
-        return redirect()->route('voluntarios.create')->with('success', 'Voluntario creado exitosamente.');
+        return redirect()->route('voluntarios.index')->with('success', 'Voluntario creado exitosamente.');
     }
 
 

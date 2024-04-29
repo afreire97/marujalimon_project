@@ -45,7 +45,7 @@
 
             <h5 class="mb-3">Lugares</h5>
             @foreach ($lugares as $lugar)
-            <div class="fc-event " data-color="#348fe2">
+            <div class="fc-event lugar" data-lugar-id="{{$lugar->LUG_id}}" data-color="#348fe2">
                 <div class="fc-event-text">{{$lugar->LUG_nombre}}</div>
                 <div class="fc-event-icon"><i class="fas fa-circle fa-fw fs-9px text-blue"></i></div>
             </div>

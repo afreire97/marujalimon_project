@@ -27,6 +27,9 @@
                         <div style="text-align: left; padding-top: 10px;">
                             <a href="{{ route('voluntario_logeado.edit', ['voluntario' => $voluntario]) }}" class="btn btn-primary d-block w-100">Editar Perfil</a>
                         </div>
+                        <div style="text-align: left; padding-top: 10px;">
+                            <a href="{{ route('voluntario_logeado.calendario', ['voluntario' => $voluntario]) }}" class="btn btn-primary d-block w-100">Ver calendario</a>
+                        </div>
                     </div>
 
 
@@ -75,33 +78,7 @@
                                 <i class="bi bi-envelope-fill me-2"></i><strong>Correo Electrónico:</strong>
                                 {{ $voluntario->VOL_mail }}
                             </div>
-                            <hr class="my-4">
-                            <!-- Puedes usar un separador para distinguir claramente las secciones -->
-                            <form action="{{ route('calcularHoras', ['voluntario' => $voluntario]) }}" method="post">
-                                @csrf
 
-                                <fieldset>
-                                    <legend style="font-size: 20px;">Indícanos tu disponibilidad</legend>
-
-                                    <div class="row mb-3">
-                                        <label for="fecha_inicio" class="col-sm-2 col-form-label">Fecha de
-                                            inicio</label>
-                                        <div class="col-sm-10">
-                                            <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio">
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <label for="fecha_fin" class="col-sm-2 col-form-label">Fecha de fin</label>
-                                        <div class="col-sm-10">
-                                            <input type="date" class="form-control" id="fecha_fin" name="fecha_fin">
-                                        </div>
-                                    </div>
-                                    <div class="d-grid gap-2">
-                                    <button type="submit" class="btn btn-primary">¿Qué dias vas a venir?</button>
-                                    </div>
-                                </fieldset>
-                            </form>
 
                             @if (isset($totalHoras))
                             <p>Total de horas realizadas: {{ $totalHoras }}</p>

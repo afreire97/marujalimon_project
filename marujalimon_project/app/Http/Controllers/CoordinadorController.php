@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Utils\ValidacionUtils;
 use App\Models\Coordinador;
 use App\Models\Delegacion;
 use App\Models\ImagenPerfil;
 use App\Models\Tarea;
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class CoordinadorController extends Controller
@@ -42,6 +46,90 @@ class CoordinadorController extends Controller
 
     }
 
+    public function create()
+    {
+
+        $fields = [
+            'COO_nombre' => 'Nombre',
+            'COO_apellidos' => 'Apellidos',
+            'COO_dni' => 'DNI',
+            'COO_fecha_nac' => 'Fecha de nacimiento',
+            'COO_domicilio' => 'Dirección',
+            'COO_cp' => 'Código Postal',
+            'COO_tel1' => 'Teléfono',
+            'COO_sexo' => 'Género',
+            'COO_mail' => 'Correo Electrónico',
+        ];
+
+        $selectFields = [
+            'COO_sexo' => ['Masculino', 'Femenino', 'Otro'],
+        ];
+
+        $delegaciones = Delegacion::all();
+
+        return view('coordinadores.create', [
+            'delegaciones' => $delegaciones,
+            'fields' => $fields,
+            'selectFields' => $selectFields
+        ]);
+    }
+    public function store(Request $request)
+    {
+
+        ValidacionUtils::validarCoordinador($request);
+
+        // Crear y guardar el coordinador
+        $coordinador = new Coordinador();
+        $coordinador->COO_nombre = $request->input('COO_nombre');
+        $coordinador->COO_apellidos = $request->input('COO_apellidos');
+        $coordinador->COO_dni = $request->input('COO_dni');
+        $coordinador->COO_fecha_nac = $request->input('COO_fecha_nac');
+        $coordinador->COO_domicilio = $request->input('COO_domicilio');
+        $coordinador->COO_cp = $request->input('COO_cp');
+        $coordinador->COO_tel1 = $request->input('COO_tel1');
+        $coordinador->COO_sexo = $request->input('COO_sexo');
+        $coordinador->COO_mail = $request->input('COO_mail');
+
+       $user = User::create([
+            'name' => $coordinador->COO_nombre,
+            'email' =>  $coordinador->COO_mail,
+            'password' => Hash::make($request->password),
+            'is_coordinador' => true,
+            'is_admin' => false,
+            'is_voluntario' => false,
+        ]);
+
+        $coordinador->user_id = $user->id;
+        $coordinador->save();
+
+
+
+        $user->coordinador()->save($coordinador);
+
+        event(new Registered($user));
+
+
+        // Asignar la delegación si se proporciona
+        if ($request->has('delegacion_id')) {
+            $coordinador->delegaciones()->attach($request->input('delegacion_id'));
+        }
+
+        // Guardar la imagen de perfil si se proporciona
+        if ($request->hasFile('imagen_perfil')) {
+            $imagen = $request->file('imagen_perfil');
+            $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension();
+            $rutaImagen = $imagen->storeAs('public/img/imagenes_perfil', $nombreImagen);
+
+            // Crear y guardar el registro de la imagen asociado al coordinador
+            $imagenPerfil = new ImagenPerfil();
+            $imagenPerfil->IMG_coordinador_id = $coordinador->COO_id;
+            $imagenPerfil->IMG_path = str_replace('public/', '/storage/', $rutaImagen); // Ajustar la ruta para ser accesible desde la web
+            $imagenPerfil->save();
+        }
+
+        return redirect()->route('coordinadores.index')->with('success', 'Coordinador creado exitosamente.');
+
+    }
 
     public function edit(Coordinador $coordinador)
     {
@@ -70,6 +158,8 @@ class CoordinadorController extends Controller
             'selectFields' => $selectFields
         ]);
     }
+
+
 
     public function update(Request $request, Coordinador $coordinador)
     {
@@ -112,25 +202,25 @@ class CoordinadorController extends Controller
 
 
 
-        // Redirigir a la vista correspondiente con un mensaje de éxito
-        return redirect()->route('coordinador.show', ['coordinador' => $coordinador])
-            ->with('success', '¡El coordinador ha sido actualizado exitosamente!');
+            // Redirigir a la vista correspondiente con un mensaje de éxito
+            return redirect()->route('coordinador.show', ['coordinador' => $coordinador])
+                ->with('success', '¡El coordinador ha sido actualizado exitosamente!');
+        }
     }
-}
 
 
 
 
-public function destroy(Coordinador $coordinador)
-{
-    // Eliminar el voluntario
-    $coordinador->delete();
+    public function destroy(Coordinador $coordinador)
+    {
+        // Eliminar el voluntario
+        $coordinador->delete();
 
 
-    return redirect()->route('coordinadores.index')->with('success', 'Voluntario eliminado correctamente');
+        return redirect()->route('coordinadores.index')->with('success', 'Voluntario eliminado correctamente');
 
 
-}
+    }
 
     protected function validateCoordinadorData(Request $request, Coordinador $coordinador)
     {
