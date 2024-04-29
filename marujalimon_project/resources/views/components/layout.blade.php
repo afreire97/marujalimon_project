@@ -112,7 +112,7 @@
 			<span class="copyright d-block">&copy; 2024 Todos los derechos reservados</span>
 			<ul class="social-media-list mt-2 mt-sm-0 flex-1">
 			<a href="#">
-            <img src="https://lh3.googleusercontent.com/pw/AP1GczPqWC9vJ2vHgOYQrfbC0b_myfhp4hYeKGLiE-bFunWqNz98qmX5Hy_71VPRSbRbJY2yC_k8Ao-BedEXb_lH35BRMdo1c9iumEEmzitbvnes3STIQaEM8U_O3erulG174pFpNcpsSVwMo2RekMT_NJWRIvqN1m5IJ0yrkp51yiVxfGy0qcooX3YEywiC0Z5A_cJuy5TuK9T7A4D58KjDXUhx_k0gXqLyPRsS5-dbFtLEGUeDH9hYQlZPu86kB9SGpBMh4_btoCsKj_EY9e5dB2A53nnW7kF5RlYxE0DBVp0IRT3JwWd9I2iuwJX7402MGXDz5NtC1-IsetL0TENdiOJnoIZPVarqVJiYSXAgmShtpAABRtevmSk3ugGiIOM7ER7wQLeK7vSvZBzQWYAsr_6wpIXGuTDZ_Lj___bow17fRoV9ifYa5Q5xfCaEbA2R4ADoGZ2n62ljynUGjVefEU-X1TtVXDSJUHMHB7dSDgDTwoQAxDNhKSosI_7A5XZcoesJ2UYt7Csv1734ykB6ZuhdC1Bj-NLyM7rv-QntoSy55wgmtV0foiyxH1Tix-K73BAhmClFLzpvp7K8MSg8BGpxRc8BfHbuR6FhIqWLC0nFzjluV7AWVa7aNcg0J2i-y-SvnGfBFiLcLKPYxenWZ3NMLSTFsT4IWhvJTwY0-SgNRlHOwkuk1_4iRSwnGv4P5hTBvi-FQ_TUMeyQlAYO4eOsMdv-uDzacO_LW99DnSbLSSbFfjCX9GXhur47sLU6c9VDDyRb6p1WGpfMfxulBAjdQtZ-BdT9IdYzR6DI_kpTuk4VscQcgJzWfg6YjKgTmErdkQM14MG4Fyi42hU9EvpBYeMxfxlcmbx-D0rEcvofN8c2Ir9a5z6RLMX36c_wEzpjHhgldRBzX78HQEEDLMND=w392-h112-s-no-gm?authuser=0" alt="Logo de la Empresa" style="height: 25px;"> <!-- Ajusta la altura según tus necesidades -->
+				<img src="{{ asset('img/logo/logo.png') }}" alt="facebook" class="social-media-icon" style="width: 100px;"/>
         </a>
 			</ul>
 		</div>

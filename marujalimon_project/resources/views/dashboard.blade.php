@@ -55,7 +55,7 @@ function randomScalingFactor()
                             <option value="{{ $i }}">{{ $i }}</option>
                             @endfor
                         </select>
-                        <button type="submit" class="btn btn-info btn-lg">Desplegar gráfico</button>
+                        <button type="submit" class="btn btn-lg" style="background-color: #13abbf; color: white;">Desplegar gráfico</button>
                     </form>
                 </div>
             </div>
@@ -91,25 +91,41 @@ function randomScalingFactor()
     ])
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const container = document.getElementById('delayed-container');
 
-            // Animación inicial para el mensaje de bienvenida
-            welcomeMessage.style.opacity = 0;
-            window.requestAnimationFrame(function() {
-                welcomeMessage.style.transition = 'opacity 8s';
+        if (welcomeMessage && container) {
+            const firstVisit = sessionStorage.getItem('firstVisit');
+
+            if (!firstVisit) {
+                // Animación para el mensaje de bienvenida
+                welcomeMessage.style.opacity = 0;
+                window.requestAnimationFrame(function() {
+                    welcomeMessage.style.transition = 'opacity 8s';
+                    welcomeMessage.style.opacity = 1;
+                });
+
+                // Animación para contenedor con delay
+                setTimeout(function() {
+                    container.style.opacity = '1';
+                    container.style.visibility = 'visible';
+                }, 6000); // Retraso de 6 segundos
+
+                // Marcar que el usuario ya ha visitado el dashboard
+                sessionStorage.setItem('firstVisit', 'true');
+            } else {
+                // Si no es la primera visita en la misma sesión, mostrar los elementos inmediatamente
                 welcomeMessage.style.opacity = 1;
-            });
-        });
-    </script>
-<script>
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        var container = document.getElementById('delayed-container');
-        container.style.opacity = '1';
-        container.style.visibility = 'visible';
-    }, 6000); // Retraso de 6 segundos
-});
+                container.style.opacity = '1';
+                container.style.visibility = 'visible';
+            }
+        } else {
+            console.error('Error: Elementos del DOM no encontrados.');
+        }
+    });
 </script>
+
 
 
 </x-layout>
