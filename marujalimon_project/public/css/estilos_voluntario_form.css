@@ -816,6 +816,9 @@ p#fixedColorText {
         transition: opacity 2s ease-in-out;
     }
       
+    .btn-form{
+        background-color: #00bcd4;
+    }
 
 
 

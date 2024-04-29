@@ -192,6 +192,7 @@ class VoluntarioController extends Controller
             'is_admin' => false,
             'is_voluntario' => true,
         ]);
+
         $user->voluntario()->save($voluntario);
 
         event(new Registered($user));
