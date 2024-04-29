@@ -35,13 +35,13 @@ class VoluntarioController extends Controller
         // Verificamos si el usuario es administrador
         if ($user->is_admin) {
             // Si es administrador, obtenemos todos los voluntarios con paginación
-            $voluntarios = Voluntario::orderBy('created_at', 'desc')->paginate();
+            $voluntarios = Voluntario::orderBy('created_at', 'desc')->paginate(16);
             $voluntarios_all = Voluntario::all();
         } else {
             // Verificamos si el usuario está asociado a un coordinador
             if ($user->is_coordinador && $user->coordinador) { // Verificar si $user->coordinador no es null
                 // Si está asociado a un coordinador, obtenemos todos los voluntarios asociados a ese coordinador con paginación
-                $voluntarios = $user->coordinador->voluntarios()->orderBy('created_at', 'desc')->paginate();
+                $voluntarios = $user->coordinador->voluntarios()->orderBy('created_at', 'desc')->paginate(16);
                 $voluntarios_all = $user->coordinador->voluntarios()->get();
             } else {
                 // Manejar el caso en el que el usuario no está asociado a ningún coordinador

@@ -816,13 +816,64 @@ p#fixedColorText {
         transition: opacity 2s ease-in-out;
     }
       
-    .btn-form{
-        background-color: #00bcd4;
+    @media (min-width: 1200px) {
+        .col-custom {
+            flex: 0 0 auto;
+            width: 12.5%;
+        }
+    }
+    
+    .volunteer-card-img {
+        max-height: 150px; /* Adjust as needed */
+        object-fit: cover;
+        width: 100%;
+    }
+    
+    .volunteer-card-title, .volunteer-card-text {
+        font-size: 0.9rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .volunteer-card-body {
+        padding: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%; /* This ensures the footer aligns at the bottom */
+    }
+    
+    .volunteer-card-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0.5rem;
+    }
+    
+    .volunteer-btn-primary {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+    }
+    .col-custom {
+        padding-right: 8px; /* Right margin of each card */
+        padding-left: 8px; /* Left margin of each card */
+    }
+    
+    #cardView {
+        margin-right: -8px; /* Negate right margin of the rightmost card */
+        margin-left: -8px; /* Negate left margin of the leftmost card */
+    }
+  
+    .row {
+        margin-right: 0;
+        margin-left: 0;
     }
 
-
-
-
+    #addNuevaTarea, #addHoursForm {
+        display: none;
+    }
+    
 
 
 
