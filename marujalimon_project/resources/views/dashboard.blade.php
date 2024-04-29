@@ -70,7 +70,7 @@ function randomScalingFactor()
                 </div>
             </div>
             <!-- Más tarjetas para otras funciones -->
-            @if(auth()->check() && auth()->user()->is_admin)
+            @if(auth()->check() && auth()->user()->is_admin || auth()->user()->is_coordinador)
             <div class="col">
                 <div class="card h-100 border-0 shadow-sm" data-tilt>
                     <div class="card-body">
@@ -80,7 +80,32 @@ function randomScalingFactor()
                     </div>
                 </div>
             </div>
+
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm" data-tilt>
+                    <div class="card-body">
+                        <h5 class="card-title text-custom-primary">Registro<i class="fa fa-user-tie"></i></h5>
+                        <p class="card-text">Accede a la lista de coordinadores y gestiona su información.</p>
+
+
+
+                    <a href="{{route('voluntarios.create')}}" class="btn btn-info btn-lg rounded-pill stretched-link">Registrar voluntario</a>
+                    <div style="margin-bottom: 10px;"></div>
+                    @if(auth()->check() && auth()->user()->is_admin)
+
+                     <a href="{{route('coordinador.create')}}" class="btn btn-info btn-lg rounded-pill stretched-link">Registrar coordinador</a>
+                     <div style="margin-bottom: 10px;"></div>
+
+                     <a href="{{route('register')}}" class="btn btn-info btn-lg rounded-pill stretched-link">Registrar admin</a>
+                     <div style="margin-bottom: 10px;"></div>
+
+                     @endif
+
+                    </div>
+                </div>
+            </div>
             @endif
+
         </div>
     </div>
 

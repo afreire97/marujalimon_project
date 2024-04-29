@@ -108,7 +108,25 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        <div class="mb-3">
+                        <label class="mb-2 col-md-4 col-form-label text-md-end" for="password">Password <span class="text-danger">*</span></label>
+                        <div class="col-md-6">
+                            <input type="password" class="form-control fs-13px" placeholder="Password" name="password" required autocomplete="new-password" />
+                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                        </div>
                     </div>
+
+                    <div class="mb-3">
+                        <label class="mb-2 col-md-4 col-form-label text-md-end" for="password_confirmation">Confirm Password <span class="text-danger">*</span></label>
+                        <div class="col-md-6">
+                            <input type="password" class="form-control fs-13px" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password" />
+                            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                        </div>
+                    </div>
+                    </div>
+
+
                 </div>
                 <div class="card-footer text-end">
                     <a href="{{ url()->previous() }}" class="btn btn-secondary">Volver</a>

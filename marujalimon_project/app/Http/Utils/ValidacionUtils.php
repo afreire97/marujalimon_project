@@ -40,6 +40,45 @@ class ValidacionUtils
             'imagen_perfil.max' => 'El tamaño máximo del archivo es de 2048 kilobytes (2MB).',
         ]);
     }
+
+    public static function validarCoordinador(Request $request)
+    {
+        return $request->validate([
+            'COO_nombre' => 'required|string',
+            'COO_apellidos' => 'required|string',
+            'COO_dni' => 'required|string|unique:coordinadores,COO_dni',
+            'COO_fecha_nac' => 'required|date',
+            'COO_domicilio' => 'required|string',
+            'COO_cp' => 'required|string',
+            'COO_tel1' => 'required|string',
+            'COO_sexo' => 'required|in:Masculino,Femenino,Otro',
+            'COO_mail' => 'required|email|unique:coordinadores,COO_mail',
+            'imagen_perfil' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validación de la imagen de perfil
+            'password' => 'required|string|min:8|confirmed',
+        ], [
+            'COO_nombre.required' => 'El campo Nombre es obligatorio.',
+            'COO_apellidos.required' => 'El campo Apellidos es obligatorio.',
+            'COO_dni.required' => 'El campo DNI es obligatorio.',
+            'COO_fecha_nac.required' => 'El campo Fecha de Nacimiento es obligatorio.',
+            'COO_domicilio.required' => 'El campo Domicilio es obligatorio.',
+            'COO_cp.required' => 'El campo Código Postal es obligatorio.',
+            'COO_tel1.required' => 'El campo Teléfono es obligatorio.',
+            'COO_sexo.required' => 'El campo Sexo es obligatorio.',
+            'COO_mail.required' => 'El campo Correo Electrónico es obligatorio.',
+            'COO_dni.unique' => 'El DNI ingresado ya está en uso.',
+            'COO_mail.unique' => 'El correo electrónico ingresado ya está en uso.',
+            'COO_mail.email' => 'El formato del correo electrónico no es válido.',
+            'imagen_perfil.image' => 'El archivo debe ser una imagen.',
+            'imagen_perfil.mimes' => 'El archivo debe ser de tipo: jpeg, png, jpg o gif.',
+            'imagen_perfil.max' => 'El tamaño máximo del archivo es de 2048 kilobytes (2MB).',
+            'password.required' => 'El campo Password es obligatorio.',
+            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+            'password.confirmed' => 'La confirmación de la contraseña no coincide.',
+        ]);
+    }
+
+
+
     public static function validarDatosFormularioUpdate(Request $request)
     {
         $data = $request->all();

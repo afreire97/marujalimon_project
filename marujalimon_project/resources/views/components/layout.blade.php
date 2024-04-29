@@ -112,7 +112,8 @@
 			<span class="copyright d-block">&copy; 2024 Todos los derechos reservados</span>
 			<ul class="social-media-list mt-2 mt-sm-0 flex-1">
 			<a href="#">
-				<img src="{{ asset('img/logo/logo.png') }}" alt="facebook" class="social-media-icon" style="width: 100px;"/>
+            <img src="{{asset('img\logo\logo.png')}}" alt="Logo de la Empresa" style="height: 25px;"> <!-- Ajusta la altura según tus necesidades -->
+
         </a>
 			</ul>
 		</div>

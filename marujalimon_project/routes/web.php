@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CalendarioController;
 use App\Http\Controllers\CoordinadorController;
 use App\Http\Controllers\HorasController;
 use App\Http\Controllers\ProfileController;
@@ -31,6 +33,10 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
 
+    Route::get('register', [RegisteredUserController::class, 'create'])
+    ->name('register');
+
+Route::post('register', [RegisteredUserController::class, 'store']);
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -76,8 +82,14 @@ Route::get('/dashboard', function () {
 
 
     //RUTA DE COORDINADORES
+    Route::get('/coordinador/create', [CoordinadorController::class, 'create'])->name('coordinador.create');
+
     Route::get('/coordinadores', [CoordinadorController::class, 'index'])->name('coordinadores.index');
     Route::get('/coordinador/{coordinador}', [CoordinadorController::class, 'show'])->name('coordinador.show');
+    Route::post('/coordinador/store', [CoordinadorController::class, 'store'])->name('coordinador.store');
+
+
+
     Route::get('/coordinadores/{coordinador}', [CoordinadorController::class, 'edit'])->name('coordinador.edit_form');
     Route::put('/coordinadores/{coordinador}', [CoordinadorController::class, 'update'])->name('coordinador.update');
     Route::delete('/coordinadores/{coordinador}', [CoordinadorController::class, 'destroy'])->name('coordinador.destroy');
@@ -118,6 +130,9 @@ Route::middleware(VoluntarioMiddleware::class)->group(function () {
     Route::get('/voluntario', [VoluntarioLogeadoController::class, 'index'])->name('voluntario_logeado.index');
     Route::get('/voluntario/{voluntario}/edit', [VoluntarioLogeadoController::class, 'edit'])->name('voluntario_logeado.edit');
     Route::put('/voluntario/{voluntario}', [VoluntarioLogeadoController::class, 'update'])->name('voluntario_logeado.update');
+    Route::get('/voluntario/{voluntario}/calendario/', [CalendarioController::class, 'index'])->name('voluntario_logeado.calendario');
+    Route::post('/voluntario/{voluntario}/calendario/', [CalendarioController::class, 'store'])->name('guardar_disponibilidad');
+
 
 
 

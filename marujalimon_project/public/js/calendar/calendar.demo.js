@@ -1,4 +1,7 @@
 var handleCalendarDemo = function() {
+
+
+
     // Obtener el contenedor de eventos externos
     var externalEventsContainer = document.getElementById('external-events');
 
@@ -18,6 +21,8 @@ var handleCalendarDemo = function() {
     });
 
     // Obtener el contenedor del calendario
+
+    console.log("Entramos al calendario");
     var calendarElm = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarElm, {
         headerToolbar: {
@@ -27,8 +32,8 @@ var handleCalendarDemo = function() {
         },
         buttonText: {
             today: 'Today',
-            month: 'Month',
-            week: 'Week',
+            month: 'Mes',
+            week: 'Semana',
             day: 'Day'
         },
         initialView: 'dayGridMonth',
@@ -65,6 +70,45 @@ var handleCalendarDemo = function() {
 
                 }
             }
+        },
+        eventReceive: function(info) {
+
+
+
+            console.log('Evento recibido:', info.event);
+
+            var fecha = info.event.start;
+            var turno = info.event.extendedProps.turno;
+            var lugarId = info.event.extendedProps.lugarId;
+
+            console.log('Fecha:', fecha);
+            console.log('Turno:', turno);
+            console.log('Lugar ID:', lugarId);
+
+            // Crear campos ocultos para almacenar los datos del evento
+            var inputFecha = document.createElement('input');
+            inputFecha.type = 'hidden';
+            inputFecha.name = 'fechas[]';
+            inputFecha.value = fecha.toISOString();
+
+            var inputTurno = document.createElement('input');
+            inputTurno.type = 'hidden';
+            inputTurno.name = 'turnos[]';
+            inputTurno.value = turno;
+
+            var inputLugar = document.createElement('input');
+            inputLugar.type = 'hidden';
+            inputLugar.name = 'lugares[]';
+            inputLugar.value = lugarId;
+
+            // Agregar los campos ocultos al formulario
+            var form = document.getElementById('evento-form');
+            form.appendChild(inputFecha);
+            form.appendChild(inputTurno);
+            form.appendChild(inputLugar);
+
+            // Imprimir los inputs del formulario en la consola
+            console.log('Inputs del formulario:', form.querySelectorAll('input'));
         }
     });
 
