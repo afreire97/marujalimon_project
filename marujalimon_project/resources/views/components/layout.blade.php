@@ -69,22 +69,28 @@
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="{{ route('voluntarios.create') }}">Añadir nuevo
                                 voluntario</a>
-                            <a class="dropdown-item" href="index_inverse_header.html">Page with Inverse Header</a>
-                            <a class="dropdown-item" href="index.html">Default Header</a>
+                            <a class="dropdown-item" href="{{ route('voluntarios.index') }}">Listar voluntarios</a>
+
                         </div>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" data-bs-toggle="dropdown">COORDINADORES <b class="caret"></b></a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="post_grid.html">Page with Grid View Blog Post</a>
-                            <a class="dropdown-item" href="post_without_sidebar.html">Page without Sidebar</a>
-                        </div>
-                    </li>
-                    <li><a href="about_me.html">ABOUT ME</a></li>
-                    <li><a href="contact_us.html">CONTACT US</a></li>
-                    <li><a
-                            href="https://wrapbootstrap.com/theme/color-admin-admin-template-front-end-WB0N89JMK">PURCHASE</a>
-                    </li>
+
+                    @if (auth()->user()->is_admin)
+                        <li class="dropdown">
+                            <a href="#" data-bs-toggle="dropdown">COORDINADORES <b class="caret"></b></a>
+                            <div class="dropdown-menu">
+
+                                <a class="dropdown-item" href="{{ route('coordinador.create') }}">Añadir nuevo
+                                    coordinador</a>
+
+
+
+                                <a class="dropdown-item" href="{{ route('coordinadores.index') }}">Listar
+                                    coordinadores</a>
+                            </div>
+                        </li>
+                    @endif
+
+
                     <li class="dropdown">
                         @guest
                             <a href="#" class="nav-link" data-bs-toggle="dropdown">Login/Register <b
@@ -97,10 +103,10 @@
                             <a href="#" class="nav-link" data-bs-toggle="dropdown">{{ Auth::user()->name }} <b
                                     class="caret"></b></a>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a>
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">Perfil</a>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button class="btn dropdown-item" type="submit">Logout</button>
+                                    <button class="btn dropdown-item" type="submit">Cerrar sesión</button>
                                 </form>
                             </div>
                         @endguest
