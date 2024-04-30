@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\User; 
 use Illuminate\Support\Facades\Log;
 class AuthenticatedSessionController extends Controller
 {
@@ -23,28 +24,35 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request)
     {
-
-
-        $request->authenticate();
-
-        $request->session()->regenerate();
-      // Comprobar si el usuario autenticado es un voluntario
-
-    if (auth()->user()->isVoluntario()) {
-
-        // Si el usuario es voluntario, redirigir a un lugar específico
-
-
-        return redirect()->route('voluntario_logeado.index');
-
-    } else {
-        // Si el usuario no es voluntario, redirigir a la ruta del dashboard
-        return redirect()->route('dashboard');
+        $credentials = $request->only('email', 'password');
+    
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+    
+            if (auth()->user()->isVoluntario()) {
+                return redirect()->route('voluntario_logeado.index');
+            } else {
+                return redirect()->route('dashboard');
+            }
+        } else {
+            // Comprobar si el correo electrónico proporcionado está registrado en el sistema
+            $userExists = User::where('email', $credentials['email'])->exists();
+    
+            if (!$userExists) {
+                return redirect()->back()->withErrors([
+                    'email' => 'El correo electrónico proporcionado no está registrado en nuestro sistema.',
+                ]);
+            } else {
+                // Si el intento de autenticación falla debido a una contraseña incorrecta
+                return redirect()->back()->withErrors([
+                    'password' => 'La contraseña proporcionada es incorrecta.',
+                ]);
+            }
+        }
     }
-    }
-
+    
     /**
      * Destroy an authenticated session.
      */
