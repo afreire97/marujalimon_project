@@ -25,15 +25,16 @@
                     </p>
                     <div class="volunteer-card-buttons">
                         <a href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}"
-                           class="volunteer-btn-primary btn btn-primary">Más información</a>
+                           class="volunteer-info btn btn-primary">Más información</a>
                         <a href="{{ route('voluntario.edit_form', ['voluntario' => $voluntario]) }}"
-                           class="volunteer-btn-primary btn btn-primary">Modificar</a>
+                           class="volunteer-modify btn btn-primary">Modificar</a>
                     </div>
                 </div>
             </div>
         </div>
     @endforeach
 </div>
+
 
 
 

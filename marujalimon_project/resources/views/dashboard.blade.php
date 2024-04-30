@@ -45,16 +45,21 @@ function randomScalingFactor()
 
     <!-- Sección de tarjetas con efecto de inclinación -->
     <div id="delayed-container" class="container">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
             <div>
                 <div id="form-container">
                     <form id="year-form">
-                        <label for="year"><h5 class="card-title text-custom-primary">Seleccione un año <i class="fa fa-calendar-alt"></i></h5></label>
+                        <label for="year">
+                            <p></p>
+                            <h5 class="card-title text-custom-primary">Seleccione un año <i class="fa fa-calendar-alt"></i></h5>
+                        </label>
+                        <p></p>
                         <select name="year" id="year">
                             @for ($i = date('Y'); $i >= 2010; $i--)
                             <option value="{{ $i }}">{{ $i }}</option>
                             @endfor
                         </select>
+                        <p></p>
                         <button type="submit" class="btn btn-lg" style="background-color: #13abbf; color: white;">Desplegar gráfico</button>
                     </form>
                 </div>
@@ -64,7 +69,7 @@ function randomScalingFactor()
                 <div class="card h-100 border-0 shadow-sm" data-tilt>
                     <div class="card-body">
                         <h5 class="card-title text-custom-primary">Listar Voluntarios <i class="fa fa-users"></i></h5>
-                        <p class="card-text">Accede a la lista de voluntarios y gestiona su información.</p>
+                        <p class="card-text">Accede a la lista de voluntarios y gestiona su toda  información.</p>
                         <a href="{{ route('voluntarios.index') }}" class="btn btn-info btn-lg rounded-pill stretched-link">Ver Voluntarios</a>
                     </div>
                 </div>
@@ -82,28 +87,21 @@ function randomScalingFactor()
             </div>
 
             <div class="col">
-                <div class="card h-100 border-0 shadow-sm" data-tilt>
-                    <div class="card-body">
-                        <h5 class="card-title text-custom-primary">Registro<i class="fa fa-user-tie"></i></h5>
-                        <p class="card-text">Accede a la lista de coordinadores y gestiona su información.</p>
+    <div class="card h-100 border-0 shadow-sm" data-tilt>
+        <div class="card-body">
+        <h5 class="card-title text-custom-primary">Registro <i class="fas fa-file-alt"></i></h5>
+            <div class="d-flex flex-column align-items-stretch">
+                <p></p>
+                <a href="{{route('voluntarios.create')}}" class="btn btn-info btn-sm rounded-pill mb-2">Registrar voluntario</a>
 
-
-
-                    <a href="{{route('voluntarios.create')}}" class="btn btn-info btn-lg rounded-pill stretched-link">Registrar voluntario</a>
-                    <div style="margin-bottom: 10px;"></div>
-                    @if(auth()->check() && auth()->user()->is_admin)
-
-                     <a href="{{route('coordinador.create')}}" class="btn btn-info btn-lg rounded-pill stretched-link">Registrar coordinador</a>
-                     <div style="margin-bottom: 10px;"></div>
-
-                     <a href="{{route('register')}}" class="btn btn-info btn-lg rounded-pill stretched-link">Registrar admin</a>
-                     <div style="margin-bottom: 10px;"></div>
-
-                     @endif
-
-                    </div>
-                </div>
+                @if(auth()->check() && auth()->user()->is_admin)
+                    <a href="{{route('coordinador.create')}}" class="btn btn-info btn-sm rounded-pill mb-2">Registrar coordinador</a>
+                    <a href="{{route('register')}}" class="btn btn-info btn-sm rounded-pill">Registrar admin</a>
+                @endif
             </div>
+        </div>
+    </div>
+</div>
             @endif
 
         </div>
@@ -116,40 +114,40 @@ function randomScalingFactor()
     ])
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const welcomeMessage = document.getElementById('welcomeMessage');
-        const container = document.getElementById('delayed-container');
+        document.addEventListener('DOMContentLoaded', function() {
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            const container = document.getElementById('delayed-container');
 
-        if (welcomeMessage && container) {
-            const firstVisit = sessionStorage.getItem('firstVisit');
+            if (welcomeMessage && container) {
+                const firstVisit = sessionStorage.getItem('firstVisit');
 
-            if (!firstVisit) {
-                // Animación para el mensaje de bienvenida
-                welcomeMessage.style.opacity = 0;
-                window.requestAnimationFrame(function() {
-                    welcomeMessage.style.transition = 'opacity 8s';
+                if (!firstVisit) {
+                    // Animación para el mensaje de bienvenida
+                    welcomeMessage.style.opacity = 0;
+                    window.requestAnimationFrame(function() {
+                        welcomeMessage.style.transition = 'opacity 8s';
+                        welcomeMessage.style.opacity = 1;
+                    });
+
+                    // Animación para contenedor con delay
+                    setTimeout(function() {
+                        container.style.opacity = '1';
+                        container.style.visibility = 'visible';
+                    }, 6000); // Retraso de 6 segundos
+
+                    // Marcar que el usuario ya ha visitado el dashboard
+                    sessionStorage.setItem('firstVisit', 'true');
+                } else {
+                    // Si no es la primera visita en la misma sesión, mostrar los elementos inmediatamente
                     welcomeMessage.style.opacity = 1;
-                });
-
-                // Animación para contenedor con delay
-                setTimeout(function() {
                     container.style.opacity = '1';
                     container.style.visibility = 'visible';
-                }, 6000); // Retraso de 6 segundos
-
-                // Marcar que el usuario ya ha visitado el dashboard
-                sessionStorage.setItem('firstVisit', 'true');
+                }
             } else {
-                // Si no es la primera visita en la misma sesión, mostrar los elementos inmediatamente
-                welcomeMessage.style.opacity = 1;
-                container.style.opacity = '1';
-                container.style.visibility = 'visible';
+                console.error('Error: Elementos del DOM no encontrados.');
             }
-        } else {
-            console.error('Error: Elementos del DOM no encontrados.');
-        }
-    });
-</script>
+        });
+    </script>
 
 
 

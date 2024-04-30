@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->string('COO_tel1')->nullable();
             $table->enum('COO_sexo', ['Masculino', 'Femenino', 'Otro'])->nullable();
             $table->string('COO_mail')->unique();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Relación con usuarios
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade'); // Relación con usuarios
             $table->timestamps();
 
         });

@@ -19,40 +19,46 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-    <!-- Tarjetas de coordinadores con nuevo estilo -->
-    <div id="cardView" class="row row-cols-md-3 row-cols-lg-4 gx-1 mt-5">
-        @foreach ($coordinadores as $coordinador)
-            <div class="col mb-4">
-                <!-- Tarjeta con nuevo estilo -->
-                <div class="card h-100 border-0 shadow-sm" data-tilt>
-                    <!-- Imagen de perfil del coordinador -->
-                    <img src="{{ $coordinador->imagenPerfil
-                        ? $coordinador->imagenPerfil->IMG_path
-                        : 'data:image/svg+xml,%3Csvg
-                                                                                                                                                                            xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 448 512\'%3E%3Cpath
-                                                                                                                                                                            fill=\'%23999\' d=\'M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96
-                                                                                                                                                                            57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.4-46.6 16-72.9
-                                                                                                                                                                            16s-50.7-5.6-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48
-                                                                                                                                                                            48 48h352c26.5 0 48-21.5
-                                                                                                                                                                            48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z\'/%3E%3C/svg%3E' }}"
-                        class="card-img-top" alt="Imagen de perfil del coordinador">
-
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <i class="fas fa-user"></i> {{ $coordinador->COO_nombre }}
-                        </h5>
-                        <p class="card-text">
-                            <i class="fas fa-id-card"></i> DNI: {{ $coordinador->COO_dni }}
-                        </p>
-                        <a href="{{ route('coordinador.show', ['coordinador' => $coordinador]) }}" class="btn btn-primary"
-                            style="margin-right: 12px;">Más información</a>
+   <!-- Tarjetas de coordinadores con estilo unificado -->
+   <div id="cardView" class="row mt-5">
+    @foreach ($coordinadores as $coordinador)
+        <div class="col col-custom mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <a href="{{ route('coordinador.show', ['coordinador' => $coordinador]) }}">
+                    <img src="{{ $coordinador->imagenPerfil ? $coordinador->imagenPerfil->IMG_path : 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg' }}"
+                         class="card-img-top" alt="Imagen de perfil del coordinador">
+                </a>
+                <div class="card-body">
+                    @php
+                        $nombre = $coordinador->COO_nombre;
+                        $posicionEspacio = strpos($nombre, ' ');
+                        if ($posicionEspacio !== false && $posicionEspacio <= 7) {
+                            $nombreFinal = substr($nombre, 0, $posicionEspacio) . '<br>' . substr($nombre, $posicionEspacio + 1);
+                        } else {
+                            $nombreFinal = $nombre;
+                        }
+                    @endphp
+                    <h5 class="card-title">
+                        <i class="fas fa-user"></i> {!! $nombreFinal !!}
+                    </h5>
+                    <p class="card-text">
+                        <i class="fas fa-id-card"></i> DNI: {{ $coordinador->COO_dni }}
+                    </p>
+                    <div class="volunteer-card-buttons d-flex justify-content-center mt-3">
+                        <a href="{{ route('coordinador.show', ['coordinador' => $coordinador]) }}"
+                           class="coordinator-info btn btn-primary">Más información</a>
                         <a href="{{ route('coordinador.edit_form', ['coordinador' => $coordinador]) }}"
-                            class="btn btn-primary ">Modificar</a>
+                           class="coordinator-modify btn btn-primary">Modificar</a>
                     </div>
                 </div>
             </div>
-        @endforeach
-    </div>
+        </div>
+    @endforeach
+</div>
+
+
+
+
 
     @if (session('success'))
         <div class="alert alert-success">
