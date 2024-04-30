@@ -1,6 +1,6 @@
 function confirmDelete() {
     Swal.fire({
-        title: '¿Estás seguro de que deseas eliminar a este voluntario?',
+        title: '¿Estás seguro de que deseas eliminar a este coordinador?',
         text: "¡No podrás revertir esto!",
         icon: 'warning',
         showCancelButton: true,
@@ -17,7 +17,7 @@ function confirmDelete() {
         if (result.isConfirmed) {
             Swal.fire(
                 '¡Eliminado!',
-                'El voluntario ha sido eliminado.',
+                'El coordinador ha sido eliminado.',
                 'success'
             ).then(() => {
                 // Enviar el formulario después de mostrar el mensaje de éxito
