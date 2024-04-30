@@ -62,7 +62,8 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
 
 
     //RUTA DE TAREAS
-    Route::post('/voluntarios/tareas/agregar', [TareasController::class, 'agregar'])->name('tareas.agregar');
+    Route::post('/voluntarios/tareas', [TareasController::class, 'store'])->name('tareas.store');
+
 
 
 });
