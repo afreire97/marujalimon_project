@@ -27,7 +27,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('storeVoluntario') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('voluntarios.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf <!-- Directiva Blade para el token CSRF -->
                 <div class="card-body">
                     <!-- Campos del formulario -->
