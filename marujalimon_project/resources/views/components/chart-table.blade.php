@@ -39,39 +39,29 @@
 
 
 
-
-<div id="addNuevaTarea">
-    <form action="{{ route('tareas.agregar') }}" method="POST">
-        @csrf
-        <input type="hidden" name="voluntariosSeleccionados" id="voluntariosSeleccionados" value="">
-
-        <label for="nueva_tarea">Nueva tarea:</label>
-        <input type="text" name="nueva_tarea" id="nueva_tarea" required>
-
-        <label for="descripcion">Descripción:</label>
-        <textarea name="descripcion" id="descripcion" required></textarea>
-
-        <label for="tarea_id">Lugares disponibles:</label>
-        <select name="tarea_id" id="tarea_id" required>
-            @foreach ($lugares as $lugar)
-                <option value="{{ $lugar->LUG_id }}">{{ $lugar->LUG_nombre }}</option>
-            @endforeach
-        </select>
-
-        <button type="submit">Agregar</button>
-    </form>
-</div>
-
-
-<!-- Botón "Demo" -->
-<div class="container d-flex justify-content-end">
-    <div class="row">
-        <div class="col">
-           <a href="#modal-dialog" class="btn btn-sm btn-success" data-bs-toggle="modal" id="demoButton" style="display: none;">Añadir horas</a>
-
+<div>
+    <div class="container d-flex justify-content-end mb-2">
+        <div class="row">
+            <div class="col">
+               <a href="#modal-dialog" class="btn btn-sm btn-success" data-bs-toggle="modal" id="demoButton" style="display: none;">Añadir horas</a>
+    
+            </div>
         </div>
     </div>
+    
+    <!-- Botón "Añadir tarea" -->
+    <div class="container d-flex justify-content-end">
+        <div class="row">
+            <div class="col">
+                <a href="#modal-dialog-tarea" class="btn btn-sm btn-success"  id="tareaButton" data-bs-toggle="modal" style="display: none;">Añadir tarea</a>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+<!-- Botón "Demo" -->
+
 
 <!-- Modal -->
 <div class="modal fade" id="modal-dialog">
@@ -108,6 +98,100 @@
     </div>
 </div>
 
+
+
+<!-- Modal de añadir tarea -->
+<div class="modal fade" id="modal-dialog-tarea">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Añadir tarea</h4>
+            </div>
+            <div class="modal-body">
+                <!-- Formulario de añadir tarea -->
+                <form>
+                    @csrf
+                    <input type="hidden" name="voluntariosSeleccionados" id="voluntariosSeleccionados" value="">
+
+                    <div class="mb-3">
+                        <label for="nueva_tarea" class="form-label">Nueva tarea:</label>
+                        <input type="text" class="form-control" id="nueva_tarea" name="nueva_tarea" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripción:</label>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="tarea_id" class="form-label">Lugares disponibles:</label>
+                        <select class="form-select" id="tarea_id" name="tarea_id" required>
+                            @foreach ($lugares as $lugar)
+                                <option value="{{ $lugar->LUG_id }}">{{ $lugar->LUG_nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-success" id="btn-añadirTarea" onclick="añadirTarea()">Añadir</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    console.log("Inicializando DataTables...");
+    
+    $('#btn-añadirTarea').click(function() {
+        // Recolecta los datos del formulario
+        let TAR_nombre = $('#nueva_tarea').val();
+        let TAR_descripcion = $('#descripcion').val();
+        let TAR_lugar_id = $('#tarea_id').val();
+    
+        // Envía los datos al servidor utilizando AJAX
+        $.ajax({
+            url: "{{ route('tareas.store') }}",
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                TAR_nombre: TAR_nombre,
+                TAR_descripcion: TAR_descripcion,
+                TAR_lugar_id: TAR_lugar_id
+            },
+            success: function(response) {
+                // Muestra el modal de SweetAlert de éxito
+                swal({
+                    title: '¡FUMO PETARDO!',
+                    text: 'La tarea ha sido añadida correctamente.',
+                    icon: 'success',
+                    buttons: {
+                        confirm: {
+                            text: 'OK',
+                            value: true,
+                            visible: true,
+                            className: 'btn btn-primary',
+                            closeModal: true,
+                        }
+                    }
+                });
+    
+                // Cierra el modal después de agregar la tarea
+                $('#modal-dialog-tarea').modal('hide');
+    
+                // Limpiar el formulario después de agregar la tarea (si es necesario)
+                $('#nueva_tarea').val('');
+                $('#descripcion').val('');
+                // O cualquier otro proceso necesario después de agregar la tarea
+            },
+            error: function(xhr, status, error) {
+                // Maneja cualquier error que ocurra durante la solicitud AJAX
+                console.error(xhr.responseText);
+            }
+        });
+    });
+    </script>
 
 
 
@@ -179,7 +263,6 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var toggleButton = document.getElementById('toggleViewButton');
-        var addNuevaTareaForm = document.getElementById('addNuevaTarea');
 
         // Assume that we start in the card view
         var isCardView = true;
@@ -192,7 +275,6 @@
             isCardView = !isCardView;
 
             // Based on the view, show or hide forms
-            addNuevaTareaForm.style.display = isCardView ? 'none' : 'block';
         });
     });
 </script>
@@ -287,8 +369,8 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var toggleButton = document.getElementById('toggleViewButton');
-    var addNuevaTareaForm = document.getElementById('addNuevaTarea');
     var demoButton = document.getElementById('demoButton'); // Referencia al botón "Demo"
+    var botonTarea = document.getElementById('tareaButton');
 
     // Asumimos que empezamos en la vista de tarjetas
     var isCardView = true;
@@ -301,10 +383,10 @@ document.addEventListener('DOMContentLoaded', function() {
         isCardView = !isCardView;
 
         // Basado en la vista, muestra u oculta formularios
-        addNuevaTareaForm.style.display = isCardView ? 'none' : 'block';
 
         // Alterna la visibilidad del botón "Demo"
         demoButton.style.display = isCardView ? 'none' : 'block'; // Esto asegura que el botón solo aparezca en la vista de tabla
+        botonTarea.style.display = isCardView ? 'none' : 'block';
     });
 });
 </script>
