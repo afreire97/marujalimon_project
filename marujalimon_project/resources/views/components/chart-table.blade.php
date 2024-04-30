@@ -67,7 +67,8 @@
 <div class="container d-flex justify-content-end">
     <div class="row">
         <div class="col">
-            <a href="#modal-dialog" class="btn btn-sm btn-success" data-bs-toggle="modal">Añadir horas</a>
+           <a href="#modal-dialog" class="btn btn-sm btn-success" data-bs-toggle="modal" id="demoButton" style="display: none;">Añadir horas</a>
+
         </div>
     </div>
 </div>
@@ -98,7 +99,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <a href="javascript:;" class="btn btn-white" data-bs-dismiss="modal">Close</a>
+                <a href="javascript:;" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</a>
                 <button type="button" class="btn btn-success" id="btn-agregar" onclick="agregarHoras()">Agregar</button>
 
 
@@ -228,8 +229,8 @@
     if (voluntariosSeleccionados.length === 0) {
         // Muestra el modal de SweetAlert como warning
         swal({
-            title: 'Warning',
-            text: 'You need to select at least one volunteer before adding hours.',
+            title: 'Aviso',
+            text: 'Es necesario seleccionar al menos un voluntario antes de añadir horas.',
             icon: 'warning',
             buttons: {
                 confirm: {
@@ -255,8 +256,8 @@
             success: function(response) {
                 // Muestra el modal de SweetAlert de éxito
                 swal({
-                    title: 'Success',
-                    text: 'Hours added successfully for all selected volunteers.',
+                    title: '¡Exito!',
+                    text: 'Las horas han sido añadidas.',
                     icon: 'success',
                     buttons: {
                         confirm: {
@@ -282,6 +283,30 @@
 }
 
 
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var toggleButton = document.getElementById('toggleViewButton');
+    var addNuevaTareaForm = document.getElementById('addNuevaTarea');
+    var demoButton = document.getElementById('demoButton'); // Referencia al botón "Demo"
+
+    // Asumimos que empezamos en la vista de tarjetas
+    var isCardView = true;
+
+    toggleButton.addEventListener('click', function() {
+        // Cambia una clase en el cuerpo (u otra lógica que puedas tener) para cambiar la vista
+        document.body.classList.toggle('cards-view');
+
+        // Alterna el estado
+        isCardView = !isCardView;
+
+        // Basado en la vista, muestra u oculta formularios
+        addNuevaTareaForm.style.display = isCardView ? 'none' : 'block';
+
+        // Alterna la visibilidad del botón "Demo"
+        demoButton.style.display = isCardView ? 'none' : 'block'; // Esto asegura que el botón solo aparezca en la vista de tabla
+    });
+});
 </script>
 
 
