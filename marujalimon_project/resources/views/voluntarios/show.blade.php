@@ -30,7 +30,7 @@
                             @endif
                         </div>
                         <div style="text-align: left; padding-top: 10px;">
-                            <a href="{{ route('voluntario.edit_form', ['voluntario' => $voluntario]) }}" class="btn btn-primary d-block w-100">Editar Perfil</a>
+                            <a href="{{ route('voluntarios.edit', ['voluntario' => $voluntario]) }}" class="btn btn-primary d-block w-100">Editar Perfil</a>
                         </div>
                     </div>
 
@@ -134,7 +134,7 @@
 
                         </div> <!-- Fin del div card-body -->
                         <div style="position: absolute; top: 0; right: 0; padding: 10px;">
-                            <form id="deleteForm" action="{{ route('voluntario.destroy', ['voluntario' => $voluntario]) }}" method="POST">
+                            <form id="deleteForm" action="{{ route('voluntarios.destroy', ['voluntario' => $voluntario]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" class="btn btn-danger" onclick="confirmDelete()">Eliminar

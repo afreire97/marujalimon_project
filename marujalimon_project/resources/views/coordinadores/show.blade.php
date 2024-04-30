@@ -38,7 +38,7 @@
                         @endif
                     </div>
                     <div style="text-align: left; padding-top: 10px;">
-                        <a href="{{ route('coordinador.edit_form', ['coordinador' => $coordinador]) }}"
+                        <a href="{{ route('coordinadores.edit', ['coordinadore' => $coordinador]) }}"
                             class="btn btn-primary d-block w-100">Editar Perfil</a>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                     </div> <!-- Fin del div card-body -->
                     <div style="position: absolute; top: 0; right: 0; padding: 10px;">
                         <form id="deleteForm"
-                            action="{{ route('coordinador.destroy', ['coordinador' => $coordinador]) }}"
+                            action="{{ route('coordinadores.destroy', ['coordinadore' => $coordinador]) }}"
                             method="POST">
                             @csrf
                             @method('DELETE')

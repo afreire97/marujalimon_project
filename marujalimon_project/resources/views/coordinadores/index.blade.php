@@ -24,7 +24,7 @@
     @foreach ($coordinadores as $coordinador)
         <div class="col col-custom mb-4">
             <div class="card h-100 border-0 shadow-sm">
-                <a href="{{ route('coordinador.show', ['coordinador' => $coordinador]) }}">
+                <a href="{{ route('coordinadores.show', ['coordinadore' => $coordinador]) }}">
                     <img src="{{ $coordinador->imagenPerfil ? $coordinador->imagenPerfil->IMG_path : 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg' }}"
                          class="card-img-top" alt="Imagen de perfil del coordinador">
                 </a>
@@ -45,9 +45,9 @@
                         <i class="fas fa-id-card"></i> DNI: {{ $coordinador->COO_dni }}
                     </p>
                     <div class="volunteer-card-buttons d-flex justify-content-center mt-3">
-                        <a href="{{ route('coordinador.show', ['coordinador' => $coordinador]) }}"
+                        <a href="{{ route('coordinadores.show', ['coordinadore' => $coordinador]) }}"
                            class="coordinator-info btn btn-primary">Más información</a>
-                        <a href="{{ route('coordinador.edit_form', ['coordinador' => $coordinador]) }}"
+                        <a href="{{ route('coordinadores.edit', ['coordinadore' => $coordinador]) }}"
                            class="coordinator-modify btn btn-primary">Modificar</a>
                     </div>
                 </div>
