@@ -11,20 +11,20 @@
             </div>
             <!-- Mensajes de éxito -->
             @if(session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
             @endif
 
             <!-- Mensajes de error de validación -->
             @if($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
             @endif
 
             <form action="{{ route('storeVoluntario') }}" method="POST" enctype="multipart/form-data">
@@ -89,7 +89,7 @@
                             <select name="DEL_id" class="form-select" required>
                                 <option value="" selected disabled>Selecciona una delegación</option>
                                 @foreach ($delegaciones as $delegacion)
-                                    <option value="{{ $delegacion->DEL_id }}">{{ $delegacion->DEL_nombre }}</option>
+                                <option value="{{ $delegacion->DEL_id }}">{{ $delegacion->DEL_nombre }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -104,34 +104,38 @@
                             <select name="COO_id" class="form-select" required>
                                 <option value="" selected disabled>Selecciona un coordinador</option>
                                 @foreach ($coordinadores as $coordinador)
-                                    <option value="{{ $coordinador->COO_id }}">{{ $coordinador->COO_nombre }}</option>
+                                <option value="{{ $coordinador->COO_id }}">{{ $coordinador->COO_nombre }}</option>
                                 @endforeach
                             </select>
                         </div>
+                    </div>
 
-                        <div class="mb-3">
-                        <label class="mb-2 col-md-4 col-form-label text-md-end" for="password">Password <span class="text-danger">*</span></label>
+                    <!-- Nuevo campo para Contraseña -->
+                    <div class="mb-3 row">
+                        <label class="col-md-4 col-form-label text-md-end">
+                            Contraseña <span class="text-danger">*</span>
+                        </label>
                         <div class="col-md-6">
-                            <input type="password" class="form-control fs-13px" placeholder="Password" name="password" required autocomplete="new-password" />
+                            <input type="password" class="form-control fs-13px" placeholder="Contraseña" name="password" required autocomplete="new-password" />
                             <x-input-error :messages="$errors->get('password')" class="mt-2" />
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="mb-2 col-md-4 col-form-label text-md-end" for="password_confirmation">Confirm Password <span class="text-danger">*</span></label>
+                    <!-- Nuevo campo para Confirmar Contraseña -->
+                    <div class="mb-3 row">
+                        <label class="col-md-4 col-form-label text-md-end">
+                            Confirmar Contraseña <span class="text-danger">*</span>
+                        </label>
                         <div class="col-md-6">
-                            <input type="password" class="form-control fs-13px" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password" />
+                            <input type="password" class="form-control fs-13px" placeholder="Confirmar Contraseña" name="password_confirmation" required autocomplete="new-password" />
                             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                         </div>
                     </div>
+
+                    <div class="card-footer text-end">
+                        <a href="{{ url()->previous() }}" class="btn btn-secondary">Volver</a>
+                        <button type="submit" class="btn btn-primary">Registrar</button>
                     </div>
-
-
-                </div>
-                <div class="card-footer text-end">
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary">Volver</a>
-                    <button type="submit" class="btn btn-primary">Registrar</button>
-                </div>
             </form>
         </div>
         <!-- Políticas de envío o información adicional -->
