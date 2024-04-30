@@ -74,9 +74,8 @@
                         </x-primary-button>
                     </div>
 
-                    <div class="mb-40px pb-40px text-dark">
-                       No eres miembro? Haz click<a href="{{route('register')}}" class="text-primary"> aquí</a> para registrarte.
-                    </div>
+
+
 
                     <hr class="bg-gray-600 opacity-2" />
 

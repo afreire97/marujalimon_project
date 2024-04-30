@@ -33,4 +33,13 @@ class TestingController extends Controller
         ]);
 
     }
+
+
+    public function modal(){
+
+
+
+        $tareas = Tarea::all();
+        return view('testing.modales', ['tareas' => $tareas]);
+    }
 }

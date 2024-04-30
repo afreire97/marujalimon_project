@@ -107,7 +107,7 @@ Route::get('/dashboard', function () {
 
 
 
-//RUTA PARA EL TESTEO
+
 
 
 
@@ -139,9 +139,12 @@ Route::middleware(VoluntarioMiddleware::class)->group(function () {
 
 });
 
-
+//RUTA PARA EL TESTEO
 
 Route::get('/calendario', [TestingController::class, 'index'])->name('calendario.index');
 Route::get('/obtener-tareas-lugar/{lugarId}', [TestingController::class, 'obtenerTareasLugar'])->name('calendario.obtenerTareasLugar');
+Route::get('/modales', [TestingController::class,  'modal'])->name('modales');
+
+
 
 require __DIR__ . '/auth.php';
