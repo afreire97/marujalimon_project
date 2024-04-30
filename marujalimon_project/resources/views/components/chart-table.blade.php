@@ -163,7 +163,7 @@
             success: function(response) {
                 // Muestra el modal de SweetAlert de éxito
                 swal({
-                    title: '¡FUMO PETARDO!',
+                    title: '¡Éxito!',
                     text: 'La tarea ha sido añadida correctamente.',
                     icon: 'success',
                     buttons: {
@@ -338,7 +338,7 @@
             success: function(response) {
                 // Muestra el modal de SweetAlert de éxito
                 swal({
-                    title: '¡Exito!',
+                    title: '¡Éxito!',
                     text: 'Las horas han sido añadidas.',
                     icon: 'success',
                     buttons: {
