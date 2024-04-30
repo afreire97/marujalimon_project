@@ -26,7 +26,7 @@ class CoordinadorController extends Controller
     {
 
 
-        $coordinadores = Coordinador::orderBy('COO_nombre', 'asc')->paginate(8);
+        $coordinadores = Coordinador::orderBy('created_at', 'desc')->paginate(8);
 
         $tareas = Tarea::all();
 
@@ -34,14 +34,14 @@ class CoordinadorController extends Controller
     }
 
 
-    public function show(Coordinador $coordinador)
+    public function show(Coordinador $coordinadore)
     {
 
 
 
 
 
-        return view('coordinadores.show', ['coordinador' => $coordinador]);
+        return view('coordinadores.show', ['coordinador' => $coordinadore]);
 
 
     }
@@ -131,7 +131,7 @@ class CoordinadorController extends Controller
 
     }
 
-    public function edit(Coordinador $coordinador)
+    public function edit(Coordinador $coordinadore)
     {
         $fields = [
             'COO_nombre' => 'Nombre',
@@ -152,7 +152,7 @@ class CoordinadorController extends Controller
         $delegaciones = Delegacion::all();
 
         return view('coordinadores.edit', [
-            'coordinador' => $coordinador,
+            'coordinador' => $coordinadore,
             'delegaciones' => $delegaciones,
             'fields' => $fields,
             'selectFields' => $selectFields
@@ -161,20 +161,20 @@ class CoordinadorController extends Controller
 
 
 
-    public function update(Request $request, Coordinador $coordinador)
+    public function update(Request $request, Coordinador $coordinadore)
     {
 
 
         // Validar los datos del formulario
-        $validatedData = $this->validateCoordinadorData($request, $coordinador);
+        $validatedData = $this->validateCoordinadorData($request, $coordinadore);
 
         // Procesar la actualización del coordinador
 
 
-        $coordinador->update($validatedData);
+        $coordinadore->update($validatedData);
         if ($request->hasFile('imagen_perfil')) {
             // Obtiene la imagen actual asociada al voluntario
-            $imagenPerfilActual = $coordinador->imagenPerfil;
+            $imagenPerfilActual = $coordinadore->imagenPerfil;
 
             // Si hay una imagen actual, elimínala y luego guarda la nueva
             if ($imagenPerfilActual) {
@@ -192,7 +192,7 @@ class CoordinadorController extends Controller
             } else {
                 // Si no hay una imagen asociada, crea una nueva
                 $imagenPerfil = new ImagenPerfil();
-                $imagenPerfil->IMG_coordinador_id = $coordinador->COO_id;
+                $imagenPerfil->IMG_coordinador_id = $coordinadore->COO_id;
                 $imagenPerfil->IMG_path = str_replace('public/', '/storage/', $rutaImagen); // Ajustar la ruta para ser accesible desde la web
                 $imagenPerfil->save();
             }
@@ -203,7 +203,7 @@ class CoordinadorController extends Controller
 
 
             // Redirigir a la vista correspondiente con un mensaje de éxito
-            return redirect()->route('coordinador.show', ['coordinador' => $coordinador])
+            return redirect()->route('coordinador.show', ['coordinador' => $coordinadore])
                 ->with('success', '¡El coordinador ha sido actualizado exitosamente!');
         }
     }
@@ -211,10 +211,10 @@ class CoordinadorController extends Controller
 
 
 
-    public function destroy(Coordinador $coordinador)
+    public function destroy(Coordinador $coordinadore)
     {
         // Eliminar el voluntario
-        $coordinador->delete();
+        $coordinadore->delete();
 
 
         return redirect()->route('coordinadores.index')->with('success', 'Voluntario eliminado correctamente');
@@ -222,7 +222,7 @@ class CoordinadorController extends Controller
 
     }
 
-    protected function validateCoordinadorData(Request $request, Coordinador $coordinador)
+    protected function validateCoordinadorData(Request $request, Coordinador $coordinadore)
     {
         return $request->validate([
             'COO_nombre' => 'required|string|max:255',
@@ -231,7 +231,7 @@ class CoordinadorController extends Controller
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('coordinadores', 'COO_dni')->ignore($coordinador->COO_id, 'COO_id'),
+                Rule::unique('coordinadores', 'COO_dni')->ignore($coordinadore->COO_id, 'COO_id'),
             ],
             'COO_fecha_nac' => 'nullable|date',
             'COO_domicilio' => 'nullable|string|max:255',
@@ -243,7 +243,7 @@ class CoordinadorController extends Controller
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('coordinadores', 'COO_mail')->ignore($coordinador->COO_mail, 'COO_mail'),
+                Rule::unique('coordinadores', 'COO_mail')->ignore($coordinadore->COO_mail, 'COO_mail'),
             ],
             'delegacion_id' => 'nullable|exists:delegaciones,DEL_id',
             'imagen_perfil' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validación de la imagen de perfil

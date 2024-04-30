@@ -307,12 +307,6 @@ class VoluntarioController extends Controller
     }
 
 
-    public function getInfo(Voluntario $voluntario)
-    {
-
-
-        return view('voluntarios.info_voluntario_view', ['voluntario' => $voluntario]);
-    }
 
 
 }

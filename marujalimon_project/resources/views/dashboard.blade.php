@@ -95,7 +95,7 @@ function randomScalingFactor()
                 <a href="{{route('voluntarios.create')}}" class="btn btn-info btn-sm rounded-pill mb-2">Registrar voluntario</a>
 
                 @if(auth()->check() && auth()->user()->is_admin)
-                    <a href="{{route('coordinador.create')}}" class="btn btn-info btn-sm rounded-pill mb-2">Registrar coordinador</a>
+                    <a href="{{route('coordinadores.create')}}" class="btn btn-info btn-sm rounded-pill mb-2">Registrar coordinador</a>
                     <a href="{{route('register')}}" class="btn btn-info btn-sm rounded-pill">Registrar admin</a>
                 @endif
             </div>

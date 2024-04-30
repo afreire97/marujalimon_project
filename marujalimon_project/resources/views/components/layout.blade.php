@@ -79,7 +79,7 @@
                             <a href="#" data-bs-toggle="dropdown">COORDINADORES <b class="caret"></b></a>
                             <div class="dropdown-menu">
 
-                                <a class="dropdown-item" href="{{ route('coordinador.create') }}">Añadir nuevo
+                                <a class="dropdown-item" href="{{ route('coordinadores.create') }}">Añadir nuevo
                                     coordinador</a>
 
 

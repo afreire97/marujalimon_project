@@ -10,7 +10,7 @@
     </div>
     @endif
 
-    <form action="{{ route('coordinador.update', ['coordinador' => $coordinador]) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('coordinadores.update', ['coordinadore' => $coordinador]) }}" method="POST" enctype="multipart/form-data">
         @csrf <!-- Directiva Blade para el token CSRF -->
         @method('PUT')
 

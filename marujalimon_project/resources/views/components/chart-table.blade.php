@@ -26,7 +26,7 @@
                     <div class="volunteer-card-buttons">
                         <a href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}"
                            class="volunteer-info btn btn-primary">Más información</a>
-                        <a href="{{ route('voluntario.edit_form', ['voluntario' => $voluntario]) }}"
+                        <a href="{{ route('voluntarios.edit', ['voluntario' => $voluntario]) }}"
                            class="volunteer-modify btn btn-primary">Modificar</a>
                     </div>
                 </div>
@@ -36,19 +36,6 @@
 </div>
 
 
-
-
-@if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
-
-@if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
 
 
 
