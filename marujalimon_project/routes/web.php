@@ -55,6 +55,7 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
     Route::post('/voluntarios/horas/agregar', [HorasController::class, 'añadirHoras'])->name('horas.añadir');
     Route::post('/totalTareasPorMes', [TareasController::class, 'totalTareasPorMes'])->name('totalTareasPorMes');
 
+
     //RUTA DE COORDINADORES
 
     Route::resource('coordinadores', CoordinadorController::class);

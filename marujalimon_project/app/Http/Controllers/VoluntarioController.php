@@ -56,7 +56,7 @@ class VoluntarioController extends Controller
         $lugares = Lugar::all();
 
         // Retornamos la vista con los voluntarios y las tareas obtenidas
-        return view('voluntarios.listar_voluntarios_card', ['voluntarios' => $voluntarios, 'tareas' => $tareas, 'lugares' => $lugares,'voluntarios_all' => $voluntarios_all]);
+        return view('voluntarios.index', ['voluntarios' => $voluntarios, 'tareas' => $tareas, 'lugares' => $lugares,'voluntarios_all' => $voluntarios_all]);
     }
 
 
@@ -75,36 +75,36 @@ class VoluntarioController extends Controller
 
 
 
-        return view('voluntarios.informacion_voluntario', ['voluntario' => $voluntario]);
+        return view('voluntarios.show', ['voluntario' => $voluntario]);
     }
 
-    public function obtenerCoordinador(Voluntario $voluntario)
-    {
-        $coordinador = $voluntario->coordinadores;
-        return response()->json($coordinador);
-    }
+    // public function obtenerCoordinador(Voluntario $voluntario)
+    // {
+    //     $coordinador = $voluntario->coordinadores;
+    //     return response()->json($coordinador);
+    // }
 
-    public function obtenerDelegaciones(Voluntario $voluntario)
-    {
-        $delegaciones = $voluntario->delegaciones;
-        return response()->json($delegaciones);
-    }
+    // public function obtenerDelegaciones(Voluntario $voluntario)
+    // {
+    //     $delegaciones = $voluntario->delegaciones;
+    //     return response()->json($delegaciones);
+    // }
 
-    public function obtenerObservaciones(Voluntario $voluntario)
-    {
-        $observaciones = $voluntario->observaciones;
-        return response()->json($observaciones);
-    }
-    public function obtenerErrores(Voluntario $voluntario)
-    {
-        $errores = $voluntario->errores;
-        return response()->json($errores);
-    }
-    public function renderizarVistaHoras(Voluntario $voluntario)
-    {
+    // public function obtenerObservaciones(Voluntario $voluntario)
+    // {
+    //     $observaciones = $voluntario->observaciones;
+    //     return response()->json($observaciones);
+    // }
+    // public function obtenerErrores(Voluntario $voluntario)
+    // {
+    //     $errores = $voluntario->errores;
+    //     return response()->json($errores);
+    // }
+    // public function renderizarVistaHoras(Voluntario $voluntario)
+    // {
 
-        return view("voluntarios.formulario_horas", ["voluntario" => $voluntario]);
-    }
+    //     return view("voluntarios.formulario_horas", ["voluntario" => $voluntario]);
+    // }
 
     public function calcularHoras(Request $request, Voluntario $voluntario)
     {
@@ -158,7 +158,7 @@ class VoluntarioController extends Controller
         $coordinadores = Coordinador::all();
         $delegaciones = Delegacion::all();
 
-        return view(('voluntarios.crear_voluntario_form'), ['coordinadores' => $coordinadores, 'delegaciones' => $delegaciones]);
+        return view(('voluntarios.create'), ['coordinadores' => $coordinadores, 'delegaciones' => $delegaciones]);
     }
 
     /**
@@ -233,7 +233,7 @@ class VoluntarioController extends Controller
         $coordinadores = $voluntario->coordinadores;
 
         return view(
-            'voluntarios.edit_form',
+            'voluntarios.edit',
             [
                 'voluntario' => $voluntario,
                 'delegaciones' => $delegaciones,
