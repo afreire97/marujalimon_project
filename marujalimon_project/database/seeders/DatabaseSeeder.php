@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
 
         Provincia::factory(10)->create();
 
-        $coordinadores = Coordinador::factory(2)->create();
+        $coordinadores = Coordinador::factory(50)->create();
 
         // Crear delegaciones y asignarles un coordinador
         $delegaciones = Delegacion::factory(4)->create();

@@ -874,7 +874,60 @@ p#fixedColorText {
         display: none;
     }
     
+    /* Estilos para botones de voluntarios */
+    .volunteer-info, .volunteer-modify{
+        flex: 1 0 48%; /* flex-grow, flex-shrink, flex-basis */
+        margin: 4px; /* Ajuste para margen uniforme */
+        padding: 8px 12px; /* Padding para un tamaño uniforme */
+        text-align: center; /* Centrado del texto */
+        font-size: 10px; /* Tamaño de fuente uniforme */
+        border: none; /* Sin bordes */
+        color: white; /* Color del texto */
+        display: block; /* Hace que el botón ocupe el espacio asignado completamente */
+        box-sizing: border-box; /* Incluye el padding y el borde en el ancho y altura del elemento */
+        height: 40px; /* Altura fija para todos los botones */
+    }
+    
+    .volunteer-card-buttons, .coordinator-card-buttons {
+        display: flex;
+        justify-content: space-between;
+        width: 100%; /* Ocupar todo el ancho del contenedor */
+    }
 
+    .volunteer-info, .volunteer-modify {
+    flex: 1 0 48%; /* flex-grow, flex-shrink, flex-basis */
+    margin: 4px; /* Ajuste para margen uniforme */
+    padding: 8px 12px; /* Padding para un tamaño uniforme */
+    text-align: center; /* Centrado del texto */
+    font-size: 10px; /* Tamaño de fuente uniforme */
+    border: none; /* Sin bordes */
+    color: white; /* Color del texto */
+    display: block; /* Hace que el botón ocupe el espacio asignado completamente */
+    box-sizing: border-box; /* Incluye el padding y el borde en el ancho y altura del elemento */
+    height: 40px; /* Altura fija para todos los botones */
+}
+
+.volunteer-card-buttons, .coordinator-card-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Ocupar todo el ancho del contenedor */
+}
+
+.coordinator-info, .coordinator-modify{
+    flex: 1 0 48%; /* flex-grow, flex-shrink, flex-basis */
+    margin: 4px; /* Ajuste para margen uniforme */
+    padding: 8px 12px; /* Padding para un tamaño uniforme */
+    text-align: center; /* Centrado del texto */
+    font-size: 10px; /* Tamaño de fuente uniforme */
+    border: none; /* Sin bordes */
+    color: white; /* Color del texto */
+    display: block; /* Hace que el botón ocupe el espacio asignado completamente */
+    box-sizing: border-box; /* Incluye el padding y el borde en el ancho y altura del elemento */
+    height: 40px; /* Altura fija para todos los botones */
+}
+    
+
+    
 
 
 
