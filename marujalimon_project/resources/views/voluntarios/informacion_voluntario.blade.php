@@ -236,7 +236,7 @@
             <script>
                 function confirmDelete() {
                     Swal.fire({
-                        title: '¿Estás seguro de que deseas eliminar a este voluntario?',
+                        title: '¿Estás seguro de que deseas eliminar este voluntario?',
                         text: "¡No podrás revertir esto!",
                         icon: 'warning',
                         showCancelButton: true,
