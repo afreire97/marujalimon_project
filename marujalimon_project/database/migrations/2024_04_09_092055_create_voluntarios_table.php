@@ -30,7 +30,7 @@ return new class extends Migration {
 
 
             //LUEGO ARREGLAR EL NULLABLE
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Relación con usuarios
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade'); // Relación con usuarios
 
 
             $table->timestamps();

@@ -182,7 +182,7 @@ class VoluntarioController extends Controller
         $voluntario->VOL_tel1 = $request->input('VOL_tel1');
         $voluntario->VOL_sexo = $request->input('VOL_sexo');
         $voluntario->VOL_mail = $request->input('VOL_mail');
-        $voluntario->save();
+
 
         $user = User::create([
             'name' => $voluntario->VOL_nombre,
@@ -193,8 +193,11 @@ class VoluntarioController extends Controller
             'is_voluntario' => true,
         ]);
 
-        $user->voluntario()->save($voluntario);
+        $voluntario->user_id= ($user->id);
 
+
+        $voluntario->user()->associate($user);
+        $voluntario->save();
         event(new Registered($user));
 
 
