@@ -49,7 +49,7 @@
 
         let table = $('#data-table-default').DataTable({
             responsive: true,
-            select: true,
+            select: false,
         });
 
     </script>
