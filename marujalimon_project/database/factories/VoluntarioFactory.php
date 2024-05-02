@@ -6,6 +6,7 @@ use App\Models\Coordinador;
 use App\Models\Delegacion;
 use App\Models\Localidad;
 use App\Models\Provincia;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,8 +24,8 @@ class VoluntarioFactory extends Factory
         return [
 
 
-            'VOL_nombre' => fake()->name(),
-            'VOL_apellidos' => fake()->name(),
+            'VOL_nombre' => fake()->firstName(),
+            'VOL_apellidos' => fake()->lastName(),
             'VOL_dni' => fake()->numerify('#########'),
             'VOL_fecha_nac' => fake()->date(),
             'VOL_domicilio' => fake()->address(),
@@ -34,7 +35,7 @@ class VoluntarioFactory extends Factory
             'VOL_mail' => fake()->unique()->email(),
 
             'VOL_dias_semana_dispo' => fake()->randomElement(['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo', null]),
-            'user_id' => null,
+            'user_id' => User::inRandomOrder()->first()->id,
 
 
 
