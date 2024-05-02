@@ -11,13 +11,14 @@ use App\Models\Tarea;
 use App\Models\User;
 use App\Models\Voluntario;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
     public function run()
     {
         // Crear un usuario coordinador
-        User::factory()->create([
+        $aaron = User::factory()->create([
             'name' => 'aaron',
             'email' => 'aaron@mail.com',
             'email_verified_at' => now(),
@@ -42,7 +43,7 @@ class DatabaseSeeder extends Seeder
 
         Provincia::factory(10)->create();
 
-        $coordinadores = Coordinador::factory(50)->create();
+        $coordinadores = Coordinador::factory(15)->create();
 
         // Crear delegaciones y asignarles un coordinador
         $delegaciones = Delegacion::factory(4)->create();
@@ -53,6 +54,9 @@ class DatabaseSeeder extends Seeder
 
         // Crear voluntarios
         $voluntarios = Voluntario::factory(200)->create();
+
+
+
 
         // Asignar voluntarios a delegaciones (y por ende a coordinadores)
         $voluntarios->each(function ($voluntario) use ($delegaciones) {
@@ -76,7 +80,7 @@ class DatabaseSeeder extends Seeder
             $tarea->lugar()->associate($lugar)->save();
 
             // Obtener un número aleatorio de horas para la tarea (entre 1 y 12)
-            $numHoras = rand(0, 3);
+            $numHoras = rand(3, 8);
 
             // Crear y asociar las horas a la tarea
             for ($i = 0; $i < $numHoras; $i++) {
@@ -86,5 +90,6 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         });
+
     }
 }

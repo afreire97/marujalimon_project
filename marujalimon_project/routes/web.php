@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CalendarioController;
 use App\Http\Controllers\CoordinadorController;
 use App\Http\Controllers\HorasController;
+use App\Http\Controllers\LugaresController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TareasController;
 use App\Http\Controllers\TestingController;
@@ -61,10 +62,18 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
     Route::resource('coordinadores', CoordinadorController::class);
 
 
-    //RUTA DE TAREAS
-    Route::post('/voluntarios/tareas', [TareasController::class, 'store'])->name('tareas.store');
+    //RUTA DE TAREAS (voluntario)
+    Route::post('/tareas', [TareasController::class, 'store'])->name('tareas.store');
 
 
+    //RUTAS DE LUGARES
+    Route::get('/lugares', [LugaresController::class, 'index'])->name('lugares.index');
+    Route::get('/lugares/{lugar}', [LugaresController::class, 'show'])->name('lugares.show');
+
+
+    //RUTAS DE TAREAS
+
+    Route::get('/tareas/{tarea}', [TareasController::class, 'show'])->name('tareas.show');
 
 });
 

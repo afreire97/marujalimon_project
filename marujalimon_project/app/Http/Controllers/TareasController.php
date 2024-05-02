@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lugar;
 use App\Models\Tarea;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TareasController extends Controller
 {
@@ -50,6 +52,24 @@ class TareasController extends Controller
     public function store(Request $request)
     {
 
+
+
+
+        // Crear una nueva tarea con los datos proporcionados
+        $tarea = new Tarea();
+        $tarea->TAR_nombre = $request->TAR_nombre;
+        $tarea->TAR_descripcion = $request->TAR_descripcion;
+        $tarea->TAR_lugar_id = $request->TAR_lugar_id;
+        $tarea->save();
+
+
+
+
+        $lugar = Lugar::where('LUG_id', $tarea->TAR_lugar_id)->first();
+
+
+        return redirect()->route('lugares.show', ['lugar' => $lugar]);
+
     }
 
     /**
@@ -57,7 +77,9 @@ class TareasController extends Controller
      */
     public function show(Tarea $tarea)
     {
-        //
+        $horas = $tarea->horas;
+
+        return view('tareas.show', ['tarea' => $tarea, 'horas' => $horas]);
     }
 
     /**
