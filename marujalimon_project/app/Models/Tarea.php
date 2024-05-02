@@ -12,6 +12,13 @@ class Tarea extends Model
     protected $table = 'tareas';
     protected $primaryKey = 'TAR_id';
 
+
+      protected $fillable = [
+        'TAR_nombre',
+        'TAR_descripcion',
+        'TAR_lugar_id',
+    ];
+
     public function lugar()
     {
         return $this->belongsTo(Lugar::class, 'TAR_lugar_id');
@@ -21,11 +28,29 @@ class Tarea extends Model
     {
 
 
-        return $this->hasMany(Horas::class, 'TAR_hora_id');
+        return $this->hasMany(Horas::class, 'HOR_tarea_id');
 
 
 
     }
+
+    public function horasTotalesTareaMes()
+    {
+        // Obtener el primer y último día del mes actual
+        $primerDiaMes = Carbon::now()->startOfMonth();
+        $ultimoDiaMes = Carbon::now()->endOfMonth();
+
+        // Sumar las horas de las tareas del mes actual
+        $totalHorasMes = $this->horas()
+            ->whereBetween('HOR_fecha_inicio', [$primerDiaMes, $ultimoDiaMes])
+            ->sum('HOR_horas');
+
+        return $totalHorasMes;
+
+    }
+
+
+
     public static function calcularTotalTareasPorAno($ano)
     {
         // Obtener todas las tareas del año especificado
