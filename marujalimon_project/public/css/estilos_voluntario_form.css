@@ -929,6 +929,24 @@ p#fixedColorText {
     .card-coordinador {
     border: 2px solid #919992 !important; /* Forzar el borde verde */
 }
+    .mode-container {
+        display: flex;
+        align-items: center; /* Asegura que los elementos estén verticalmente alineados */
+        padding: 5px 10px; /* Añade un poco de padding alrededor de los elementos */
+        background-color: #f8f9fa; /* Color de fondo claro para el contenedor */
+        border: 1px solid #dee2e6; /* Borde sutil para el contenedor */
+        border-radius: 5px; /* Bordes redondeados para suavizar los bordes */
+    }
+
+    #modeDisplay {
+        margin-right: 10px; /* Espacio entre el texto del modo y el botón */
+        font-weight: bold; /* Hace el texto un poco más grueso */
+        color: #333; /* Color oscuro para el texto para mejor legibilidad */
+    }
+
+    #toggleViewButton {
+        white-space: nowrap; /* Asegura que el texto del botón no se envuelva */
+    }
 
 
 

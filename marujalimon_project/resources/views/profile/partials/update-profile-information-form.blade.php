@@ -1,11 +1,11 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Profile Information') }}
+            {{ __('Información del Perfil') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("Actualiza la información de perfil y la dirección de correo electrónico de tu cuenta.") }}
         </p>
     </header>
 
@@ -19,7 +19,7 @@
 
         <div class="card shadow mt-6 space-y-6">
             <div class="card-body">
-                <x-input-label for="name" :value="__('Name')" class="mb-3" />
+                <x-input-label for="name" :value="__('Nombre')" class="mb-3" />
                 <x-text-input id="name" name="name" type="text" class="form-control" :value="old('name', $user->name)" required autofocus autocomplete="name" />
                 <x-input-error class="mt-2" :messages="$errors->get('name')" />
             </div>
@@ -49,7 +49,7 @@
             </div>
 
             <div class="card-footer flex items-center gap-4">
-                <x-primary-button>{{ __('Save') }}</x-primary-button>
+                <x-primary-button>{{ __('Guardar') }}</x-primary-button>
 
                 @if (session('status') === 'profile-updated')
                     <p
@@ -58,7 +58,7 @@
                         x-transition
                         x-init="setTimeout(() => show = false, 2000)"
                         class="text-sm text-gray-600 dark:text-gray-400"
-                    >{{ __('Saved.') }}</p>
+                    >{{ __('Guardado.') }}</p>
                 @endif
             </div>
         </div>

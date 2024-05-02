@@ -1,6 +1,14 @@
-<div class="d-grid gap-2 mb-3">
-    <button id="toggleViewButton" class="btn btn-primary">Cambiar Vista</button>
+<div class="mode-container" style="display: flex; align-items: center; justify-content: space-between; background-color: #008080; padding: 10px; border-radius: 5px; width: 100%;">
+    <div style="flex-grow: 1; display: flex; justify-content: center;">
+    <div id="modeDisplay" style="color: white; font-size: 24px;">Modo Cartas</div>
+    </div>
+    <button id="toggleViewButton" class="btn btn-danger">Cambiar Modo</button>
 </div>
+
+
+
+
+
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -292,6 +300,7 @@
         var toggleButton = document.getElementById('toggleViewButton');
         var demoButton = document.getElementById('demoButton'); // Referencia al botón "Demo"
         var botonTarea = document.getElementById('tareaButton');
+        var modeDisplay = document.getElementById('modeDisplay'); // Elemento que muestra el modo actual
 
         // Asumimos que empezamos en la vista de tarjetas
         var isCardView = true;
@@ -300,15 +309,16 @@
             // Cambia una clase en el cuerpo (u otra lógica que puedas tener) para cambiar la vista
             document.body.classList.toggle('cards-view');
 
+            // Actualiza el texto del modo actual basado en la vista
+            modeDisplay.textContent = isCardView ? 'Modo Tabla' : 'Modo Cartas';
+
             // Alterna el estado
             isCardView = !isCardView;
 
-            // Basado en la vista, muestra u oculta formularios
-
-            // Alterna la visibilidad del botón "Demo"
-            demoButton.style.display = isCardView ? 'none' :
-                'block'; // Esto asegura que el botón solo aparezca en la vista de tabla
+            // Alterna la visibilidad de otros botones basados en la vista
+            demoButton.style.display = isCardView ? 'none' : 'block'; // Asegura que el botón solo aparezca en la vista de tabla
             botonTarea.style.display = isCardView ? 'none' : 'block';
         });
     });
 </script>
+

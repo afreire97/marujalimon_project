@@ -71,7 +71,7 @@
                     <div class="form-check mb-30px">
                         <input class="form-check-input" type="checkbox" value="1" id="rememberMe" name="remember">
                         <label class="form-check-label" for="rememberMe">
-                            Remember Me
+                            Recordarme
                         </label>
                     </div>
 {{-- 
