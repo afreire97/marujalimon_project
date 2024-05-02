@@ -72,26 +72,6 @@
         </div>
     @endif
 
-
-    <div id="addHoursForm">
-        <form action="{{ route('horas.añadir') }}" method="POST">
-            @csrf
-            <input type="hidden" name="coordinadoresSeleccionados" id="coordinadoresSeleccionados" value="">
-
-            <label for="horas">Horas:</label>
-            <input type="number" name="horas" id="horas" required>
-
-            <label for="tarea_id">Tarea:</label>
-            <select name="tarea_id" id="tarea_id" required>
-                @foreach ($tareas as $tarea)
-                    <option value="{{ $tarea->TAR_id }}">{{ $tarea->TAR_nombre }}</option>
-                @endforeach
-            </select>
-
-            <button type="submit">Agregar</button>
-        </form>
-    </div>
-
     <div id="tableView" class="table-responsive " style="display: none;">
         <!-- Contenido de la vista de tabla -->
         <div class="table-responsive">
@@ -100,8 +80,8 @@
                     <tr>
                         <th width="1%">ID</th>
                         <th width="1%">Nombre</th>
+                        <th width="1%">Apellidos</th>
                         <th>DNI</th>
-                        <th>Usuario</th>
                         <th>Fecha de Creación</th>
                         <th>Fecha de Actualización</th>
                     </tr>
@@ -111,8 +91,8 @@
                         <tr>
                             <td>{{ $coordinador->COO_id }}</td>
                             <td>{{ $coordinador->COO_nombre }}</td>
+                            <td>{{ $coordinador->COO_apellidos }}</td>
                             <td>{{ $coordinador->COO_dni }}</td>
-                            <td>{{ $coordinador->user_id }}</td>
                             <td>{{ $coordinador->created_at }}</td>
                             <td>{{ $coordinador->updated_at }}</td>
                         </tr>

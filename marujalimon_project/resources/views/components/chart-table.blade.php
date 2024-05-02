@@ -25,9 +25,9 @@
                     </p>
                     <div class="volunteer-card-buttons">
                         <a href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}"
-                           class="volunteer-info btn btn-primary">Más información</a>
+                            class="volunteer-info btn btn-primary">Más información</a>
                         <a href="{{ route('voluntarios.edit', ['voluntario' => $voluntario]) }}"
-                           class="volunteer-modify btn btn-primary">Modificar</a>
+                            class="volunteer-modify btn btn-primary">Modificar</a>
                     </div>
                 </div>
             </div>
@@ -43,17 +43,19 @@
     <div class="container d-flex justify-content-end mb-2">
         <div class="row">
             <div class="col">
-               <a href="#modal-dialog" class="btn btn-sm btn-success" data-bs-toggle="modal" id="demoButton" style="display: none;">Añadir horas</a>
-    
+                <a href="#modal-dialog" class="btn btn-sm btn-success" data-bs-toggle="modal" id="demoButton"
+                    style="display: none;">Añadir horas</a>
+
             </div>
         </div>
     </div>
-    
+
     <!-- Botón "Añadir tarea" -->
     <div class="container d-flex justify-content-end">
         <div class="row">
             <div class="col">
-                <a href="#modal-dialog-tarea" class="btn btn-sm btn-success"  id="tareaButton" data-bs-toggle="modal" style="display: none;">Añadir tarea</a>
+                <a href="#modal-dialog-tarea" class="btn btn-sm btn-success" id="tareaButton" data-bs-toggle="modal"
+                    style="display: none;">Añadir tarea</a>
             </div>
         </div>
     </div>
@@ -76,6 +78,9 @@
                     @csrf
                     <input type="hidden" name="voluntariosSeleccionados" id="voluntariosSeleccionados" value="">
 
+                    <div id="voluntarios-seleccionados"></div>
+
+
                     <label for="horas">Horas:</label>
                     <input type="number" name="horas" id="horas" required>
 
@@ -90,7 +95,8 @@
             </div>
             <div class="modal-footer">
                 <a href="javascript:;" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</a>
-                <button type="button" class="btn btn-success" id="btn-agregar" onclick="agregarHoras()">Agregar</button>
+                <button type="button" class="btn btn-success" id="btn-agregar"
+                    onclick="agregarHoras()">Agregar</button>
 
 
             </div>
@@ -135,7 +141,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-success" id="btn-añadirTarea" onclick="añadirTarea()">Añadir</button>
+                <button type="button" class="btn btn-success" id="btn-añadirTarea"
+                    onclick="añadirTarea()">Añadir</button>
             </div>
         </div>
     </div>
@@ -143,13 +150,13 @@
 
 <script>
     console.log("Inicializando DataTables...");
-    
+
     $('#btn-añadirTarea').click(function() {
         // Recolecta los datos del formulario
         let TAR_nombre = $('#nueva_tarea').val();
         let TAR_descripcion = $('#descripcion').val();
         let TAR_lugar_id = $('#tarea_id').val();
-    
+
         // Envía los datos al servidor utilizando AJAX
         $.ajax({
             url: "{{ route('tareas.store') }}",
@@ -176,10 +183,10 @@
                         }
                     }
                 });
-    
+
                 // Cierra el modal después de agregar la tarea
                 $('#modal-dialog-tarea').modal('hide');
-    
+
                 // Limpiar el formulario después de agregar la tarea (si es necesario)
                 $('#nueva_tarea').val('');
                 $('#descripcion').val('');
@@ -191,7 +198,7 @@
             }
         });
     });
-    </script>
+</script>
 
 
 
@@ -289,108 +296,118 @@
     });
 
     let voluntariosSeleccionados = [];
+    let voluntariosNombres = [];
 
     $('#data-table-default tbody').on('click', 'tr', function() {
         let voluntarioId = table.row(this).data()[0];
+        let voluntarioNombre = table.row(this).data()[1];
+
         let index = voluntariosSeleccionados.indexOf(voluntarioId);
 
         if (index === -1) {
             voluntariosSeleccionados.push(voluntarioId);
+            voluntariosNombres.push(voluntarioNombre);
         } else {
             voluntariosSeleccionados.splice(index, 1);
+            voluntariosNombres.splice(index, 1);
         }
 
         console.log("Voluntarios seleccionados:", voluntariosSeleccionados);
+        console.log("Voluntarios nombres:", voluntariosNombres);
+
+        $('#modal-dialog .modal-body #voluntarios-seleccionados').empty();
+
+        // Agrega los nombres de los voluntarios seleccionados al div en el cuerpo del modal
+        voluntariosNombres.forEach(nombre => {
+            $('#modal-dialog .modal-body #voluntarios-seleccionados').append(
+                '<p>Voluntario seleccionado: ' + nombre + '</p>');
+        });
+
     });
 
     function agregarHoras() {
-    // Recolecta los voluntarios seleccionados
-    let voluntariosSeleccionadosJSON = JSON.stringify(voluntariosSeleccionados);
+        // Recolecta los voluntarios seleccionados
+        let voluntariosSeleccionadosJSON = JSON.stringify(voluntariosSeleccionados);
 
-    // Verifica si el array de voluntarios seleccionados está vacío
-    if (voluntariosSeleccionados.length === 0) {
-        // Muestra el modal de SweetAlert como warning
-        swal({
-            title: 'Aviso',
-            text: 'Es necesario seleccionar al menos un voluntario antes de añadir horas.',
-            icon: 'warning',
-            buttons: {
-                confirm: {
-                    text: 'OK',
-                    value: true,
-                    visible: true,
-                    className: 'btn btn-primary',
-                    closeModal: true
-                }
-            }
-        });
-    } else {
-        // Envía los datos al servidor utilizando AJAX
-        $.ajax({
-            url: "{{ route('horas.añadir') }}",
-            method: "POST",
-            data: {
-                _token: "{{ csrf_token() }}",
-                voluntariosSeleccionados: voluntariosSeleccionadosJSON,
-                horas: $('#horas').val(),
-                tarea_id: $('#tarea_id').val()
-            },
-            success: function(response) {
-                // Muestra el modal de SweetAlert de éxito
-                swal({
-                    title: '¡Éxito!',
-                    text: 'Las horas han sido añadidas.',
-                    icon: 'success',
-                    buttons: {
-                        confirm: {
-                            text: 'OK',
-                            value: true,
-                            visible: true,
-                            className: 'btn btn-primary',
-                            closeModal: true,
-                        }
+        // Verifica si el array de voluntarios seleccionados está vacío
+        if (voluntariosSeleccionados.length === 0) {
+            // Muestra el modal de SweetAlert como warning
+            swal({
+                title: 'Aviso',
+                text: 'Es necesario seleccionar al menos un voluntario antes de añadir horas.',
+                icon: 'warning',
+                buttons: {
+                    confirm: {
+                        text: 'OK',
+                        value: true,
+                        visible: true,
+                        className: 'btn btn-primary',
+                        closeModal: true
                     }
-                });
+                }
+            });
+        } else {
+            // Envía los datos al servidor utilizando AJAX
+            $.ajax({
+                url: "{{ route('horas.añadir') }}",
+                method: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    voluntariosSeleccionados: voluntariosSeleccionadosJSON,
+                    horas: $('#horas').val(),
+                    tarea_id: $('#tarea_id').val()
+                },
+                success: function(response) {
+                    // Muestra el modal de SweetAlert de éxito
+                    swal({
+                        title: '¡Éxito!',
+                        text: 'Las horas han sido añadidas.',
+                        icon: 'success',
+                        buttons: {
+                            confirm: {
+                                text: 'OK',
+                                value: true,
+                                visible: true,
+                                className: 'btn btn-primary',
+                                closeModal: true,
+                            }
+                        }
+                    });
 
 
-                $('#modal-dialog').modal('hide');
+                    $('#modal-dialog').modal('hide');
 
-            },
-            error: function(xhr, status, error) {
-                // Maneja cualquier error que ocurra durante la solicitud AJAX
-                console.error(xhr.responseText);
-            }
-        });
+                },
+                error: function(xhr, status, error) {
+                    // Maneja cualquier error que ocurra durante la solicitud AJAX
+                    console.error(xhr.responseText);
+                }
+            });
+        }
     }
-}
-
-
 </script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var toggleButton = document.getElementById('toggleViewButton');
-    var demoButton = document.getElementById('demoButton'); // Referencia al botón "Demo"
-    var botonTarea = document.getElementById('tareaButton');
+    document.addEventListener('DOMContentLoaded', function() {
+        var toggleButton = document.getElementById('toggleViewButton');
+        var demoButton = document.getElementById('demoButton'); // Referencia al botón "Demo"
+        var botonTarea = document.getElementById('tareaButton');
 
-    // Asumimos que empezamos en la vista de tarjetas
-    var isCardView = true;
+        // Asumimos que empezamos en la vista de tarjetas
+        var isCardView = true;
 
-    toggleButton.addEventListener('click', function() {
-        // Cambia una clase en el cuerpo (u otra lógica que puedas tener) para cambiar la vista
-        document.body.classList.toggle('cards-view');
+        toggleButton.addEventListener('click', function() {
+            // Cambia una clase en el cuerpo (u otra lógica que puedas tener) para cambiar la vista
+            document.body.classList.toggle('cards-view');
 
-        // Alterna el estado
-        isCardView = !isCardView;
+            // Alterna el estado
+            isCardView = !isCardView;
 
-        // Basado en la vista, muestra u oculta formularios
+            // Basado en la vista, muestra u oculta formularios
 
-        // Alterna la visibilidad del botón "Demo"
-        demoButton.style.display = isCardView ? 'none' : 'block'; // Esto asegura que el botón solo aparezca en la vista de tabla
-        botonTarea.style.display = isCardView ? 'none' : 'block';
+            // Alterna la visibilidad del botón "Demo"
+            demoButton.style.display = isCardView ? 'none' :
+                'block'; // Esto asegura que el botón solo aparezca en la vista de tabla
+            botonTarea.style.display = isCardView ? 'none' : 'block';
+        });
     });
-});
 </script>
-
-
-
-
