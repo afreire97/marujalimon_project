@@ -23,7 +23,7 @@
    <div id="cardView" class="row mt-5">
     @foreach ($coordinadores as $coordinador)
         <div class="col col-custom mb-4">
-            <div class="card h-100 border-0 shadow-sm">
+        <div class="card h-100 border-0 shadow-sm card-coordinador">
                 <a href="{{ route('coordinadores.show', ['coordinadore' => $coordinador]) }}">
                     <img src="{{ $coordinador->imagenPerfil ? $coordinador->imagenPerfil->IMG_path : 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg' }}"
                          class="card-img-top" alt="Imagen de perfil del coordinador">

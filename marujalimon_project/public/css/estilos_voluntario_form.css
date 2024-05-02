@@ -926,8 +926,10 @@ p#fixedColorText {
     height: 40px; /* Altura fija para todos los botones */
 }
     
+    .card-coordinador {
+    border: 2px solid #919992 !important; /* Forzar el borde verde */
+}
 
-    
 
 
 
