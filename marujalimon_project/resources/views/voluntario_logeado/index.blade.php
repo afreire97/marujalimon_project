@@ -106,7 +106,7 @@
 
                         </div> <!-- Fin del div card-body -->
                         <div style="position: absolute; top: 0; right: 0; padding: 10px;">
-                            <form id="deleteForm" action="{{ route('voluntario.destroy', ['voluntario' => $voluntario]) }}" method="POST">
+                            <form id="deleteForm" action="{{ route('voluntarios.destroy', ['voluntario' => $voluntario]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" class="btn btn-danger" onclick="confirmDelete()">Eliminar
