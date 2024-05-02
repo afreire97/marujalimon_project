@@ -74,6 +74,8 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
     //RUTAS DE TAREAS
 
     Route::get('/tareas/{tarea}', [TareasController::class, 'show'])->name('tareas.show');
+    Route::put('/tareas', [TareasController::class,'update'])->name('tareas.update');
+
 
 });
 

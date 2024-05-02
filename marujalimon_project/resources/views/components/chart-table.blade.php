@@ -195,7 +195,6 @@
     });
 </script>
 <script>
-    console.log("Inicializando DataTables...");
 
     let table = $('#data-table-default').DataTable({
         responsive: true,

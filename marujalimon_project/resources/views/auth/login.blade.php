@@ -74,7 +74,7 @@
                             Recordarme
                         </label>
                     </div>
-{{-- 
+{{--
                     @if (Route::has('password.request'))
                         <a href="{{ route('password.request') }}" class="text-primary">¿Olvidaste tu contraseña?</a>
                     @endif --}}

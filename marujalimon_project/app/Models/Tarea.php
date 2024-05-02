@@ -33,7 +33,19 @@ class Tarea extends Model
 
 
     }
+    public function horasTotalesTareaAnioActual()
+    {
+        // Obtener el primer y último día del año actual
+        $primerDiaAnio = Carbon::now()->startOfYear();
+        $ultimoDiaAnio = Carbon::now()->endOfYear();
 
+        // Sumar las horas de las tareas del año actual
+        $totalHorasAnio = $this->horas()
+            ->whereBetween('HOR_fecha_inicio', [$primerDiaAnio, $ultimoDiaAnio])
+            ->sum('HOR_horas');
+
+        return $totalHorasAnio;
+    }
     public function horasTotalesTareaMes()
     {
         // Obtener el primer y último día del mes actual

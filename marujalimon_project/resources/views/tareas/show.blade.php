@@ -26,6 +26,11 @@
         </div>
     </div>
 
+
+    <a href="{{ URL::previous() }}" class="btn btn-primary">Volver Atrás</a>
+
+
+
     <!-- Agregado CSS y scripts -->
 
     <!-- CSS de DataTables -->
