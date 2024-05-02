@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-layout>
     <link rel="stylesheet" href="{{asset('css/estilos_voluntario_form.css')}}">
 
     <x-slot name="header">
@@ -28,4 +28,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-layout>

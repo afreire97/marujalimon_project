@@ -21,10 +21,10 @@ class CoordinadorFactory extends Factory
         $usuario = User::inRandomOrder()->first();
 
         return [
-            'COO_nombre' => fake()->name(),
+            'COO_nombre' => fake()->firstName(),
             'COO_dni' => fake()->randomNumber(8),
             'user_id' => $usuario->id, // Asociar el ID del usuario obtenido
-            'COO_apellidos' => fake()->name(),
+            'COO_apellidos' => fake()->lastName(),
             'COO_fecha_nac' => fake()->date(),
             'COO_domicilio' => fake()->address(),
             'COO_cp' => fake()->postcode(),
