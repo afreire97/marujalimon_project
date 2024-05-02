@@ -93,16 +93,27 @@ class TareasController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tarea $tarea)
-    {
-        //
+        public function update(Request $request)
+        {
+            // Validar la solicitud
+            $request->validate([
+                'nueva_tarea' => 'required|string',
+                'nueva_descripcion' => 'required|string',
+            ]);
+
+
+
+            $tarea = Tarea::where('TAR_id', $request->tarea_id);
+
+            // Actualizar los datos de la tarea
+            $tarea->update([
+                'TAR_nombre' => $request->nueva_tarea,
+                'TAR_descripcion' => $request->nueva_descripcion,
+            ]);
+
+            // Redireccionar o devolver una respuesta JSON según lo necesites
+            return response()->json(['message' => 'Tarea actualizada correctamente']);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Tarea $tarea)
-    {
-        //
-    }
-}
+

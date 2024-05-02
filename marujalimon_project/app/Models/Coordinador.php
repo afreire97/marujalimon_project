@@ -32,6 +32,9 @@ class Coordinador extends Model
     public function voluntarios(){
         return $this->belongsToMany(Voluntario::class, 'coordinador_voluntario', 'COO_VOL_coordinador_id', 'COO_VOL_voluntario_id');
     }
+    public function lugares(){
+        return $this->belongsToMany(Lugar::class, 'coordinador_lugar', 'COO_LUG_coordinador_id', 'COO_LUG_lugar_id');
+    }
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

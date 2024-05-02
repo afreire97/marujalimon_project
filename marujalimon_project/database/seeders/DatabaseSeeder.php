@@ -74,6 +74,15 @@ class DatabaseSeeder extends Seeder
         // Crear lugares
         $lugares = Lugar::factory(10)->create();
 
+        $coordinadoresDisponibles = Coordinador::all();
+
+        foreach ($lugares as $lugar) {
+            // Selecciona uno o varios coordinadores aleatorios
+            $coordinadores = $coordinadoresDisponibles->random(rand(1, 3)); // Cambia el rango según tus necesidades
+
+            // Asigna los coordinadores al lugar utilizando el método de relación
+            $lugar->coordinadores()->attach($coordinadores);
+        }
         // Crear tareas y asignarlas a lugares
         Tarea::factory(100)->create()->each(function ($tarea) use ($lugares) {
             $lugar = $lugares->random();

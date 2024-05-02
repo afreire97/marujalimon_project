@@ -64,6 +64,7 @@
             <!-- begin navbar-collapse -->
             <div class="collapse navbar-collapse" id="header-navbar">
                 <ul class="nav navbar-nav navbar-right">
+
                     <li class="dropdown">
                         <a href="#" data-bs-toggle="dropdown">VOLUNTARIOS<b class="caret"></b></a>
                         <div class="dropdown-menu">
@@ -90,6 +91,17 @@
                         </li>
                     @endif
 
+                    @if (auth()->user()->is_admin||auth()->user()->is_coordinador)
+
+                    <li class="dropdown">
+                        <a href="#" data-bs-toggle="dropdown">LUGARES<b class="caret"></b></a>
+                        <div class="dropdown-menu">
+                            {{-- <a class="dropdown-item" href="{{ route('voluntarios.create') }}">Añadir nuevo</a> --}}
+                            <a class="dropdown-item" href="{{ route('lugares.index') }}">Listar lugares</a>
+
+                        </div>
+                    </li>
+                    @endif
 
                     <li class="dropdown">
                         @guest

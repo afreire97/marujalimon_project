@@ -31,6 +31,8 @@ class Horas extends Model
 
 
 
+
+
     public static function calcularTotalHorasPorAno($ano)
     {
         // Obtener todas las horas del año especificado

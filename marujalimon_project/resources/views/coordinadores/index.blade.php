@@ -112,9 +112,8 @@
 
         let table = $('#data-table-default').DataTable({
             responsive: true,
-            select: {
-                style: 'multi'
-            }
+            select: false,
+
         });
 
         // Array para almacenar las IDs de los coordinadores seleccionados

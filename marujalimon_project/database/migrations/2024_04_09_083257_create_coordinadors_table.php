@@ -25,6 +25,12 @@ return new class extends Migration {
             $table->timestamps();
 
         });
+        Schema::create('coordinador_lugar', function (Blueprint $table) {
+            $table->id('COO_LUG_id');
+            $table->foreignId('COO_LUG_coordinador_id')->nullable()->constrained('coordinadores', 'COO_id')->onDelete('cascade');
+            $table->foreignId('COO_LUG_lugar_id')->nullable()->constrained('lugares', 'LUG_id')->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     /**
