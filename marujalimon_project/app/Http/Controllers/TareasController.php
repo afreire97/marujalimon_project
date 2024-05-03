@@ -120,19 +120,15 @@ class TareasController extends Controller
      */
     public function destroy(Tarea $tarea)
     {
-        try {
+
             // Eliminar la tarea
 
             $lugar = $tarea->lugar;
             $tarea->delete();
 
             // Redireccionar o devolver una respuesta JSON según lo necesites
-            return view('tareas.index', ['lugar' => $lugar]);
-        } catch (\Exception $e) {
-            // Manejar el error si la tarea no puede ser eliminada
-            Log::error('Error al eliminar la tarea: ' . $e->getMessage());
-            return response()->json(['message' => 'Error al eliminar la tarea'], 500);
-        }
+            return redirect()->route('lugares.show', ['lugar' => $lugar]);
+
     }
 
 
