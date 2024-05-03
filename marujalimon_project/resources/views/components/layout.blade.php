@@ -71,7 +71,7 @@
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="{{ route('voluntarios.create') }}">Añadir nuevo
                                 <a class="dropdown-item" href="{{ route('voluntarios.index') }}">Listar voluntarios</a>
-                                voluntario</a>
+                                </a>
 
                         </div>
                     </li>
