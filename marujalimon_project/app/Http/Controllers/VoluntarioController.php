@@ -18,6 +18,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class VoluntarioController extends Controller
@@ -127,6 +128,10 @@ class VoluntarioController extends Controller
 
     public function mostrarHorasPorMes(Request $request, Voluntario $voluntario)
     {
+
+
+
+        Log::info("Entramos en el controlador");
         // Obtener el año del formulario
         $ano = $request->input('ano');
 
@@ -301,7 +306,18 @@ class VoluntarioController extends Controller
     public function destroy(Voluntario $voluntario)
     {
         // Eliminar el voluntario
+
+
+        $authorizedUser = Auth::user();
+        $user = $voluntario->user;
         $voluntario->delete();
+        $user->delete();
+
+
+        if ($authorizedUser->is_voluntario) {
+            return redirect()->route('login')->with('success', 'Voluntario eliminado correctamente');
+
+        }
 
 
         return redirect()->route('voluntarios.index')->with('success', 'Voluntario eliminado correctamente');

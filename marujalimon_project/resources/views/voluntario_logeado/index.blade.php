@@ -1,9 +1,9 @@
 <x-layout>
 
     @if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
     @endif
 
 
@@ -20,15 +20,19 @@
                 </div>
                 <div class="row g-0">
                     <div class="col-md-4 p-3">
-                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <div
+                            style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
 
-                            <img src="{{ $voluntario->imagenPerfil ? $voluntario->imagenPerfil->IMG_path : 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 448 512\'%3E%3Cpath fill=\'%23999\' d=\'M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.4-46.6 16-72.9 16s-50.7-5.6-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z\'/%3E%3C/svg%3E' }}" class="card-img-top" alt="Imagen de perfil del voluntario">
+                            <img src="{{ $voluntario->imagenPerfil ? $voluntario->imagenPerfil->IMG_path : 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 448 512\'%3E%3Cpath fill=\'%23999\' d=\'M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.4-46.6 16-72.9 16s-50.7-5.6-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z\'/%3E%3C/svg%3E' }}"
+                                class="card-img-top" alt="Imagen de perfil del voluntario">
                         </div>
                         <div style="text-align: left; padding-top: 10px;">
-                            <a href="{{ route('voluntario_logeado.edit', ['voluntario' => $voluntario]) }}" class="btn btn-primary d-block w-100">Editar Perfil</a>
+                            <a href="{{ route('voluntario_logeado.edit', ['voluntario' => $voluntario]) }}"
+                                class="btn btn-primary d-block w-100">Editar Perfil</a>
                         </div>
                         <div style="text-align: left; padding-top: 10px;">
-                            <a href="{{ route('voluntario_logeado.calendario', ['voluntario' => $voluntario]) }}" class="btn btn-primary d-block w-100">Ver calendario</a>
+                            <a href="{{ route('voluntario_logeado.calendario', ['voluntario' => $voluntario]) }}"
+                                class="btn btn-primary d-block w-100">Ver calendario</a>
                         </div>
                     </div>
 
@@ -41,11 +45,7 @@
                             </div>
 
                             @foreach ($voluntario->observaciones as $observacion)
-
-
-                                <p>{{$observacion->OBS_contenido}}</p>
-
-
+                                <p>{{ $observacion->OBS_contenido }}</p>
                             @endforeach
 
 
@@ -81,7 +81,7 @@
 
 
                             @if (isset($totalHoras))
-                            <p>Total de horas realizadas: {{ $totalHoras }}</p>
+                                <p>Total de horas realizadas: {{ $totalHoras }}</p>
                             @endif
 
                             <hr class="my-4">
@@ -89,12 +89,16 @@
                             <legend style="font-size: 20px;">Introduce un año para mostrar un gráfico de horas</legend>
 
 
-                            <form action="{{ route('mostrarHorasPorMes', ['voluntario' => $voluntario]) }}" method="POST" id="calcularHorasForm" data-voluntario="{{$voluntario}}">
+
+
+                            <form action="{{ route('mostrarHorasPorMes', ['voluntario' => $voluntario]) }}"
+                                method="POST" id="calcularHorasForm" data-voluntario="{{ $voluntario }}">
                                 @csrf
                                 <div class="row mb-3 gx-2">
                                     <label for="ano" class="col-md-3 col-form-label">Año:</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="ano" name="ano" required>
+                                        <input type="text" class="form-control" id="ano" name="ano"
+                                            required>
                                     </div>
                                 </div>
                                 <div class="d-grid gap-2">
@@ -104,9 +108,19 @@
 
 
 
+
+                            <div class="row" id="chartContainer" style="display: none;">
+                                <div class="col-12 px-4 py-2">
+                                    <canvas id="monthlyChart"></canvas>
+                                </div>
+                            </div>
+
+
                         </div> <!-- Fin del div card-body -->
                         <div style="position: absolute; top: 0; right: 0; padding: 10px;">
-                            <form id="deleteForm" action="{{ route('voluntarios.destroy', ['voluntario' => $voluntario]) }}" method="POST">
+                            <form id="deleteForm"
+                                action="{{ route('voluntarios.destroy', ['voluntario' => $voluntario]) }}"
+                                method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" class="btn btn-danger" onclick="confirmDelete()">Eliminar
@@ -133,5 +147,109 @@
 
 
 
+
+            <script>
+                document.getElementById('calcularHorasForm').addEventListener('submit', function(event) {
+                    // Evitar el envío del formulario
+                    event.preventDefault();
+
+                    // Obtener el año del formulario
+                    var ano = document.getElementById('ano').value;
+
+                    // Enviar una solicitud AJAX al servidor para obtener los datos de horas por mes
+                    fetch(`{{ route('mostrarHorasPorMes', ['voluntario' => $voluntario]) }}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                ano: ano
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Mostrar el contenedor del gráfico
+                            document.getElementById('chartContainer').style.display = 'block';
+
+                            // Obtener el contexto del lienzo para el gráfico mensual
+                            var monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+
+                            // Destruir el gráfico anterior si existe
+                            if (window.monthlyChart && typeof window.monthlyChart.destroy === 'function') {
+                                window.monthlyChart.destroy();
+                            }
+
+                            // Configurar el gráfico mensual
+                            window.monthlyChart = new Chart(monthlyCtx, {
+                                type: 'bar',
+                                data: {
+                                    labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+                                        'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                                    ],
+                                    datasets: [{
+                                            label: 'Horas Voluntariado (' + ano + ')',
+                                            data: Object.values(data.horasPorMes),
+                                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                            borderColor: 'rgba(54, 162, 235, 1)',
+                                            borderWidth: 1
+                                        },
+                                        {
+                                            label: 'Media de Horas Voluntariado por Mes',
+                                            data: Object.values(data.mediaHorasPorMes),
+                                            backgroundColor: 'rgba(255, 0, 0, 0.2)', // Color rojo con transparencia
+                                            borderColor: 'rgba(255, 0, 0, 1)', // Color rojo sólido para el borde
+                                            borderWidth: 1
+                                        }
+                                    ]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error al obtener los datos de horas por mes:', error);
+                        });
+                });
+            </script>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+            <script>
+                function confirmDelete() {
+                    Swal.fire({
+                        title: '¿Estás seguro de que deseas eliminar este voluntario?',
+                        text: "¡No podrás revertir esto!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: '¡Sí, eliminar!',
+                        cancelButtonText: 'Cancelar',
+                        focusCancel: true, // Foco en el botón de cancelar
+                        customClass: {
+                            confirmButton: 'swal-confirm-btn',
+                            cancelButton: 'swal-cancel-btn'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire(
+                                '¡Eliminado!',
+                                'El voluntario ha sido eliminado.',
+                                'success'
+                            ).then(() => {
+                                // Enviar el formulario después de mostrar el mensaje de éxito
+                                document.getElementById('deleteForm').submit();
+                            });
+                        }
+                    })
+                }
+            </script>
 
 </x-layout>
