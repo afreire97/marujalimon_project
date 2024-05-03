@@ -118,8 +118,9 @@
                                         action="{{ route('tareas.destroy', ['tarea' => $tarea]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" onclick="eliminarTarea()">Eliminar
+                                        <button type="button" class="btn btn-danger" onclick="eliminarTarea()">Eliminar
                                             Tarea</button>
+                                            
                                     </form>
                                 </div>
                             </td>
@@ -288,18 +289,34 @@
     {{-- SCRIPT PARA BORRAR TAREA --}}
     <script>
         function eliminarTarea() {
-            // Envía la solicitud AJAX para eliminar la tarea
-
-
-            
-
-
-
-
-
-
-       
-         
+            swal({
+                title: '¿Estás seguro?',
+                text: 'Esta acción eliminará la tarea permanentemente.',
+                icon: 'warning',
+                buttons: {
+                    cancel: {
+                        text: 'Cancelar',
+                        value: false,
+                        visible: true,
+                        className: 'btn btn-secondary',
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: 'Eliminar',
+                        value: true,
+                        visible: true,
+                        className: 'btn btn-danger',
+                        closeModal: false,
+                    }
+                }
+            }).then((confirmar) => {
+                if (confirmar) {
+                    // Si el usuario confirma, enviar el formulario para eliminar la tarea
+                    document.getElementById('deleteForm').submit();
+                } else {
+                    // Si el usuario cancela, no hacer nada
+                }
+            });
         }
     </script>
 
