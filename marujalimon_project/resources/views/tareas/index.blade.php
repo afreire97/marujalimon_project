@@ -89,14 +89,14 @@
                         <th>Descripción</th>
                         <th>Horas totales este mes</th>
                         <th>Horas totales</th>
-
                         <th>Detalles</th>
                         <th>Modificar</th>
+                        <th>Eliminar</th>
 
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($tareas as $tarea)
+                    @foreach ($lugar->tareas as $tarea)
                         <tr>
 
                             <td>{{ $tarea->TAR_id }}</td>
@@ -111,6 +111,17 @@
                             <td>
                                 <button type="button" class="btn btn-primary"
                                     onclick="openModificarModal('{{ $tarea->TAR_id }}','{{ $tarea->TAR_nombre }}', '{{ $tarea->TAR_descripcion }}')">Modificar</button>
+                            </td>
+                            <td>
+                                <div style="position: relative;">
+                                    <form id="deleteForm"
+                                        action="{{ route('tareas.destroy', ['tarea' => $tarea]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger" onclick="eliminarTarea()">Eliminar
+                                            Tarea</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -133,8 +144,6 @@
     <script src="{{ asset('tabla/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('tabla/assets/plugins/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}">
     </script>
-
-
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('tabla/assets/plugins/datatables.net-select/js/dataTables.select.min.js') }}"></script>
 
@@ -146,8 +155,8 @@
             responsive: true,
             select: false,
             "order": [
-            [0, 'desc'] // Ordena por la primera columna (created_at) de forma descendente
-        ]
+                [0, 'desc'] // Ordena por la primera columna (created_at) de forma descendente
+            ]
         });
 
         function agregarTarea() {
@@ -215,6 +224,9 @@
 
         }
     </script>
+
+    {{-- IMPORTANTE PARA PODER ELIMINAR --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     {{-- SCRIPT PARA MODIFICAR TAREA --}}
     <script>
         // Inicializa el DataTable
@@ -269,6 +281,25 @@
                     console.error('Error al modificar tarea');
                 }
             });
+        }
+    </script>
+
+
+    {{-- SCRIPT PARA BORRAR TAREA --}}
+    <script>
+        function eliminarTarea() {
+            // Envía la solicitud AJAX para eliminar la tarea
+
+
+            
+
+
+
+
+
+
+       
+         
         }
     </script>
 

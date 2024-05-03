@@ -93,27 +93,49 @@ class TareasController extends Controller
     /**
      * Update the specified resource in storage.
      */
-        public function update(Request $request)
-        {
-            // Validar la solicitud
-            $request->validate([
-                'nueva_tarea' => 'required|string',
-                'nueva_descripcion' => 'required|string',
-            ]);
+    public function update(Request $request)
+    {
+        // Validar la solicitud
+        $request->validate([
+            'nueva_tarea' => 'required|string',
+            'nueva_descripcion' => 'required|string',
+        ]);
 
 
 
-            $tarea = Tarea::where('TAR_id', $request->tarea_id);
+        $tarea = Tarea::where('TAR_id', $request->tarea_id);
 
-            // Actualizar los datos de la tarea
-            $tarea->update([
-                'TAR_nombre' => $request->nueva_tarea,
-                'TAR_descripcion' => $request->nueva_descripcion,
-            ]);
+        // Actualizar los datos de la tarea
+        $tarea->update([
+            'TAR_nombre' => $request->nueva_tarea,
+            'TAR_descripcion' => $request->nueva_descripcion,
+        ]);
+
+        // Redireccionar o devolver una respuesta JSON según lo necesites
+        return response()->json(['message' => 'Tarea actualizada correctamente']);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Tarea $tarea)
+    {
+        try {
+            // Eliminar la tarea
+
+            $lugar = $tarea->lugar;
+            $tarea->delete();
 
             // Redireccionar o devolver una respuesta JSON según lo necesites
-            return response()->json(['message' => 'Tarea actualizada correctamente']);
+            return view('tareas.index', ['lugar' => $lugar]);
+        } catch (\Exception $e) {
+            // Manejar el error si la tarea no puede ser eliminada
+            Log::error('Error al eliminar la tarea: ' . $e->getMessage());
+            return response()->json(['message' => 'Error al eliminar la tarea'], 500);
         }
     }
+
+
+}
 
 

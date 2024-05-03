@@ -62,8 +62,8 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
     Route::resource('coordinadores', CoordinadorController::class);
 
 
-    //RUTA DE TAREAS (voluntario)
-    Route::post('/tareas', [TareasController::class, 'store'])->name('tareas.store');
+    
+   
 
 
     //RUTAS DE LUGARES
@@ -73,8 +73,12 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
 
     //RUTAS DE TAREAS
 
+    Route::delete('/tareas/{tarea}', [TareasController::class, 'destroy'])->name('tareas.destroy');
+    Route::post('/tareas', [TareasController::class, 'store'])->name('tareas.store');
     Route::get('/tareas/{tarea}', [TareasController::class, 'show'])->name('tareas.show');
     Route::put('/tareas', [TareasController::class,'update'])->name('tareas.update');
+    
+
 
 
 });
