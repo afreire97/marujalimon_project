@@ -998,8 +998,67 @@ p#fixedColorText {
     .btn-custom:hover {
         background-color: #138496; /* Cambio de color al pasar el mouse para interactividad */
     }
+    .lista-sugerencias {
+        position: absolute;
+        background: white;
+        width: 100%;
+        border: 1px solid #ccc;
+        z-index: 1000;
+        max-height: 200px;
+        overflow-y: auto;
+        display: none; /* Este estilo se cambiará dinámicamente con JavaScript */
+    }
     
-
-
+    .opcion-tarea {
+        padding: 8px 10px;
+        cursor: pointer;
+    }
+    
+    .opcion-tarea:hover {
+        background-color: #f8f8f8;
+    }
+    
+    .lista-sugerencias {
+        position: absolute;
+        background: white;
+        width: calc(100% - 30px); 
+        border: 1px solid #ccc;
+        border-top: none;
+        z-index: 1000;
+        max-height: 200px;
+        overflow-y: auto;
+        display: none; /* Este estilo se cambiará dinámicamente con JavaScript */
+        top: 100%; /* Asegura que aparezca justo debajo del input */
+        left: 15px; /* Ajustar según el padding del contenedor padre */
+        right: 15px;
+    }
+    
+    .opcion-tarea {
+        padding: 8px 10px;
+        cursor: pointer;
+    }
+    
+    .opcion-tarea:hover {
+        background-color: #f8f8f8;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    input[type="text"], input[type="number"] {
+        width: 100%;
+        box-sizing: border-box; /* Esto asegura que el padding no afecte el ancho total */
+        padding: 8px;
+        margin-bottom: 10px; /* Añade un espacio entre los campos de entrada */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    
+    input[type="text"]:focus, input[type="number"]:focus {
+        border-color: #66afe9;
+        outline: none;
+    }
+    
 
 
