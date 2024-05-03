@@ -18,6 +18,7 @@ class LugarFactory extends Factory
     {
         return [
             'LUG_nombre' => fake()->company(),
+            'LUG_direccion' => fake()->address(),
         ];
     }
 }

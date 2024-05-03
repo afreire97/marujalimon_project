@@ -1,9 +1,10 @@
 <?php
 namespace App\Http\Utils;
+
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-class ValidacionUtils
 
+class ValidacionUtils
 {
     public static function validarVoluntario(Request $request)
     {
@@ -41,6 +42,20 @@ class ValidacionUtils
         ]);
     }
 
+    public static function validarLugar(Request $request)
+    {
+        return $request->validate([
+            'LUG_nombre' => 'required|string|max:255',
+            'LUG_direccion' => 'required|string|max:255',
+            'IMG_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación de la imagen si se proporciona
+        ], [
+            'LUG_nombre.required' => 'El campo Nombre es obligatorio.',
+            'LUG_direccion.required' => 'El campo Dirección es obligatorio.',
+            'IMG_path.image' => 'El archivo debe ser una imagen.',
+            'IMG_path.mimes' => 'El archivo debe ser de tipo: jpeg, png, jpg o gif.',
+            'IMG_path.max' => 'El tamaño máximo del archivo es de 2048 kilobytes (2MB).',
+        ]);
+    }
     public static function validarCoordinador(Request $request)
     {
         return $request->validate([
