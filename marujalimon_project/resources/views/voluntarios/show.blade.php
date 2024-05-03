@@ -137,8 +137,7 @@
                             <form id="deleteForm" action="{{ route('voluntarios.destroy', ['voluntario' => $voluntario]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="button" class="btn btn-danger" onclick="confirmDelete()">Eliminar
-                                    Perfil</button>
+                                <button type="button" class="btn btn-danger" onclick="confirmDelete()">Eliminar Perfil</button>
                             </form>
                         </div>
                     </div>
