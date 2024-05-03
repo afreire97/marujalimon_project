@@ -74,6 +74,10 @@ class DatabaseSeeder extends Seeder
         // Crear lugares
         $lugares = Lugar::factory(10)->create();
 
+        // Asigna una imagen a cada lugar
+        $lugares->each(function ($lugar) {
+            App\Models\ImagenLugar::factory()->create(['IMG_lugar_id' => $lugar->LUG_id]);
+        });
         $coordinadoresDisponibles = Coordinador::all();
 
         foreach ($lugares as $lugar) {
