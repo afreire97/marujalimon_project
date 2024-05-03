@@ -118,8 +118,9 @@
                                         action="{{ route('tareas.destroy', ['tarea' => $tarea]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" onclick="eliminarTarea()">Eliminar
+                                        <button type="button" class="btn btn-danger" onclick="eliminarTarea()">Eliminar
                                             Tarea</button>
+                                            
                                     </form>
                                 </div>
                             </td>
