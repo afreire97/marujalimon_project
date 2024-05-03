@@ -52,7 +52,7 @@ function randomScalingFactor()
                 <div id="form-container">
                     <form id="year-form">
                         <label for="year">
-                        <p></p>
+                            <p></p>
                             <h5 class="card-title text-custom-primary">Seleccione un año <i class="fa fa-calendar-alt"></i></h5>
                         </label>
                         <p></p>
@@ -68,17 +68,18 @@ function randomScalingFactor()
             </div>
 
             <!-- Tarjeta de Listar Voluntarios -->
-            
+
             <div class="col-sm-6 col-md-4 col-lg-2">
                 <div class="card h-100 border-0 shadow-sm" data-tilt>
                     <div class="card-body">
                         <h5 class="card-title text-custom-primary">Listar Voluntarios <i class="fa fa-users"></i></h5>
                         <p class="card-text">Accede a la lista de voluntarios y gestiona su toda información.</p>
-                        <a href="{{ route('voluntarios.index') }}" class="btn btn-info btn-lg rounded-pill stretched-link">Ver Voluntarios</a>
+                        <a href="{{ route('voluntarios.index') }}" class="btn custom-btn btn-lg rounded-pill">Ver Voluntarios</a>
+                        <p></p>
+                        <a href="{{ route('voluntarios.create') }}" class="btn custom-btn btn-lg rounded-pill">Añadir Voluntario</a>
                     </div>
                 </div>
             </div>
-            
 
             <!-- Tarjeta de Listar Coordinadores -->
             @if (auth()->check() && auth()->user()->is_admin)
@@ -87,7 +88,9 @@ function randomScalingFactor()
                     <div class="card-body">
                         <h5 class="card-title text-custom-primary">Listar Coordinadores <i class="fa fa-user-tie"></i></h5>
                         <p class="card-text">Accede a la lista de coordinadores y gestiona su información.</p>
-                        <a href="{{ route('coordinadores.index') }}" class="btn btn-info btn-lg rounded-pill stretched-link">Ver Coordinadores</a>
+                        <a href="{{ route('coordinadores.index') }}" class="btn custom-btn btn-lg rounded-pill">Ver Coordinadores</a>
+                        <p></p>
+                        <a href="{{ route('coordinadores.create') }}" class="btn custom-btn btn-lg rounded-pill">Añadir Coordinador</a>
                     </div>
                 </div>
             </div>
@@ -99,27 +102,32 @@ function randomScalingFactor()
                     <div class="card-body">
                         <h5 class="card-title text-custom-primary">Listar Lugares <i class="fa fa-map-marker-alt"></i></h5>
                         <p class="card-text">Accede a la lista de lugares y gestiona toda su información disponible.</p>
-                        <a href="{{ route('lugares.index') }}" class="btn btn-info btn-lg rounded-pill stretched-link">Ver Lugares</a>
+                        <a href="{{ route('lugares.index') }}" class="btn custom-btn btn-lg rounded-pill">Ver Lugares</a>
+                        <p></p>
+                        <a href="{{ route('lugares.create') }}" class="btn custom-btn btn-lg rounded-pill">Añadir Lugar</a>
                     </div>
                 </div>
             </div>
 
+
             <!-- Tarjeta de Registro -->
             <div class="col-sm-6 col-md-4 col-lg-2">
-                <div class="card h-100 border-0 shadow-sm" data-tilt>
-                    <div class="card-body">
-                        <h5 class="card-title text-custom-primary">Registro <i class="fas fa-file-alt"></i></h5>
-                        <p></p>
-                        <div class="d-flex flex-column align-items-stretch">
-                            <a href="{{ route('voluntarios.create') }}" class="btn btn-info btn-sm rounded-pill mb-2">Registrar voluntario</a>
-                            @if (auth()->check() && auth()->user()->is_admin)
-                            <a href="{{ route('coordinadores.create') }}" class="btn btn-info btn-sm rounded-pill mb-2">Registrar coordinador</a>
-                            <a href="{{ route('register') }}" class="btn btn-info btn-sm rounded-pill">Registrar admin</a>
-                            @endif
-                        </div>
-                    </div>
-                </div>
+    <div class="card h-100 border-0 shadow-sm" data-tilt>
+        <div class="card-body">
+            <h5 class="card-title text-custom-primary">Registro <i class="fas fa-file-alt"></i></h5>
+            <div class="d-flex flex-column align-items-stretch">
+                <p></p>
+                <a href="{{ route('voluntarios.create') }}" class="btn btn-custom btn-lg rounded-pill mb-2">Registrar voluntario</a>
+                @if (auth()->check() && auth()->user()->is_admin)
+                <p></p>
+                <a href="{{ route('coordinadores.create') }}" class="btn btn-custom btn-lg rounded-pill mb-2">Registrar coordinador</a>
+                <p></p>
+                <a href="{{ route('register') }}" class="btn btn-custom btn-lg rounded-pill">Registrar admin</a>
+                @endif
             </div>
+        </div>
+    </div>
+</div>
         </div>
     </div>
 

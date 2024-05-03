@@ -965,9 +965,40 @@ p#fixedColorText {
         background-color: #106292;  /* Un azul un poco más oscuro para el estado hover y focus */
         color: white;
     }
+   
+   
+    .card .custom-btn {
+        font-size: 16px; /* Tamaño de letra uniforme */
+        border-radius: 20px; /* Bordes redondeados */
+        padding: 10px 20px; /* Espaciado interno adecuado */
+        margin: 5px; /* Margen uniforme */
+        width: 100%; /* Ocupar todo el ancho posible dentro de la tarjeta */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra sutil */
+        transition: background-color 0.3s, color 0.3s; /* Transición suave para efectos de hover */
+        background-color: #17a2b8; /* Color primario para acciones principales */
+        color: #ffffff;
+    }
     
+    .card .custom-btn:hover {
+        background-color: rgb(18, 144, 216); /* Color al pasar el mouse */
+    }
     
-
+    .btn-custom {
+        font-size: 14px; /* Tamaño de letra mayor para mejor lectura */
+        border-radius: 25px; /* Bordes más redondeados */
+        padding: 12px 24px; /* Mayor padding para un botón más grande */
+        margin-bottom: 10px; /* Espaciado uniforme entre botones */
+        width: 100%; /* Aprovechar el ancho completo del contenedor */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Sombra más pronunciada para un aspecto elevado */
+        background-color: #17a2b8; /* Un color de fondo coherente con el diseño global */
+        color: white; /* Texto blanco para contraste */
+        transition: background-color 0.3s; /* Transición suave al cambiar de color */
+    }
+    
+    .btn-custom:hover {
+        background-color: #138496; /* Cambio de color al pasar el mouse para interactividad */
+    }
+    
 
 
 
