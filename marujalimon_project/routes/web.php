@@ -62,8 +62,8 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
     Route::resource('coordinadores', CoordinadorController::class);
 
 
-    
-   
+
+
 
 
     //RUTAS DE LUGARES
@@ -79,7 +79,7 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
     Route::post('/tareas', [TareasController::class, 'store'])->name('tareas.store');
     Route::get('/tareas/{tarea}', [TareasController::class, 'show'])->name('tareas.show');
     Route::put('/tareas', [TareasController::class,'update'])->name('tareas.update');
-    
+
 
 
 
