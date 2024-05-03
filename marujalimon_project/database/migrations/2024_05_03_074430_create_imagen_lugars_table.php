@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lugares', function (Blueprint $table) {
-            $table->id('LUG_id');
-            $table->string('LUG_nombre');
-            $table->string('LUG_direccion');
-
-
-            $table->timestamps();
+        Schema::create('imagen_lugares', function (Blueprint $table) {
+            $table->id('IMG_LUG_id');
+            $table->foreignId('IMG_lugar_id')->nullable()->constrained('lugares', 'LUG_id')->onDelete('cascade');
+            $table->string('IMG_path');
+            $table->timestamps();;
         });
     }
 
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lugars');
+        Schema::dropIfExists('imagen_lugars');
     }
 };

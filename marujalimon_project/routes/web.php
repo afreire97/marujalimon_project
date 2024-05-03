@@ -68,7 +68,12 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
 
     //RUTAS DE LUGARES
     Route::get('/lugares', [LugaresController::class, 'index'])->name('lugares.index');
+    Route::get('/lugares/create', [LugaresController::class, 'create'])->name('lugares.create');
+    Route::post('/lugares/create', [LugaresController::class, 'store'])->name('lugares.store');
     Route::get('/lugares/{lugar}', [LugaresController::class, 'show'])->name('lugares.show');
+    Route::get('/lugares/{lugar}/edit', [LugaresController::class, 'edit'])->name('lugares.edit');
+
+    Route::put('/lugares/{lugar}', [LugaresController::class, 'update'])->name('lugares.update');
 
 
     //RUTAS DE TAREAS

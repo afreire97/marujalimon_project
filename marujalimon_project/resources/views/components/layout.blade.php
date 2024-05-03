@@ -17,6 +17,7 @@
     <!-- ================== BEGIN BASE CSS STYLE ================== -->
     <!-- Enlace al archivo vendor.min.css -->
     <link href="{{ asset('css/blog/vendor.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/blog/card.list.css') }}" rel="stylesheet" />
 
     <!-- Enlace al archivo app.min.css -->
     <link href="{{ asset('css/blog/app.min.css') }}" rel="stylesheet" />
@@ -69,8 +70,8 @@
                         <a href="#" data-bs-toggle="dropdown">VOLUNTARIOS<b class="caret"></b></a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="{{ route('voluntarios.create') }}">Añadir nuevo
+                                <a class="dropdown-item" href="{{ route('voluntarios.index') }}">Listar voluntarios</a>
                                 voluntario</a>
-                            <a class="dropdown-item" href="{{ route('voluntarios.index') }}">Listar voluntarios</a>
 
                         </div>
                     </li>
@@ -97,9 +98,11 @@
                         <a href="#" data-bs-toggle="dropdown">LUGARES<b class="caret"></b></a>
                         <div class="dropdown-menu">
                             {{-- <a class="dropdown-item" href="{{ route('voluntarios.create') }}">Añadir nuevo</a> --}}
+                            <a class="dropdown-item" href="{{ route('lugares.create') }}">Añadir lugar</a>
                             <a class="dropdown-item" href="{{ route('lugares.index') }}">Listar lugares</a>
 
                         </div>
+
                     </li>
                     @endif
 
