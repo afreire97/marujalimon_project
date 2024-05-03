@@ -15,6 +15,9 @@
 
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
 
 <!-- Tarjetas de voluntarios con nuevo estilo -->
 <div id="cardView" class="row mt-5">
@@ -53,27 +56,25 @@
             <div class="modal-header">
                 <h4 class="modal-title">Añadir horas</h4>
             </div>
-            <div class="modal-body">
-                <!-- Aquí está el formulario -->
-                <form>
-                    @csrf
-                    <input type="hidden" name="voluntariosSeleccionados" id="voluntariosSeleccionados" value="">
+            <!-- Modal body -->
+<div class="modal-body">
+    <!-- Aquí está el formulario -->
+    <form>
+        @csrf
+        <input type="hidden" name="voluntariosSeleccionados" id="voluntariosSeleccionados" value="">
 
-                    <div id="voluntarios-seleccionados"></div>
+        <div id="voluntarios-seleccionados"></div>
 
+        <label for="horas">Horas:</label>
+        <input type="number" name="horas" id="horas" required>
 
-                    <label for="horas">Horas:</label>
-                    <input type="number" name="horas" id="horas" required>
+        <label for="tarea_id">Tarea:</label>
+        <input type="text" id="buscadorTarea" placeholder="Escribe una tarea" autocomplete="off" class="form-control">
+        <input type="hidden" name="tarea_id" id="tareaSeleccionada">
+        <div id="listaTareas" class="lista-sugerencias"></div>
+    </form>
+</div>
 
-                    <label for="tarea_id">Tarea:</label>
-                    <select name="tarea_id" id="tarea_id" required>
-                        @foreach ($tareas as $tarea)
-                        <option value="{{ $tarea->TAR_id }}">{{ $tarea->TAR_nombre }}</option>
-                        @endforeach
-                    </select>
-
-                </form>
-            </div>
             <div class="modal-footer">
                 <a href="javascript:;" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</a>
                 <button type="button" class="btn btn-success" id="btn-agregar" onclick="agregarHoras()">Agregar</button>
@@ -218,66 +219,79 @@ $('#modal-dialog .modal-body #voluntarios-seleccionados').append(
 
 
 
-    function agregarHoras() {
-        // Recolecta los voluntarios seleccionados
-        let voluntariosSeleccionadosJSON = JSON.stringify(voluntariosSeleccionados);
+function agregarHoras() {
+    // Recolecta los voluntarios seleccionados
+    let voluntariosSeleccionadosJSON = JSON.stringify(voluntariosSeleccionados);
 
-        // Verifica si el array de voluntarios seleccionados está vacío
-        if (voluntariosSeleccionados.length === 0) {
-            // Muestra el modal de SweetAlert como warning
-            swal({
-                title: 'Aviso',
-                text: 'Es necesario seleccionar al menos un voluntario antes de añadir horas.',
-                icon: 'warning',
-                buttons: {
-                    confirm: {
-                        text: 'OK',
-                        value: true,
-                        visible: true,
-                        className: 'btn btn-primary',
-                        closeModal: true
-                    }
+    // Captura el valor de las horas y tarea_id
+    let horas = $('#horas').val();
+    let tareaId = $('#tareaSeleccionada').val(); // Asegúrate de que este campo contiene el ID correcto
+
+    console.log("Horas: ", horas);
+    console.log("Tarea ID: ", tareaId);  // Verifica que se capture el valor correcto
+
+    // Verifica si el array de voluntarios seleccionados está vacío
+    if (voluntariosSeleccionados.length === 0) {
+        // Muestra el modal de SweetAlert como warning
+        swal({
+            title: 'Aviso',
+            text: 'Es necesario seleccionar al menos un voluntario antes de añadir horas.',
+            icon: 'warning',
+            buttons: {
+                confirm: {
+                    text: 'OK',
+                    value: true,
+                    visible: true,
+                    className: 'btn btn-primary',
+                    closeModal: true
                 }
-            });
-        } else {
-            // Envía los datos al servidor utilizando AJAX
-            $.ajax({
-                url: "{{ route('horas.añadir') }}",
-                method: "POST",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    voluntariosSeleccionados: voluntariosSeleccionadosJSON,
-                    horas: $('#horas').val(),
-                    tarea_id: $('#tarea_id').val()
-                },
-                success: function(response) {
-                    // Muestra el modal de SweetAlert de éxito
-                    swal({
-                        title: '¡Éxito!',
-                        text: 'Las horas han sido añadidas.',
-                        icon: 'success',
-                        buttons: {
-                            confirm: {
-                                text: 'OK',
-                                value: true,
-                                visible: true,
-                                className: 'btn btn-primary',
-                                closeModal: true,
-                            }
+            }
+        });
+    } else {
+        // Envía los datos al servidor utilizando AJAX
+        $.ajax({
+            url: "{{ route('horas.añadir') }}",
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                voluntariosSeleccionados: voluntariosSeleccionadosJSON,
+                horas: horas,
+                tarea_id: tareaId  // Asegúrate de enviar el ID correcto
+            },
+            success: function(response) {
+                // Muestra el modal de SweetAlert de éxito
+                swal({
+                    title: '¡Éxito!',
+                    text: 'Las horas han sido añadidas.',
+                    icon: 'success',
+                    buttons: {
+                        confirm: {
+                            text: 'OK',
+                            value: true,
+                            visible: true,
+                            className: 'btn btn-primary',
+                            closeModal: true,
                         }
-                    });
+                    }
+                });
 
-
-                    $('#modal-dialog').modal('hide');
-
-                },
-                error: function(xhr, status, error) {
-                    // Maneja cualquier error que ocurra durante la solicitud AJAX
-                    console.error(xhr.responseText);
-                }
-            });
-        }
+                $('#modal-dialog').modal('hide');
+            },
+            error: function(xhr, status, error) {
+                // Maneja cualquier error que ocurra durante la solicitud AJAX
+                console.error("Error en la solicitud AJAX:", xhr.responseText);
+                // Podrías mostrar un mensaje al usuario también
+                swal({
+                    title: 'Error',
+                    text: 'Hubo un problema al añadir las horas, por favor revisa los datos.',
+                    icon: 'error',
+                    button: 'Ok'
+                });
+            }
+        });
     }
+}
+
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -304,4 +318,105 @@ $('#modal-dialog .modal-body #voluntarios-seleccionados').append(
             botonTarea.style.display = isCardView ? 'none' : 'block';
         });
     });
+</script>
+<script>
+$(document).ready(function() {
+    // Manejo del autocompletado
+    $("#buscadorTarea").on('input', function() {
+        var inputValue = $(this).val();
+        if (inputValue.length > 1) {
+            $.ajax({
+                url: "/buscar-tareas",
+                type: "GET",
+                data: { query: inputValue },
+                success: function(data) {
+                    var listaTareas = $("#listaTareas");
+                    listaTareas.empty();
+                    if (data.length) {
+                        data.forEach(function(tarea) {
+                            listaTareas.append(`<div class='opcion-tarea' data-id='${tarea.id}'>${tarea.nombre}</div>`);
+                        });
+                        listaTareas.show(); // Muestra las sugerencias
+                    } else {
+                        listaTareas.hide(); // Oculta el contenedor si no hay datos
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error en la solicitud AJAX: " + error);
+                }
+            });
+        } else {
+            $("#listaTareas").empty().hide();
+        }
+    });
+
+    // Manejo de selección de tareas desde las sugerencias
+    $(document).on('click', '.opcion-tarea', function() {
+        var tareaNombre = $(this).text();
+        var tareaId = $(this).data('id');
+        $("#buscadorTarea").val(tareaNombre);
+        $("#tareaSeleccionada").val(tareaId);
+        console.log("Tarea ID seleccionada:", tareaId); // Depuración
+        $("#listaTareas").empty().hide();
+    });
+
+    // Función para añadir horas
+    $("#btn-agregar").on('click', function() {
+        let voluntariosSeleccionadosJSON = JSON.stringify(voluntariosSeleccionados);
+        let horas = $('#horas').val();
+        let tareaId = $('#tareaSeleccionada').val(); // Captura el ID de la tarea seleccionada
+        console.log("Enviando Tarea ID:", tareaId); // Depuración
+
+        if (voluntariosSeleccionados.length === 0) {
+            swal({
+                title: 'Aviso',
+                text: 'Es necesario seleccionar al menos un voluntario antes de añadir horas.',
+                icon: 'warning',
+                buttons: {
+                    confirm: {
+                        text: 'OK',
+                        value: true,
+                        visible: true,
+                        className: 'btn btn-primary',
+                        closeModal: true
+                    }
+                }
+            });
+        } else {
+            $.ajax({
+                url: "{{ route('horas.añadir') }}",
+                method: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    voluntariosSeleccionados: voluntariosSeleccionadosJSON,
+                    horas: horas,
+                    tarea_id: tareaId
+                },
+                success: function(response) {
+                    swal({
+                        title: '¡Éxito!',
+                        text: 'Las horas han sido añadidas.',
+                        icon: 'success',
+                        buttons: {
+                            confirm: {
+                                text: 'OK',
+                                value: true,
+                                visible: true,
+                                className: 'btn btn-primary',
+                                closeModal: true,
+                            }
+                        }
+                    });
+                    $('#modal-dialog').modal('hide');
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error durante la solicitud AJAX:", xhr.responseText);
+                }
+            });
+        }
+    });
+});
+
+
+
 </script>
