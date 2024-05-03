@@ -947,7 +947,26 @@ p#fixedColorText {
     #toggleViewButton {
         white-space: nowrap; /* Asegura que el texto del botón no se envuelva */
     }
+    .button-container .btn {
+        padding: .375rem .75rem;  /* Establece un padding uniforme */
+        font-size: 1rem;          /* Establece un tamaño de fuente uniforme */
+        line-height: 1.5;         /* Line-height para mantener el contenido centrado */
+        border-radius: .25rem;    /* Border-radius para los bordes redondeados */
+        margin-right: 10px;       /* Espacio entre los botones */
+    }
 
+    #demoButton {
+        background-color: #40bdee;  /* Azul celeste para el fondo */
+        color: white;               /* Blanco para el texto, para contraste */
+        border: none;               /* Opcional: elimina el borde si está presente */
+    }
+    
+    #demoButton:hover, #demoButton:focus {
+        background-color: #106292;  /* Un azul un poco más oscuro para el estado hover y focus */
+        color: white;
+    }
+    
+    
 
 
 
