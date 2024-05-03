@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Utils\ValidacionUtils;
+use App\Models\Coordinador;
 use App\Models\ImagenLugar;
 use Illuminate\Http\Request;
 use App\Models\Lugar;
@@ -18,13 +19,17 @@ class LugaresController extends Controller
 
         if (Auth::user()->is_admin) {
             $lugares = Lugar::all();
+            $coordinadores = Coordinador::all();
+            return view('lugares.index', ['lugares' => $lugares,'coordinadores' => $coordinadores]);
         } else {
             $coordinador = Auth::user()->coordinador;
             $lugares = $coordinador->lugares;
+            $lugaresAll = Lugar::all();
+            return view('lugares.index', ['lugares' => $lugares, 'lugaresAll' => $lugaresAll]);
         }
 
 
-        return view('lugares.index', ['lugares' => $lugares]);
+       
     }
 
 
@@ -111,5 +116,33 @@ class LugaresController extends Controller
         return redirect()->route('lugares.index')->with('success', 'Lugar actualizado exitosamente.');
     }
 
+
+
+    public function asignarCoordinador(Request $request)
+    {
+        // Validar la solicitud si es necesario
+    
+        $coordinadorId = Auth::user()->is_coordinador ? Auth::user()->coordinador->COO_id : $request->input('COO_id');
+        $lugarId = $request->input('LUG_id');
+    
+        $coordinador = Coordinador::where('COO_id', $coordinadorId)->first();
+        $lugar = Lugar::where('LUG_id', $lugarId)->first();
+    
+        $coordinador->lugares()->attach($lugar->LUG_id);
+    
+        $message = 'Coordinador asignado correctamente al lugar.';
+    
+        if (Auth::user()->is_admin) {
+            $lugares = Lugar::all();
+            $coordinadores = Coordinador::all();
+            return redirect()->route('lugares.index', ['lugares' => $lugares, 'coordinadores' => $coordinadores])->with('success', $message);
+        } else {
+            $coordinador = Auth::user()->coordinador;
+            $lugares = $coordinador->lugares;
+            $lugaresAll = Lugar::all();
+            return redirect()->route('lugares.index', ['lugares' => $lugares, 'lugaresAll' => $lugaresAll])->with('success', $message);
+        }
+    }
+    
 
 }

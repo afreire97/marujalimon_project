@@ -33,4 +33,80 @@
 </div>
 
 
+<div class="container d-flex justify-content-end">
+    <div class="row">
+        <div class="col">
+            <a href="#modal-dialog-tarea" class="btn btn-sm btn-success" id="tareaButton" data-bs-toggle="modal">Asignar nuevo lugar</a>
+        </div>
+    </div>
+</div>
+{{-- MODAL PARA AÑADIR TAREA --}}
+<div class="modal fade" id="modal-dialog-tarea">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Añadir lugar de trabajo</h4>
+            </div>
+            <div class="modal-body">
+                <!-- Formulario de añadir tarea -->
+                <form id="form-agregar-tarea" method="POST" action="{{ route('asignarCoordinador') }}">
+                    @csrf
+                    <input type="hidden" name="voluntariosSeleccionados" id="voluntariosSeleccionados"
+                        value="">
+                    <input type="hidden" name="lugar" id="lugar" value="{{ $lugar->LUG_id }}">
+
+                    @if (auth()->user()->is_coordinador)
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Lugares</label>
+                        <select name="LUG_id" id="LUG_id" required>
+                            @foreach ($lugaresAll as $lugar)
+                            <option value="{{ $lugar->LUG_id }}">{{ $lugar->LUG_nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @else
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Lugares</label>
+                        <select name="LUG_id" id="LUG_id" required>
+                            @foreach ($lugares as $lugar)
+                            <option value="{{ $lugar->LUG_id }}">{{ $lugar->LUG_nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @endif
+
+                    @if (auth()->user()->is_admin)
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Coordinadores</label>
+                        <select name="COO_id'" id="COO_id'" required>
+                            @foreach ($coordinadores as $coordinador)
+                            <option value="{{ $coordinador->COO_id }}">{{ $coordinador->COO_nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @else
+
+                    @endif
+                    
+                    
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-success" id="btn-añadirTarea"
+                    onclick="asignarLugar()">Añadir</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function asignarLugar() {
+    // Enviar el formulario
+    document.getElementById("form-agregar-tarea").submit();
+}
+
+</script>
+
 </x-layout>

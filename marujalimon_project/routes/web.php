@@ -73,6 +73,7 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
         'lugares' => 'lugar'
     ]);
 
+    Route::post('lugares/coordinador', [LugaresController::class, 'asignarCoordinador'])->name('asignarCoordinador');
     //RUTAS DE TAREAS
 
     Route::delete('/tareas/{tarea}', [TareasController::class, 'destroy'])->name('tareas.destroy');
