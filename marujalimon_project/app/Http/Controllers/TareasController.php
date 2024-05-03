@@ -131,14 +131,6 @@ class TareasController extends Controller
 
     }
 
-    public function buscar(Request $request)
-{
-    $query = $request->input('query');
-    $tareas = Tarea::where('TAR_nombre', 'LIKE', "%{$query}%")->get(['TAR_id as id', 'TAR_nombre as nombre']);
-    return response()->json($tareas);
-}
-
-
 
 }
 

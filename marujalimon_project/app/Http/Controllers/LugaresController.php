@@ -8,6 +8,7 @@ use App\Models\ImagenLugar;
 use Illuminate\Http\Request;
 use App\Models\Lugar;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class LugaresController extends Controller
 {
@@ -123,12 +124,16 @@ class LugaresController extends Controller
         // Validar la solicitud si es necesario
     
         $coordinadorId = Auth::user()->is_coordinador ? Auth::user()->coordinador->COO_id : $request->input('COO_id');
-        $lugarId = $request->input('LUG_id');
+        $lugarId = Auth::user()->is_coordinador ? $request->input('LUG_COO_id'): $request->input('LUG_id');
+        Log::info($coordinadorId . $lugarId);
     
         $coordinador = Coordinador::where('COO_id', $coordinadorId)->first();
         $lugar = Lugar::where('LUG_id', $lugarId)->first();
     
-        $coordinador->lugares()->attach($lugar->LUG_id);
+        $lugar->coordinadores()->attach($coordinador);
+
+
+        // $coordinador->lugares()->attach($lugar->);
     
         $message = 'Coordinador asignado correctamente al lugar.';
     

@@ -51,14 +51,13 @@
                 <!-- Formulario de añadir tarea -->
                 <form id="form-agregar-tarea" method="POST" action="{{ route('asignarCoordinador') }}">
                     @csrf
-                    <input type="hidden" name="voluntariosSeleccionados" id="voluntariosSeleccionados"
-                        value="">
-                    <input type="hidden" name="lugar" id="lugar" value="{{ $lugar->LUG_id }}">
+                   
+                   
 
                     @if (auth()->user()->is_coordinador)
                     <div class="mb-3">
                         <label for="descripcion" class="form-label">Lugares</label>
-                        <select name="LUG_id" id="LUG_id" required>
+                        <select name="LUG_COO_id" id="LUG_COO_id" required>
                             @foreach ($lugaresAll as $lugar)
                             <option value="{{ $lugar->LUG_id }}">{{ $lugar->LUG_nombre }}</option>
                             @endforeach
@@ -84,7 +83,7 @@
                             @endforeach
                         </select>
                     </div>
-                    @else
+                  
 
                     @endif
                     
