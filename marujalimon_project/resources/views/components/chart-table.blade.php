@@ -1,9 +1,13 @@
 <div class="mode-container" style="display: flex; align-items: center; justify-content: space-between; background-color: #008080; padding: 10px; border-radius: 5px; width: 100%;">
     <div style="flex-grow: 1; display: flex; justify-content: center;">
-    <div id="modeDisplay" style="color: white; font-size: 24px;">Modo Cartas</div>
+        <div id="modeDisplay" class="text-position" style="color: white; font-size: 24px;">Modo Cartas</div>
     </div>
-    <button id="toggleViewButton" class="btn btn-danger">Cambiar Modo</button>
+    <div class="button-container d-flex justify-content-end align-items-center">
+        <a href="#modal-dialog" class="btn btn-success" data-bs-toggle="modal" style="display: none;" id="demoButton">Añadir horas</a>
+        <button id="toggleViewButton" class="btn btn-danger">Cambiar Modo</button>
+    </div>
 </div>
+
 
 
 
@@ -15,55 +19,31 @@
 <!-- Tarjetas de voluntarios con nuevo estilo -->
 <div id="cardView" class="row mt-5">
     @foreach ($voluntarios as $voluntario)
-        <div class="col col-custom mb-4">
-            <div class="card h-100 border-0 shadow-sm">
-                <!-- Start of clickable image -->
-                <a href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}">
-                    <img src="{{ $voluntario->imagenPerfil ? $voluntario->imagenPerfil->IMG_path : 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg' }}"
-                        class="volunteer-card-img" alt="Imagen de perfil del voluntario">
-                </a>
-                <!-- End of clickable image -->
+    <div class="col col-custom mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <!-- Start of clickable image -->
+            <a href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}">
+                <img src="{{ $voluntario->imagenPerfil ? $voluntario->imagenPerfil->IMG_path : 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg' }}" class="volunteer-card-img" alt="Imagen de perfil del voluntario">
+            </a>
+            <!-- End of clickable image -->
 
-                <div class="volunteer-card-body">
-                    <h5 class="volunteer-card-title">
-                        <i class="fas fa-user"></i> {{ $voluntario->VOL_nombre }} {{ $voluntario->VOL_apellidos }}
-                    </h5>
-                    <p class="volunteer-card-text">
-                        <i class="fas fa-id-card"></i> DNI: {{ $voluntario->VOL_dni }}
-                    </p>
-                    <div class="volunteer-card-buttons">
-                        <a href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}"
-                            class="volunteer-info btn btn-primary">Más información</a>
-                        <a href="{{ route('voluntarios.edit', ['voluntario' => $voluntario]) }}"
-                            class="volunteer-modify btn btn-primary">Modificar</a>
-                    </div>
+            <div class="volunteer-card-body">
+                <h5 class="volunteer-card-title">
+                    <i class="fas fa-user"></i> {{ $voluntario->VOL_nombre }} {{ $voluntario->VOL_apellidos }}
+                </h5>
+                <p class="volunteer-card-text">
+                    <i class="fas fa-id-card"></i> DNI: {{ $voluntario->VOL_dni }}
+                </p>
+                <div class="volunteer-card-buttons">
+                    <a href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}" class="volunteer-info btn btn-primary">Más información</a>
+                    <a href="{{ route('voluntarios.edit', ['voluntario' => $voluntario]) }}" class="volunteer-modify btn btn-primary">Modificar</a>
                 </div>
             </div>
         </div>
+    </div>
     @endforeach
 </div>
 
-
-
-
-
-<div>
-    <div class="container d-flex justify-content-end mb-2">
-        <div class="row">
-            <div class="col">
-                <a href="#modal-dialog" class="btn btn-sm btn-success" data-bs-toggle="modal" id="demoButton"
-                    style="display: none;">Añadir horas</a>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- Botón "Añadir tarea" -->
-
-
-</div>
-
-<!-- Botón "Demo" -->
 
 
 <!-- Modal -->
@@ -88,7 +68,7 @@
                     <label for="tarea_id">Tarea:</label>
                     <select name="tarea_id" id="tarea_id" required>
                         @foreach ($tareas as $tarea)
-                            <option value="{{ $tarea->TAR_id }}">{{ $tarea->TAR_nombre }}</option>
+                        <option value="{{ $tarea->TAR_id }}">{{ $tarea->TAR_nombre }}</option>
                         @endforeach
                     </select>
 
@@ -96,8 +76,7 @@
             </div>
             <div class="modal-footer">
                 <a href="javascript:;" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</a>
-                <button type="button" class="btn btn-success" id="btn-agregar"
-                    onclick="agregarHoras()">Agregar</button>
+                <button type="button" class="btn btn-success" id="btn-agregar" onclick="agregarHoras()">Agregar</button>
 
 
             </div>
@@ -131,18 +110,18 @@
             </thead>
             <tbody>
                 @foreach ($voluntarios_all as $voluntario)
-                    <tr>
-                        <td>{{ $voluntario->VOL_id }}</td>
-                        <td>{{ $voluntario->VOL_nombre }}</td>
-                        <td>{{ $voluntario->VOL_apellidos }}</td>
-                        <td>{{ $voluntario->VOL_dni }}</td>
-                        <td>{{ $voluntario->VOL_fecha_nac }}</td>
-                        <td>{{ $voluntario->VOL_domicilio }}</td>
-                        <td>{{ $voluntario->VOL_cp }}</td>
-                        <td>{{ $voluntario->VOL_tel1 }}</td>
-                        <td>{{ $voluntario->VOL_sexo }}</td>
-                        <td>{{ $voluntario->VOL_mail }}</td>
-                    </tr>
+                <tr>
+                    <td>{{ $voluntario->VOL_id }}</td>
+                    <td>{{ $voluntario->VOL_nombre }}</td>
+                    <td>{{ $voluntario->VOL_apellidos }}</td>
+                    <td>{{ $voluntario->VOL_dni }}</td>
+                    <td>{{ $voluntario->VOL_fecha_nac }}</td>
+                    <td>{{ $voluntario->VOL_domicilio }}</td>
+                    <td>{{ $voluntario->VOL_cp }}</td>
+                    <td>{{ $voluntario->VOL_tel1 }}</td>
+                    <td>{{ $voluntario->VOL_sexo }}</td>
+                    <td>{{ $voluntario->VOL_mail }}</td>
+                </tr>
                 @endforeach
             </tbody>
         </table>
@@ -150,9 +129,9 @@
 </div>
 
 @if ($voluntarios->count() > 0)
-    <div class="paginacion" id="paginacion">
-        {{ $voluntarios->links() }}
-    </div>
+<div class="paginacion" id="paginacion">
+    {{ $voluntarios->links() }}
+</div>
 @endif
 
 
@@ -195,7 +174,6 @@
     });
 </script>
 <script>
-
     let table = $('#data-table-default').DataTable({
         responsive: true,
         select: {
@@ -207,31 +185,38 @@
     let voluntariosNombres = [];
 
     $('#data-table-default tbody').on('click', 'tr', function() {
-        let voluntarioId = table.row(this).data()[0];
-        let voluntarioNombre = table.row(this).data()[1];
+    let voluntarioId = table.row(this).data()[0];
+    let voluntarioNombre = table.row(this).data()[1];
 
-        let index = voluntariosSeleccionados.indexOf(voluntarioId);
+    let index = voluntariosSeleccionados.indexOf(voluntarioId);
 
-        if (index === -1) {
-            voluntariosSeleccionados.push(voluntarioId);
-            voluntariosNombres.push(voluntarioNombre);
-        } else {
-            voluntariosSeleccionados.splice(index, 1);
-            voluntariosNombres.splice(index, 1);
-        }
+    if (index === -1) {
+        voluntariosSeleccionados.push(voluntarioId);
+        voluntariosNombres.push(voluntarioNombre);
+    } else {
+        voluntariosSeleccionados.splice(index, 1);
+        voluntariosNombres.splice(index, 1);
+    }
 
-        console.log("Voluntarios seleccionados:", voluntariosSeleccionados);
-        console.log("Voluntarios nombres:", voluntariosNombres);
+    console.log("Voluntarios seleccionados:", voluntariosSeleccionados);
+    console.log("Voluntarios nombres:", voluntariosNombres);
 
-        $('#modal-dialog .modal-body #voluntarios-seleccionados').empty();
+    $('#modal-dialog .modal-body #voluntarios-seleccionados').empty();
 
-        // Agrega los nombres de los voluntarios seleccionados al div en el cuerpo del modal
-        voluntariosNombres.forEach(nombre => {
-            $('#modal-dialog .modal-body #voluntarios-seleccionados').append(
-                '<p>Voluntario seleccionado: ' + nombre + '</p>');
-        });
+// Crea una cadena con los nombres separados por comas, pero con 'y' antes del último nombre
+let nombresConcatenados = '';
+if (voluntariosNombres.length > 1) {
+    nombresConcatenados = voluntariosNombres.slice(0, -1).map(nombre => `<strong>${nombre}</strong>`).join(', ') + ' y ' + `<strong>${voluntariosNombres[voluntariosNombres.length - 1]}</strong>`;
+} else if (voluntariosNombres.length === 1) {
+    nombresConcatenados = `<strong>${voluntariosNombres[0]}</strong>`;
+}
 
-    });
+// Agrega la cadena al div en el cuerpo del modal
+$('#modal-dialog .modal-body #voluntarios-seleccionados').append(
+    `<p>Se le <strong>añadirán horas</strong> a ${nombresConcatenados}</p>`);
+});
+
+
 
     function agregarHoras() {
         // Recolecta los voluntarios seleccionados
@@ -320,4 +305,3 @@
         });
     });
 </script>
-
