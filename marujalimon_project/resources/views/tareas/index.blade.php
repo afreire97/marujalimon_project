@@ -118,8 +118,7 @@
                                         action="{{ route('tareas.destroy', ['tarea' => $tarea]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" class="btn btn-danger" onclick="eliminarTarea()">Eliminar
-                                            Tarea</button>
+                                        <button type="button" class="btn btn-danger" onclick="eliminarTarea('{{ $tarea->TAR_id }}')">Eliminar Tarea</button>
                                             
                                     </form>
                                 </div>
@@ -288,36 +287,24 @@
 
     {{-- SCRIPT PARA BORRAR TAREA --}}
     <script>
-        function eliminarTarea() {
-            swal({
-                title: '¿Estás seguro?',
-                text: 'Esta acción eliminará la tarea permanentemente.',
-                icon: 'warning',
-                buttons: {
-                    cancel: {
-                        text: 'Cancelar',
-                        value: false,
-                        visible: true,
-                        className: 'btn btn-secondary',
-                        closeModal: true,
-                    },
-                    confirm: {
-                        text: 'Eliminar',
-                        value: true,
-                        visible: true,
-                        className: 'btn btn-danger',
-                        closeModal: false,
-                    }
-                }
-            }).then((confirmar) => {
-                if (confirmar) {
-                    // Si el usuario confirma, enviar el formulario para eliminar la tarea
-                    document.getElementById('deleteForm').submit();
-                } else {
-                    // Si el usuario cancela, no hacer nada
-                }
-            });
+        function eliminarTarea(id) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '¡Sí, bórralo!',
+        cancelButtonText: 'Cancelar',
+        focusCancel: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('deleteForm').action = "/tareas/" + id;
+            document.getElementById('deleteForm').submit();
         }
+    })
+}
     </script>
 
     <script>

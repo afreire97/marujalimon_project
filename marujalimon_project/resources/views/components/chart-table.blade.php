@@ -185,113 +185,114 @@
     let voluntariosSeleccionados = [];
     let voluntariosNombres = [];
 
-    $('#data-table-default tbody').on('click', 'tr', function() {
-    let voluntarioId = table.row(this).data()[0];
-    let voluntarioNombre = table.row(this).data()[1];
+    $('#data-table-default tbody').off('click').on('click', 'tr', function() {
+        let voluntarioId = table.row(this).data()[0];
+        let voluntarioNombre = table.row(this).data()[1];
 
-    let index = voluntariosSeleccionados.indexOf(voluntarioId);
+        console.log("Voluntario ID:", voluntarioId); // Nuevo console.log
+        console.log("Voluntario Nombre:", voluntarioNombre); // Nuevo console.log
 
-    if (index === -1) {
-        voluntariosSeleccionados.push(voluntarioId);
-        voluntariosNombres.push(voluntarioNombre);
-    } else {
-        voluntariosSeleccionados.splice(index, 1);
-        voluntariosNombres.splice(index, 1);
-    }
+        let index = voluntariosSeleccionados.indexOf(voluntarioId);
 
-    console.log("Voluntarios seleccionados:", voluntariosSeleccionados);
-    console.log("Voluntarios nombres:", voluntariosNombres);
+        if (index === -1) {
+            voluntariosSeleccionados.push(voluntarioId);
+            voluntariosNombres.push(voluntarioNombre);
+        } else {
+            voluntariosSeleccionados.splice(index, 1);
+            voluntariosNombres.splice(index, 1);
+        }
 
-    $('#modal-dialog .modal-body #voluntarios-seleccionados').empty();
+        console.log("Voluntarios seleccionados:", voluntariosSeleccionados);
+        console.log("Voluntarios nombres:", voluntariosNombres);
 
-// Crea una cadena con los nombres separados por comas, pero con 'y' antes del último nombre
-let nombresConcatenados = '';
-if (voluntariosNombres.length > 1) {
-    nombresConcatenados = voluntariosNombres.slice(0, -1).map(nombre => `<strong>${nombre}</strong>`).join(', ') + ' y ' + `<strong>${voluntariosNombres[voluntariosNombres.length - 1]}</strong>`;
-} else if (voluntariosNombres.length === 1) {
-    nombresConcatenados = `<strong>${voluntariosNombres[0]}</strong>`;
-}
+        $('#modal-dialog .modal-body #voluntarios-seleccionados').empty();
 
-// Agrega la cadena al div en el cuerpo del modal
-$('#modal-dialog .modal-body #voluntarios-seleccionados').append(
-    `<p>Se le <strong>añadirán horas</strong> a ${nombresConcatenados}</p>`);
-});
+        // Crea una cadena con los nombres separados por comas, pero con 'y' antes del último nombre
+        let nombresConcatenados = '';
+        if (voluntariosNombres.length > 1) {
+            nombresConcatenados = voluntariosNombres.slice(0, -1).map(nombre => `<strong>${nombre}</strong>`).join(', ') + ' y ' + `<strong>${voluntariosNombres[voluntariosNombres.length - 1]}</strong>`;
+        } else if (voluntariosNombres.length === 1) {
+            nombresConcatenados = `<strong>${voluntariosNombres[0]}</strong>`;
+        }
 
+        // Agrega la cadena al div en el cuerpo del modal
+        $('#modal-dialog .modal-body #voluntarios-seleccionados').append(
+            `<p>Se le <strong>añadirán horas</strong> a ${nombresConcatenados}</p>`);
+    });
 
+    function agregarHoras() {
+        // Recolecta los voluntarios seleccionados
+        let voluntariosSeleccionadosJSON = JSON.stringify(voluntariosSeleccionados);
 
-function agregarHoras() {
-    // Recolecta los voluntarios seleccionados
-    let voluntariosSeleccionadosJSON = JSON.stringify(voluntariosSeleccionados);
+        // Captura el valor de las horas y tarea_id
+        let horas = $('#horas').val();
+        let tareaId = $('#tareaSeleccionada').val(); // Asegúrate de que este campo contiene el ID correcto
 
-    // Captura el valor de las horas y tarea_id
-    let horas = $('#horas').val();
-    let tareaId = $('#tareaSeleccionada').val(); // Asegúrate de que este campo contiene el ID correcto
+        console.log("Horas: ", horas);
+        console.log("Tarea ID: ", tareaId);  // Verifica que se capture el valor correcto
+        console.log("Voluntarios seleccionados JSON: ", voluntariosSeleccionadosJSON); // Nuevo console.log
 
-    console.log("Horas: ", horas);
-    console.log("Tarea ID: ", tareaId);  // Verifica que se capture el valor correcto
-
-    // Verifica si el array de voluntarios seleccionados está vacío
-    if (voluntariosSeleccionados.length === 0) {
-        // Muestra el modal de SweetAlert como warning
-        swal({
-            title: 'Aviso',
-            text: 'Es necesario seleccionar al menos un voluntario antes de añadir horas.',
-            icon: 'warning',
-            buttons: {
-                confirm: {
-                    text: 'OK',
-                    value: true,
-                    visible: true,
-                    className: 'btn btn-primary',
-                    closeModal: true
-                }
-            }
-        });
-    } else {
-        // Envía los datos al servidor utilizando AJAX
-        $.ajax({
-            url: "{{ route('horas.añadir') }}",
-            method: "POST",
-            data: {
-                _token: "{{ csrf_token() }}",
-                voluntariosSeleccionados: voluntariosSeleccionadosJSON,
-                horas: horas,
-                tarea_id: tareaId  // Asegúrate de enviar el ID correcto
-            },
-            success: function(response) {
-                // Muestra el modal de SweetAlert de éxito
-                swal({
-                    title: '¡Éxito!',
-                    text: 'Las horas han sido añadidas.',
-                    icon: 'success',
-                    buttons: {
-                        confirm: {
-                            text: 'OK',
-                            value: true,
-                            visible: true,
-                            className: 'btn btn-primary',
-                            closeModal: true,
-                        }
+        // Verifica si el array de voluntarios seleccionados está vacío
+        if (voluntariosSeleccionados.length === 0) {
+            // Muestra el modal de SweetAlert como warning
+            swal({
+                title: 'Aviso',
+                text: 'Es necesario seleccionar al menos un voluntario antes de añadir horas.',
+                icon: 'warning',
+                buttons: {
+                    confirm: {
+                        text: 'OK',
+                        value: true,
+                        visible: true,
+                        className: 'btn btn-primary',
+                        closeModal: true
                     }
-                });
+                }
+            });
+        } else {
+            // Envía los datos al servidor utilizando AJAX
+            $.ajax({
+                url: "{{ route('horas.añadir') }}",
+                method: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    voluntariosSeleccionados: voluntariosSeleccionadosJSON,
+                    horas: horas,
+                    tarea_id: tareaId  // Asegúrate de enviar el ID correcto
+                },
+                success: function(response) {
+                    // Muestra el modal de SweetAlert de éxito
+                    swal({
+                        title: '¡Éxito!',
+                        text: 'Las horas han sido añadidas.',
+                        icon: 'success',
+                        buttons: {
+                            confirm: {
+                                text: 'OK',
+                                value: true,
+                                visible: true,
+                                className: 'btn btn-primary',
+                                closeModal: true,
+                            }
+                        }
+                    });
 
-                $('#modal-dialog').modal('hide');
-            },
-            error: function(xhr, status, error) {
-                // Maneja cualquier error que ocurra durante la solicitud AJAX
-                console.error("Error en la solicitud AJAX:", xhr.responseText);
-                // Podrías mostrar un mensaje al usuario también
-                swal({
-                    title: 'Error',
-                    text: 'Hubo un problema al añadir las horas, por favor revisa los datos.',
-                    icon: 'error',
-                    button: 'Ok'
-                });
-            }
-        });
+                    $('#modal-dialog').modal('hide');
+                },
+                error: function(xhr, status, error) {
+                    // Maneja cualquier error que ocurra durante la solicitud AJAX
+                    console.error("Error en la solicitud AJAX:", xhr.responseText);
+                    // Podrías mostrar un mensaje al usuario también
+                    swal({
+                        title: 'Error',
+                        text: 'Hubo un problema al añadir las horas, por favor revisa los datos.',
+                        icon: 'error',
+                        button: 'Ok'
+                    });
+                }
+            });
+        }
     }
-}
-
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -319,6 +320,8 @@ function agregarHoras() {
         });
     });
 </script>
+
+
 <script>
 $(document).ready(function() {
     // Manejo del autocompletado
@@ -358,62 +361,6 @@ $(document).ready(function() {
         $("#tareaSeleccionada").val(tareaId);
         console.log("Tarea ID seleccionada:", tareaId); // Depuración
         $("#listaTareas").empty().hide();
-    });
-
-    // Función para añadir horas
-    $("#btn-agregar").on('click', function() {
-        let voluntariosSeleccionadosJSON = JSON.stringify(voluntariosSeleccionados);
-        let horas = $('#horas').val();
-        let tareaId = $('#tareaSeleccionada').val(); // Captura el ID de la tarea seleccionada
-        console.log("Enviando Tarea ID:", tareaId); // Depuración
-
-        if (voluntariosSeleccionados.length === 0) {
-            swal({
-                title: 'Aviso',
-                text: 'Es necesario seleccionar al menos un voluntario antes de añadir horas.',
-                icon: 'warning',
-                buttons: {
-                    confirm: {
-                        text: 'OK',
-                        value: true,
-                        visible: true,
-                        className: 'btn btn-primary',
-                        closeModal: true
-                    }
-                }
-            });
-        } else {
-            $.ajax({
-                url: "{{ route('horas.añadir') }}",
-                method: "POST",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    voluntariosSeleccionados: voluntariosSeleccionadosJSON,
-                    horas: horas,
-                    tarea_id: tareaId
-                },
-                success: function(response) {
-                    swal({
-                        title: '¡Éxito!',
-                        text: 'Las horas han sido añadidas.',
-                        icon: 'success',
-                        buttons: {
-                            confirm: {
-                                text: 'OK',
-                                value: true,
-                                visible: true,
-                                className: 'btn btn-primary',
-                                closeModal: true,
-                            }
-                        }
-                    });
-                    $('#modal-dialog').modal('hide');
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error durante la solicitud AJAX:", xhr.responseText);
-                }
-            });
-        }
     });
 });
 
