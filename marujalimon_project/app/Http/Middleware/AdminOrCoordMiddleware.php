@@ -32,13 +32,6 @@ class AdminOrCoordMiddleware
 
                 if ($user->is_coordinador) {
                     return redirect()->route('dashboard');
-                } elseif ($user->is_voluntario) {
-
-                    if ($request->route()->getName() === 'mostrarHorasPorMes') {
-                        return $next($request);
-
-                    }
-                    return redirect()->route('voluntario_logeado.index');
                 }
 
             }
@@ -66,8 +59,21 @@ class AdminOrCoordMiddleware
 
         }
 
-        return $next($request);
 
+
+
+        if($user->is_admin || $user->is_coordinador) return $next($request);
+
+        elseif ($user->is_voluntario) {
+
+            if ($request->route()->getName() === 'mostrarHorasPorMes') {
+                return $next($request);
+
+            }
+        }
+
+
+        return redirect()->route('voluntario_logeado.index');
 
 
 
