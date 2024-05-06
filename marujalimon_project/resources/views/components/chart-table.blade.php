@@ -188,15 +188,17 @@
     $('#data-table-default tbody').off('click').on('click', 'tr', function() {
         let voluntarioId = table.row(this).data()[0];
         let voluntarioNombre = table.row(this).data()[1];
+        let voluntarioApellido = table.row(this).data()[2];
 
         console.log("Voluntario ID:", voluntarioId); // Nuevo console.log
         console.log("Voluntario Nombre:", voluntarioNombre); // Nuevo console.log
+        console.log("Voluntario Apellido:", voluntarioApellido); // Nuevo console.log
 
         let index = voluntariosSeleccionados.indexOf(voluntarioId);
 
         if (index === -1) {
             voluntariosSeleccionados.push(voluntarioId);
-            voluntariosNombres.push(voluntarioNombre);
+            voluntariosNombres.push(voluntarioNombre + ' ' + voluntarioApellido); // Modifica esta línea
         } else {
             voluntariosSeleccionados.splice(index, 1);
             voluntariosNombres.splice(index, 1);
@@ -210,7 +212,7 @@
         // Crea una cadena con los nombres separados por comas, pero con 'y' antes del último nombre
         let nombresConcatenados = '';
         if (voluntariosNombres.length > 1) {
-            nombresConcatenados = voluntariosNombres.slice(0, -1).map(nombre => `<strong>${nombre}</strong>`).join(', ') + ' y ' + `<strong>${voluntariosNombres[voluntariosNombres.length - 1]}</strong>`;
+            nombresConcatenados = voluntariosNombres.slice(0, -1).map(nombre => `<strong>${nombre}</strong>`).join(', ') + ' y a ' + `<strong>${voluntariosNombres[voluntariosNombres.length - 1]}</strong>.`;
         } else if (voluntariosNombres.length === 1) {
             nombresConcatenados = `<strong>${voluntariosNombres[0]}</strong>`;
         }
