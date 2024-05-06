@@ -82,6 +82,8 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
     Route::put('/tareas', [TareasController::class,'update'])->name('tareas.update');
 
     Route::get('/buscar-tareas', [TareasController::class, 'buscar'])->name('tareas.buscar');
+    Route::get('/tareas/{tarea}/lugar', [TareasController::class, 'mostrarLugar'])->name('tareas.mostrarLugar');
+
     
 
 
