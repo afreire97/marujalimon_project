@@ -221,6 +221,7 @@
         $('#modal-dialog .modal-body #voluntarios-seleccionados').append(
             `<p>Se le <strong>añadirán horas</strong> a ${nombresConcatenados}</p>`);
     });
+    
 
     function agregarHoras() {
         // Recolecta los voluntarios seleccionados
