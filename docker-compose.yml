@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./marujalimon_project
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"
+    volumes:
+      - ./marujalimon_project:/var/www/html
+    depends_on:
+      - mysql_db
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql_db
+      - DB_PORT=3306
+      - DB_DATABASE=maruja_limon_db
+      - DB_USERNAME=root
+      - DB_PASSWORD=1234
+
+  mysql_db:
+    image: mysql:latest
+    ports:
+      - "3306:3306"  # Mapea el puerto 3306 del contenedor al puerto 3306 del host
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: maruja_limon_db

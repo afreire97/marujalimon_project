@@ -69,9 +69,11 @@
                     <li class="dropdown">
                         <a href="#" data-bs-toggle="dropdown">VOLUNTARIOS<b class="caret"></b></a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ route('voluntarios.create') }}">Añadir nuevo
-                                <a class="dropdown-item" href="{{ route('voluntarios.index') }}">Listar voluntarios</a>
-                                </a>
+                            <a class="dropdown-item" href="{{ route('voluntarios.create') }}">Añadir nuevo</a>
+
+                              @if (auth()->user()->is_admin || auth()->user()->is_coordinador)
+                              <a class="dropdown-item" href="{{ route('voluntarios.index') }}">Listar voluntarios</a>
+                              @endif
 
                         </div>
                     </li>
