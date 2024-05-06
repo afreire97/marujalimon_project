@@ -139,6 +139,16 @@ class TareasController extends Controller
 }
 
 
+public function mostrarLugar(Tarea $tarea)
+{
+    $lugar = $tarea->lugar;
+
+    return response()->json($lugar);
+}
+
+
+
+
 
 }
 
