@@ -21,7 +21,7 @@ class LugaresController extends Controller
         if (Auth::user()->is_admin) {
             $lugares = Lugar::all();
             $coordinadores = Coordinador::all();
-            return view('lugares.index', ['lugares' => $lugares,'coordinadores' => $coordinadores]);
+            return view('lugares.index', ['lugares' => $lugares, 'coordinadores' => $coordinadores]);
         } else {
             $coordinador = Auth::user()->coordinador;
             $lugares = $coordinador->lugares;
@@ -30,7 +30,7 @@ class LugaresController extends Controller
         }
 
 
-       
+
     }
 
 
@@ -122,32 +122,38 @@ class LugaresController extends Controller
     public function asignarCoordinador(Request $request)
     {
         // Validar la solicitud si es necesario
-    
-        $coordinadorId = Auth::user()->is_coordinador ? Auth::user()->coordinador->COO_id : $request->input('COO_id');
-        $lugarId = Auth::user()->is_coordinador ? $request->input('LUG_COO_id'): $request->input('LUG_id');
-        Log::info($coordinadorId . $lugarId);
-    
-        $coordinador = Coordinador::where('COO_id', $coordinadorId)->first();
-        $lugar = Lugar::where('LUG_id', $lugarId)->first();
-    
-        $lugar->coordinadores()->attach($coordinador);
 
+        $user = Auth::user();
+        if ($user->is_coordinador) {
+            $coordinadorId = $user->coordinador->COO_id;
+        } elseif ($user->is_admin) {
+            $coordinadorId = $request->input('COO_id');
+        }
 
-        // $coordinador->lugares()->attach($lugar->);
-    
-        $message = 'Coordinador asignado correctamente al lugar.';
-    
-        if (Auth::user()->is_admin) {
+        $lugarId = $user->is_coordinador ? $request->input('LUG_COO_id') : $request->input('LUG_id');
+
+        // Verificar si el coordinador ya está asociado al lugar
+        $lugar = Lugar::find($lugarId);
+        if ($lugar->coordinadores->contains('COO_id', $coordinadorId)) {
+            $message = 'El coordinador ya está asignado a este lugar.';
+        } else {
+            $coordinador = Coordinador::find($coordinadorId);
+            $lugar->coordinadores()->attach($coordinador);
+            $message = 'Coordinador asignado correctamente al lugar.';
+        }
+
+        // Redireccionar con el mensaje apropiado
+        if ($user->is_admin) {
             $lugares = Lugar::all();
             $coordinadores = Coordinador::all();
             return redirect()->route('lugares.index', ['lugares' => $lugares, 'coordinadores' => $coordinadores])->with('success', $message);
         } else {
-            $coordinador = Auth::user()->coordinador;
+            $coordinador = $user->coordinador;
             $lugares = $coordinador->lugares;
             $lugaresAll = Lugar::all();
             return redirect()->route('lugares.index', ['lugares' => $lugares, 'lugaresAll' => $lugaresAll])->with('success', $message);
         }
     }
-    
+
 
 }
