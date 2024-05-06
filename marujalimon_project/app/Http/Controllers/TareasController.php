@@ -131,6 +131,7 @@ class TareasController extends Controller
 
     }
 
+
     public function buscar(Request $request)
 {
     $query = $request->input('query');
