@@ -327,7 +327,7 @@ $(document).ready(function() {
     // Manejo del autocompletado
     $("#buscadorTarea").on('input', function() {
         var inputValue = $(this).val();
-        if (inputValue.length > 1) {
+        if (inputValue.length >=1) {
             $.ajax({
                 url: "/buscar-tareas",
                 type: "GET",
