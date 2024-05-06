@@ -22,13 +22,11 @@ document.addEventListener("DOMContentLoaded", function() {
             cardView.style.display = "none";
             tableView.style.display = "block";
             paginacion.style.display = "none";
-            modeDisplay.textContent = "Modo Tabla"; // Cambia el texto a Modo Tabla
         } else {
             // De lo contrario, muestra la vista de tarjetas y oculta la vista de tabla
             cardView.style.display = "flex";
             tableView.style.display = "none";
             paginacion.style.display = "block";
-            modeDisplay.textContent = "Modo Cartas"; // Cambia el texto a Modo Cartas
             reflowCardLayout();
         }
     });

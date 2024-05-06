@@ -15,9 +15,9 @@
     <script src="{{ asset('tabla/assets/plugins/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
     <div class="mode-container" style="display: flex; align-items: center; justify-content: space-between; background-color: #008080; padding: 10px; border-radius: 5px; width: 100%;">
     <div style="flex-grow: 1; display: flex; justify-content: center;">
-    <div id="modeDisplay" style="color: white; font-size: 24px;">Modo Cartas</div>
+    <div id="modeDisplay" style="color: white; font-size: 24px;">Coordinadores</div>
     </div>
-    <button id="toggleViewButton" class="btn btn-danger">Cambiar Modo</button>
+    <button id="toggleViewButton" class="btn btn-danger">Cambiar a Tabla</button>
 </div>
 
 
@@ -142,6 +142,16 @@
         });
     </script>
     <script src="{{ asset('js/card-table/switchCardTable.js') }}"></script>
+    <script>
+document.getElementById("toggleViewButton").addEventListener("click", function() {
+    var button = document.getElementById("toggleViewButton");
+    if (button.innerHTML === "Cambiar a Tabla") {
+        button.innerHTML = "Cambiar a Cartas";
+    } else {
+        button.innerHTML = "Cambiar a Tabla";
+    }
+});
+</script>
 
 
 </x-layout>
