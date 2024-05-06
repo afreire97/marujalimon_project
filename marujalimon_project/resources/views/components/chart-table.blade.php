@@ -1,10 +1,10 @@
 <div class="mode-container" style="display: flex; align-items: center; justify-content: space-between; background-color: #008080; padding: 10px; border-radius: 5px; width: 100%;">
     <div style="flex-grow: 1; display: flex; justify-content: center;">
-        <div id="modeDisplay" class="text-position" style="color: white; font-size: 24px;">Modo Cartas</div>
+        <div id="modeDisplay" class="text-position" style="color: white; font-size: 24px;">Voluntarios</div>
     </div>
     <div class="button-container d-flex justify-content-end align-items-center">
         <a href="#modal-dialog" class="btn btn-success" data-bs-toggle="modal" style="display: none;" id="demoButton">Añadir horas</a>
-        <button id="toggleViewButton" class="btn btn-danger">Cambiar Modo</button>
+        <button id="toggleViewButton" class="btn btn-danger">Cambiar a Tabla</button>
     </div>
 </div>
 
@@ -57,23 +57,23 @@
                 <h4 class="modal-title">Añadir horas</h4>
             </div>
             <!-- Modal body -->
-<div class="modal-body">
-    <!-- Aquí está el formulario -->
-    <form>
-        @csrf
-        <input type="hidden" name="voluntariosSeleccionados" id="voluntariosSeleccionados" value="">
+            <div class="modal-body">
+                <!-- Aquí está el formulario -->
+                <form>
+                    @csrf
+                    <input type="hidden" name="voluntariosSeleccionados" id="voluntariosSeleccionados" value="">
 
-        <div id="voluntarios-seleccionados"></div>
+                    <div id="voluntarios-seleccionados"></div>
 
-        <label for="horas">Horas:</label>
-        <input type="number" name="horas" id="horas" required>
+                    <label for="horas">Horas:</label>
+                    <input type="number" name="horas" id="horas" required>
 
-        <label for="tarea_id">Tarea:</label>
-        <input type="text" id="buscadorTarea" placeholder="Escribe una tarea" autocomplete="off" class="form-control">
-        <input type="hidden" name="tarea_id" id="tareaSeleccionada">
-        <div id="listaTareas" class="lista-sugerencias"></div>
-    </form>
-</div>
+                    <label for="tarea_id">Tarea:</label>
+                    <input type="text" id="buscadorTarea" placeholder="Escribe una tarea" autocomplete="off" class="form-control">
+                    <input type="hidden" name="tarea_id" id="tareaSeleccionada">
+                    <div id="listaTareas" class="lista-sugerencias"></div>
+                </form>
+            </div>
 
             <div class="modal-footer">
                 <a href="javascript:;" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</a>
@@ -188,15 +188,17 @@
     $('#data-table-default tbody').off('click').on('click', 'tr', function() {
         let voluntarioId = table.row(this).data()[0];
         let voluntarioNombre = table.row(this).data()[1];
+        let voluntarioApellido = table.row(this).data()[2];
 
         console.log("Voluntario ID:", voluntarioId); // Nuevo console.log
         console.log("Voluntario Nombre:", voluntarioNombre); // Nuevo console.log
+        console.log("Voluntario Apellido:", voluntarioApellido); // Nuevo console.log
 
         let index = voluntariosSeleccionados.indexOf(voluntarioId);
 
         if (index === -1) {
             voluntariosSeleccionados.push(voluntarioId);
-            voluntariosNombres.push(voluntarioNombre);
+            voluntariosNombres.push(voluntarioNombre + ' ' + voluntarioApellido); // Modifica esta línea
         } else {
             voluntariosSeleccionados.splice(index, 1);
             voluntariosNombres.splice(index, 1);
@@ -210,7 +212,7 @@
         // Crea una cadena con los nombres separados por comas, pero con 'y' antes del último nombre
         let nombresConcatenados = '';
         if (voluntariosNombres.length > 1) {
-            nombresConcatenados = voluntariosNombres.slice(0, -1).map(nombre => `<strong>${nombre}</strong>`).join(', ') + ' y ' + `<strong>${voluntariosNombres[voluntariosNombres.length - 1]}</strong>`;
+            nombresConcatenados = voluntariosNombres.slice(0, -1).map(nombre => `<strong>${nombre}</strong>`).join(', ') + ' y a ' + `<strong>${voluntariosNombres[voluntariosNombres.length - 1]}</strong>.`;
         } else if (voluntariosNombres.length === 1) {
             nombresConcatenados = `<strong>${voluntariosNombres[0]}</strong>`;
         }
@@ -230,7 +232,7 @@
         let tareaId = $('#tareaSeleccionada').val(); // Asegúrate de que este campo contiene el ID correcto
 
         console.log("Horas: ", horas);
-        console.log("Tarea ID: ", tareaId);  // Verifica que se capture el valor correcto
+        console.log("Tarea ID: ", tareaId); // Verifica que se capture el valor correcto
         console.log("Voluntarios seleccionados JSON: ", voluntariosSeleccionadosJSON); // Nuevo console.log
 
         // Verifica si el array de voluntarios seleccionados está vacío
@@ -259,7 +261,7 @@
                     _token: "{{ csrf_token() }}",
                     voluntariosSeleccionados: voluntariosSeleccionadosJSON,
                     horas: horas,
-                    tarea_id: tareaId  // Asegúrate de enviar el ID correcto
+                    tarea_id: tareaId // Asegúrate de enviar el ID correcto
                 },
                 success: function(response) {
                     // Muestra el modal de SweetAlert de éxito
@@ -310,7 +312,7 @@
             document.body.classList.toggle('cards-view');
 
             // Actualiza el texto del modo actual basado en la vista
-            modeDisplay.textContent = isCardView ? 'Modo Tabla' : 'Modo Cartas';
+            modeDisplay.textContent = isCardView ? 'Voluntarios' : 'Voluntarios';
 
             // Alterna el estado
             isCardView = !isCardView;
@@ -324,47 +326,69 @@
 
 
 <script>
-$(document).ready(function() {
-    // Manejo del autocompletado
-    $("#buscadorTarea").on('input', function() {
-        var inputValue = $(this).val();
-        if (inputValue.length >=1) {
-            $.ajax({
-                url: "/buscar-tareas",
-                type: "GET",
-                data: { query: inputValue },
-                success: function(data) {
-                    var listaTareas = $("#listaTareas");
-                    listaTareas.empty();
-                    if (data.length) {
-                        data.forEach(function(tarea) {
-                            listaTareas.append(`<div class='opcion-tarea' data-id='${tarea.id}'>${tarea.nombre}</div>`);
-                        });
-                        listaTareas.show(); // Muestra las sugerencias
-                    } else {
-                        listaTareas.hide(); // Oculta el contenedor si no hay datos
+    $(document).ready(function() {
+        // Manejo del autocompletado
+        $("#buscadorTarea").on('input', function() {
+            var inputValue = $(this).val();
+            if (inputValue.length >= 1) {
+                $.ajax({
+                    url: "/buscar-tareas",
+                    type: "GET",
+                    data: {
+                        query: inputValue
+                    },
+                    success: function(data) {
+                        var listaTareas = $("#listaTareas");
+                        listaTareas.empty();
+                        if (data.length) {
+                            data.forEach(function(tarea) {
+                                // Hacer una solicitud adicional para obtener el nombre del lugar
+                                $.ajax({
+                                    url: "/tareas/" + tarea.id + "/lugar",
+                                    type: "GET",
+                                    success: function(lugar) {
+                                        listaTareas.append(`
+  <div class='opcion-tarea' data-id='${tarea.id}' style="margin-bottom: 10px;">
+    <svg class='icono-tarea' fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
+      <path d="M 10 4 L 10 6 L 4 6 L 4 20 L 20 20 L 20 6 L 14 6 L 14 4 L 10 4 z M 12 4 L 12 6 L 14 6 L 14 4 L 12 4 z M 6 8 L 18 8 L 18 18 L 6 18 L 6 8 z M 8 10 L 8 12 L 10 12 L 10 10 L 8 10 z M 12 10 L 12 12 L 16 12 L 16 10 L 12 10 z M 8 14 L 8 16 L 10 16 L 10 14 L 8 14 z M 12 14 L 12 16 L 16 16 L 16 14 L 12 14 z"/>
+    </svg>
+    ${tarea.nombre}
+    <svg class='icono-lugar' fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
+      <path d="M 12 2 C 8.1458516 2 5 5.1458516 5 9 C 5 12.060703 6.5479097 15.446303 10.09375 18.96875 L 12 21 L 13.90625 18.96875 C 17.45209 15.446303 19 12.060703 19 9 C 19 5.1458516 15.854148 2 12 2 z M 12 4 C 14.773268 4 17 6.2267317 17 9 C 17 11.224902 15.777626 13.930926 12.59375 17.03125 L 12 17.71875 L 11.40625 17.03125 C 8.222374 13.930926 7 11.224902 7 9 C 7 6.2267317 9.2267317 4 12 4 z M 12 6 A 2 2 0 0 0 12 10 A 2 2 0 0 0 12 6 z"/>
+    </svg>
+    <span style="font-style: italic; color: #808080;">${lugar.LUG_nombre}</span>
+  </div>
+`);
+
+
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error("Error en la solicitud AJAX: " + error);
+                                    }
+                                });
+                            });
+                            listaTareas.show(); // Muestra las sugerencias
+                        } else {
+                            listaTareas.hide(); // Oculta el contenedor si no hay datos
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error en la solicitud AJAX: " + error);
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error en la solicitud AJAX: " + error);
-                }
-            });
-        } else {
+                });
+            } else {
+                $("#listaTareas").empty().hide();
+            }
+        });
+
+        // Manejo de selección de tareas desde las sugerencias
+        $(document).on('click', '.opcion-tarea', function() {
+            var tareaNombre = $(this).text();
+            var tareaId = $(this).data('id');
+            $("#buscadorTarea").val(tareaNombre);
+            $("#tareaSeleccionada").val(tareaId);
+            console.log("Tarea ID seleccionada:", tareaId); // Depuración
             $("#listaTareas").empty().hide();
-        }
+        });
     });
-
-    // Manejo de selección de tareas desde las sugerencias
-    $(document).on('click', '.opcion-tarea', function() {
-        var tareaNombre = $(this).text();
-        var tareaId = $(this).data('id');
-        $("#buscadorTarea").val(tareaNombre);
-        $("#tareaSeleccionada").val(tareaId);
-        console.log("Tarea ID seleccionada:", tareaId); // Depuración
-        $("#listaTareas").empty().hide();
-    });
-});
-
-
-
 </script>
