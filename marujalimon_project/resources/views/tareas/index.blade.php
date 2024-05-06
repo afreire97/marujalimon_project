@@ -1,4 +1,14 @@
 <x-layout>
+
+    {{-- BOTON PARA ELIMINAR LUGAR --}}
+    <div class="d-flex justify-content-end">
+        <form id="deleteFormLugar" action="{{ route('lugares.destroy', ['lugar' => $lugar]) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="button" class="btn btn-danger" onclick="confirmDeleteLugar()">Eliminar Lugar</button>
+        </form>
+    </div>
+
     {{-- BOTON PARA AÑADIR TAREA --}}
     <div class="container d-flex justify-content-end">
         <div class="row">
@@ -8,6 +18,7 @@
             </div>
         </div>
     </div>
+    
     {{-- MODAL PARA AÑADIR TAREA --}}
     <div class="modal fade" id="modal-dialog-tarea">
         <div class="modal-dialog">
@@ -45,6 +56,7 @@
         </div>
     </div>
 
+    
     {{-- MODAL PARA MODIFICAR TAREA --}}
     <div class="modal fade" id="modal-dialog-modificar-tarea">
         <div class="modal-dialog">
@@ -148,6 +160,37 @@
     <script src="{{ asset('tabla/assets/plugins/datatables.net-select/js/dataTables.select.min.js') }}"></script>
 
 
+
+    <script>
+        function confirmDeleteLugar() {
+            Swal.fire({
+                title: '¿Estás seguro de que deseas eliminar este lugar?',
+                text: "¡No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: '¡Sí, eliminar!',
+                cancelButtonText: 'Cancelar',
+                focusCancel: true, // Foco en el botón de cancelar
+                customClass: {
+                    confirmButton: 'swal-confirm-btn',
+                    cancelButton: 'swal-cancel-btn'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        '¡Eliminado!',
+                        'El voluntario ha sido eliminado.',
+                        'success'
+                    ).then(() => {
+                        // Enviar el formulario después de mostrar el mensaje de éxito
+                        document.getElementById('deleteFormLugar').submit();
+                    });
+                }
+            })
+        }
+    </script>
     {{-- SCRIPT PARA AGREGAR TAREA --}}
     <script>
         // Inicializa el DataTable

@@ -57,6 +57,15 @@ class LugaresController extends Controller
 
     }
 
+    public function destroy(Lugar $lugar)
+{
+    // Eliminar el lugar
+    $lugar->delete();
+
+    // Redireccionar o devolver una respuesta JSON según lo necesites
+    return redirect()->route('lugares.index');
+}
+
     public function store(Request $request)
     {
 
@@ -122,38 +131,40 @@ class LugaresController extends Controller
     public function asignarCoordinador(Request $request)
     {
         // Validar la solicitud si es necesario
-
+    
         $user = Auth::user();
         if ($user->is_coordinador) {
             $coordinadorId = $user->coordinador->COO_id;
         } elseif ($user->is_admin) {
             $coordinadorId = $request->input('COO_id');
         }
-
+    
         $lugarId = $user->is_coordinador ? $request->input('LUG_COO_id') : $request->input('LUG_id');
-
+    
         // Verificar si el coordinador ya está asociado al lugar
         $lugar = Lugar::find($lugarId);
         if ($lugar->coordinadores->contains('COO_id', $coordinadorId)) {
             $message = 'El coordinador ya está asignado a este lugar.';
+            $success = false;
         } else {
             $coordinador = Coordinador::find($coordinadorId);
             $lugar->coordinadores()->attach($coordinador);
             $message = 'Coordinador asignado correctamente al lugar.';
+            $success = true;
         }
-
+    
         // Redireccionar con el mensaje apropiado
         if ($user->is_admin) {
             $lugares = Lugar::all();
             $coordinadores = Coordinador::all();
-            return redirect()->route('lugares.index', ['lugares' => $lugares, 'coordinadores' => $coordinadores])->with('success', $message);
+            return response()->json(['success' => $success, 'message' => $message, 'redirect' => route('lugares.index', ['lugares' => $lugares, 'coordinadores' => $coordinadores])]);
         } else {
             $coordinador = $user->coordinador;
             $lugares = $coordinador->lugares;
             $lugaresAll = Lugar::all();
-            return redirect()->route('lugares.index', ['lugares' => $lugares, 'lugaresAll' => $lugaresAll])->with('success', $message);
+            return response()->json(['success' => $success, 'message' => $message, 'redirect' => route('lugares.index', ['lugares' => $lugares, 'lugaresAll' => $lugaresAll])]);
         }
     }
-
+    
 
 }

@@ -41,6 +41,7 @@
             </div>
         </div>
     </div>
+
     {{-- MODAL PARA AÑADIR TAREA --}}
     <div class="modal fade" id="modal-dialog-tarea">
         <div class="modal-dialog">
@@ -106,36 +107,62 @@
 
     <script>
         function asignarLugar() {
-            // Enviar el formulario
-            document.getElementById("form-agregar-tarea").submit();
-            // Obtener el elemento select por su ID
-            var selectLugares = document.getElementById("LUG_id");
-
-            // Obtener el valor seleccionado de los lugares
-            var valorSeleccionadoLugar = selectLugares.value;
-
-            // Obtener el texto seleccionado de los lugares
-            var textoSeleccionadoLugar = selectLugares.options[selectLugares.selectedIndex].text;
-
-            // Puedes usar el valor o el texto según lo que necesites
-            console.log("Valor seleccionado de lugares:", valorSeleccionadoLugar);
-            console.log("Texto seleccionado de lugares:", textoSeleccionadoLugar);
-
-
-            // Obtener el elemento select por su ID
-            var selectCoordinadores = document.getElementById("COO_id'");
-
-            // Obtener el valor seleccionado
-            var valorSeleccionado = selectCoordinadores.value;
-
-            // Obtener el texto seleccionado
-            var textoSeleccionado = selectCoordinadores.options[selectCoordinadores.selectedIndex].text;
-
-            // Puedes usar el valor o el texto según lo que necesites
-            console.log("Valor seleccionado:", valorSeleccionado);
-            console.log("Texto seleccionado:", textoSeleccionado);
-
+            // Obtener el formulario
+            var form = document.getElementById("form-agregar-tarea");
+    
+            // Enviar el formulario mediante fetch
+            fetch(form.action, {
+                    method: form.method,
+                    body: new FormData(form)
+                })
+                .then(function(response) {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    // Si la respuesta del servidor es exitosa, muestra un mensaje de éxito
+                    return response.json();
+                })
+                .then(function(data) {
+                    if (data.success) {
+                        swal({
+                            title: '¡Éxito!',
+                            text: 'El lugar ha sido asignado correctamente.',
+                            icon: 'success',
+                            buttons: {
+                                confirm: {
+                                    text: 'OK',
+                                    value: true,
+                                    visible: true,
+                                    className: 'btn btn-primary reload',
+                                    closeModal: true,
+                                }
+                            }
+                        }).then(function() {
+                            // Cuando el usuario haga clic en el botón "OK", recargar la página
+                            location.reload();
+                        });
+                        $('#modal-dialog').modal('hide');
+                    } else {
+                        swal({
+                            title: 'Error',
+                            text: data.message,
+                            icon: 'error',
+                            button: 'Ok'
+                        });
+                    }
+                })
+                .catch(function(error) {
+                    // Si hay un error en la solicitud, muestra un mensaje de error
+                    console.error('Error:', error);
+                    swal({
+                        title: 'Error',
+                        text: 'Hubo un problema al añadir las horas, por favor revisa los datos.',
+                        icon: 'error',
+                        button: 'Ok'
+                    });
+                });
         }
     </script>
+
 
 </x-layout>
