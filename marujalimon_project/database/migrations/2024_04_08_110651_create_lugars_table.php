@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('LUG_id');
             $table->string('LUG_nombre');
             $table->string('LUG_direccion');
+            $table->string('LUG_url_maps');
 
 
             $table->timestamps();

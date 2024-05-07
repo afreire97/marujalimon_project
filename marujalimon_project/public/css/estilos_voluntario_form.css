@@ -282,23 +282,23 @@ body {
     flex-direction: column; /* Nuevo */
     height: 100%; /* Establece una altura si aún no la tiene */
   }
-  
+
   /* Estilo para la imagen */
   .card-img-top {
     width: 100%; /* Asegúrate de que la imagen no exceda la anchura de la tarjeta */
     flex-grow: 15; /* Nuevo: permite que la imagen crezca */
   }
-  
+
   /* Estilo para el cuerpo de la tarjeta */
   .card-body {
     margin-top: auto; /* Nuevo: empuja el contenido hacia abajo */
   }
-  
-  
+
+
   .pulse {
     animation: pulseAnimation 2s infinite;
   }
-  
+
   @keyframes pulseAnimation {
     0% {
       box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
@@ -337,11 +337,11 @@ body {
 }
 
 .bg-lava-lamp {
-    background: linear-gradient(270deg, 
-                                #f8f9fa, 
-                                #f1f3f5, 
-                                #f8f9fa, 
-                                #f1f3f5, 
+    background: linear-gradient(270deg,
+                                #f8f9fa,
+                                #f1f3f5,
+                                #f8f9fa,
+                                #f1f3f5,
                                 #f8f9fa);
     background-size: 200% 200%;
     animation: lavaLamp 10s ease infinite;
@@ -555,10 +555,10 @@ header {
 
 
 #welcomeMessage {
-    text-shadow: 
-        -1px 0 rgba(0, 0, 0, 0.4), 
-        0 1px rgba(0, 0, 0, 0.4), 
-        1px 0 rgba(0, 0, 0, 0.4), 
+    text-shadow:
+        -1px 0 rgba(0, 0, 0, 0.4),
+        0 1px rgba(0, 0, 0, 0.4),
+        1px 0 rgba(0, 0, 0, 0.4),
         0 -1px rgba(0, 0, 0, 0.4);
 }
 
@@ -573,7 +573,7 @@ header {
 
 .rhombus:nth-child(2) {
     animation-delay: 1s;
-    
+
 }
 
 .rhombus:nth-child(3) {
@@ -785,7 +785,7 @@ p#fixedColorText {
 }
 
 .card-body:hover {
-   
+
     border-radius: 4px; /* Bordes redondeados para la tarjeta */
 }
 
@@ -815,27 +815,27 @@ p#fixedColorText {
         opacity: 0;
         transition: opacity 2s ease-in-out;
     }
-      
+
     @media (min-width: 1200px) {
         .col-custom {
             flex: 0 0 auto;
             width: 12.5%;
         }
     }
-    
+
     .volunteer-card-img {
         max-height: 150px; /* Adjust as needed */
         object-fit: cover;
         width: 100%;
     }
-    
+
     .volunteer-card-title, .volunteer-card-text {
         font-size: 0.9rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    
+
     .volunteer-card-body {
         padding: 0.5rem;
         display: flex;
@@ -843,14 +843,14 @@ p#fixedColorText {
         justify-content: space-between;
         height: 100%; /* This ensures the footer aligns at the bottom */
     }
-    
+
     .volunteer-card-buttons {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-top: 0.5rem;
     }
-    
+
     .volunteer-btn-primary {
         font-size: 0.8rem;
         padding: 0.25rem 0.5rem;
@@ -859,12 +859,12 @@ p#fixedColorText {
         padding-right: 8px; /* Right margin of each card */
         padding-left: 8px; /* Left margin of each card */
     }
-    
+
     #cardView {
         margin-right: -8px; /* Negate right margin of the rightmost card */
         margin-left: -8px; /* Negate left margin of the leftmost card */
     }
-  
+
     .row {
         margin-right: 0;
         margin-left: 0;
@@ -873,7 +873,7 @@ p#fixedColorText {
     #addNuevaTarea, #addHoursForm {
         display: none;
     }
-    
+
     /* Estilos para botones de voluntarios */
     .volunteer-info, .volunteer-modify{
         flex: 1 0 48%; /* flex-grow, flex-shrink, flex-basis */
@@ -887,7 +887,7 @@ p#fixedColorText {
         box-sizing: border-box; /* Incluye el padding y el borde en el ancho y altura del elemento */
         height: 40px; /* Altura fija para todos los botones */
     }
-    
+
     .volunteer-card-buttons, .coordinator-card-buttons {
         display: flex;
         justify-content: space-between;
@@ -925,7 +925,7 @@ p#fixedColorText {
     box-sizing: border-box; /* Incluye el padding y el borde en el ancho y altura del elemento */
     height: 40px; /* Altura fija para todos los botones */
 }
-    
+
     .card-coordinador {
     border: 2px solid #919992 !important; /* Forzar el borde verde */
 }
@@ -960,13 +960,13 @@ p#fixedColorText {
         color: white;               /* Blanco para el texto, para contraste */
         border: none;               /* Opcional: elimina el borde si está presente */
     }
-    
+
     #demoButton:hover, #demoButton:focus {
         background-color: #106292;  /* Un azul un poco más oscuro para el estado hover y focus */
         color: white;
     }
-   
-   
+
+
     .card .custom-btn {
         font-size: 16px; /* Tamaño de letra uniforme */
         border-radius: 20px; /* Bordes redondeados */
@@ -978,11 +978,11 @@ p#fixedColorText {
         background-color: #17a2b8; /* Color primario para acciones principales */
         color: #ffffff;
     }
-    
+
     .card .custom-btn:hover {
         background-color: rgb(18, 144, 216); /* Color al pasar el mouse */
     }
-    
+
     .btn-custom {
         font-size: 14px; /* Tamaño de letra mayor para mejor lectura */
         border-radius: 25px; /* Bordes más redondeados */
@@ -994,7 +994,7 @@ p#fixedColorText {
         color: white; /* Texto blanco para contraste */
         transition: background-color 0.3s; /* Transición suave al cambiar de color */
     }
-    
+
     .btn-custom:hover {
         background-color: #138496; /* Cambio de color al pasar el mouse para interactividad */
     }
@@ -1008,20 +1008,20 @@ p#fixedColorText {
         overflow-y: auto;
         display: none; /* Este estilo se cambiará dinámicamente con JavaScript */
     }
-    
+
     .opcion-tarea {
         padding: 8px 10px;
         cursor: pointer;
     }
-    
+
     .opcion-tarea:hover {
         background-color: #f8f8f8;
     }
-    
+
     .lista-sugerencias {
         position: absolute;
         background: white;
-        width: calc(100% - 30px); 
+        width: calc(100% - 30px);
         border: 1px solid #ccc;
         border-top: none;
         z-index: 1000;
@@ -1032,20 +1032,20 @@ p#fixedColorText {
         left: 15px; /* Ajustar según el padding del contenedor padre */
         right: 15px;
     }
-    
+
     .opcion-tarea {
         padding: 8px 10px;
         cursor: pointer;
     }
-    
+
     .opcion-tarea:hover {
         background-color: #f8f8f8;
     }
-    
+
     .modal-body {
         padding: 20px;
     }
-    
+
     input[type="text"], input[type="number"] {
         width: 100%;
         box-sizing: border-box; /* Esto asegura que el padding no afecte el ancho total */
@@ -1054,11 +1054,17 @@ p#fixedColorText {
         border: 1px solid #ccc;
         border-radius: 4px;
     }
-    
+
     input[type="text"]:focus, input[type="number"]:focus {
         border-color: #66afe9;
         outline: none;
     }
-    
 
 
+
+
+.lugar-card-body{
+
+    overflow: visible;
+
+}

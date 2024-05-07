@@ -7,13 +7,6 @@
     <div class="container">
         <h1>Voluntarios Asociados al Lugar: {{ $lugar->LUG_nombre }}</h1>
 
-        <div class="card">
-            <div class="card-body">
-                <h3>Detalles del Lugar:</h3>
-                <p><strong>Nombre del Lugar:</strong> {{ $lugar->LUG_nombre }}</p>
-                <p><strong>Dirección:</strong> {{ $lugar->LUG_direccion }}</p>
-            </div>
-        </div>
 
         <br>
 
@@ -59,14 +52,14 @@
                                             <a class="btn btn-sm btn-success"
                                                 href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}">
                                                 Más información</a>
-        
+
                                         </td>
                                         <!-- Agrega más columnas si necesitas mostrar más detalles del voluntario -->
                                     </tr>
                                 @endforeach
                             </tbody>
-                         
-                        
+
+
                         </table>
                     </div>
                 </div>
@@ -86,7 +79,7 @@
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Apellidos</th>
-                                
+
                                     <th>Fecha de asignación</th>
                                     <th>Info</th>
                                     <!-- Agrega más columnas si necesitas mostrar más detalles del voluntario -->
@@ -107,20 +100,20 @@
                                     </tr>
                                 @endforeach
                             </tbody>
-                         
-                        
+
+
                         </table>
                     </div>
                 </div>
 
             </div>
         </div>
-        
-        
 
 
 
-       
+
+
+
     <script src="{{ asset('tabla/assets/plugins/datatables.net-select/js/dataTables.select.min.js') }}"></script>
        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('tabla/assets/plugins/datatables.net/js/dataTables.min.js') }}"></script>
