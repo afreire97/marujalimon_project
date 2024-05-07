@@ -51,11 +51,11 @@
 
 <!-- Modal -->
 <div class="modal fade" id="modal-dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Añadir horas</h4>
-            </div>
+        <div class="modal-header" style="background-color: #008080; display: flex; justify-content: center; align-items: center;">
+    <h4 class="modal-title" style="color: white; font-weight: bold;">Añadir horas</h4>
+</div>
             <!-- Modal body -->
             <div class="modal-body">
                 <!-- Aquí está el formulario -->
@@ -78,8 +78,6 @@
             <div class="modal-footer">
                 <a href="javascript:;" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</a>
                 <button type="button" class="btn btn-success" id="btn-agregar" onclick="agregarHoras()">Agregar</button>
-
-
             </div>
         </div>
     </div>
@@ -94,8 +92,8 @@
 <div id="tableView" class="table-responsive " style="display: none;">
     <!-- Contenido de la vista de tabla -->
     <div class="table-responsive">
-        <table id="data-table-default" width="100%" class="table table-bordered align-middle text-nowrap">
-            <thead>
+    <table id="data-table-default" width="100%" class="table table-bordered align-middle text-nowrap table-striped">
+    <thead style="background-color: #40E0D0;">
                 <tr>
                     <th width="1%">ID</th>
                     <th width="1%">Nombre</th>
@@ -397,7 +395,7 @@
 document.getElementById("toggleViewButton").addEventListener("click", function() {
     var button = document.getElementById("toggleViewButton");
     if (button.innerHTML === "Cambiar a Tabla") {
-        button.innerHTML = "Cambiar a Cartas";
+        button.innerHTML = "Cambiar a Tarjetas";
     } else {
         button.innerHTML = "Cambiar a Tabla";
     }

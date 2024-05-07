@@ -54,6 +54,9 @@ function randomScalingFactor()
                         <label for="year">
                             <p></p>
                             <h5 class="card-title text-custom-primary">Seleccione un año <i class="fa fa-calendar-alt"></i></h5>
+                            <p></p>
+                            <p class="card-text" style="font-weight: normal;">Seleccione un año en concreto para desplegar el gráfico proporcionando así datos relevantes.</p> <!-- Aquí está el cambio -->
+                            <p></p>
                         </label>
                         <p></p>
                         <select name="year" id="year">
