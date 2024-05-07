@@ -1059,7 +1059,15 @@ p#fixedColorText {
         border-color: #66afe9;
         outline: none;
     }
-
+    
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9f9f9; /* Light gray color */
+    }
+    
+    .table-striped tbody tr:nth-of-type(even) {
+        background-color: #ffffff; /* White color */
+    }
+    
 
 
 
