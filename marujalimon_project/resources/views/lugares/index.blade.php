@@ -13,7 +13,7 @@
                 <div class="row">
                     <div class="col">
                         <a href="#modal-dialog-tarea" class="btn btn-warning" id="tareaButton"
-                            data-bs-toggle="modal">Asignar nuevo lugar</a>
+                            data-bs-toggle="modal">Asignar coordinador</a>
                     </div>
                 </div>
             </div>
@@ -29,26 +29,31 @@
     <div id="cardView" class="row mt-5">
         @foreach ($lugares as $lugar)
             <div class="col col-custom mb-4">
-                <div class="card h-100 border-0 shadow-sm">
+                <div class="card h-100 border-0 shadow-sm" id="cardViewLugar">
                     <!-- Start of clickable image -->
                     <a href="{{ route('lugares.show', ['lugar' => $lugar]) }}">
-                        <img src="{{ $lugar->imagen->IMG_path }}" class="volunteer-card-img"
-                            alt="Imagen de perfil del voluntario">
+                        <img src="{{ optional($lugar->imagen)->IMG_path ? asset($lugar->imagen->IMG_path) : asset('img/default_img/lugar.png') }}" class="volunteer-card-img">
+
                     </a>
                     <!-- End of clickable image -->
 
                     <div class="volunteer-card-body">
-                        <h5 class="volunteer-card-title">
+                        <h5 class="volunteer-card-title mt-3">
                             <i class="fas fa-user"></i> {{ $lugar->LUG_nombre }}
                         </h5>
-                        <p class="volunteer-card-text">
+                        <p class="text-break">
                             <i class="fas fa-id-card"></i> Dirección: {{ $lugar->LUG_direccion }}
+                        </p>
+                        <p>
+                            <a target="_blank" href="{{$lugar->LUG_url_maps}}"
+                                >Visitar sitio</a>
                         </p>
                         <div class="volunteer-card-buttons">
                             <a href="{{ route('lugares.show', ['lugar' => $lugar]) }}"
                                 class="volunteer-info btn btn-primary">Más información</a>
                             <a href="{{ route('lugares.edit', ['lugar' => $lugar]) }}"
                                 class="volunteer-modify btn btn-primary">Modificar</a>
+
                         </div>
                     </div>
                 </div>

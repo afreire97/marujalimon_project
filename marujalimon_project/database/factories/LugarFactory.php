@@ -19,6 +19,7 @@ class LugarFactory extends Factory
         return [
             'LUG_nombre' => fake()->company(),
             'LUG_direccion' => fake()->address(),
+            'LUG_url_maps' => 'https://maps.app.goo.gl/V197oh1SYAWMyZLn6',
         ];
     }
 }

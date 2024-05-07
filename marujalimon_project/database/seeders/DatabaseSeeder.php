@@ -94,7 +94,9 @@ class DatabaseSeeder extends Seeder
             $coordinadores = $coordinadoresDisponibles->random(rand(1, 3)); // Cambia el rango según tus necesidades
 
             // Asigna los coordinadores al lugar utilizando el método de relación
-            $lugar->coordinadores()->attach($coordinadores);
+            $now = now(); // Obtiene la fecha y hora actual
+$lugar->coordinadores()->attach($coordinadores, ['created_at' => $now, 'updated_at' => $now]);
+
         }
         // Crear tareas y asignarlas a lugares
         Tarea::factory(100)->create()->each(function ($tarea) use ($lugares) {
