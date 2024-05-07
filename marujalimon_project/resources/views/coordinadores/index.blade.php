@@ -146,7 +146,7 @@
 document.getElementById("toggleViewButton").addEventListener("click", function() {
     var button = document.getElementById("toggleViewButton");
     if (button.innerHTML === "Cambiar a Tabla") {
-        button.innerHTML = "Cambiar a Cartas";
+        button.innerHTML = "Cambiar a Tarjetas";
     } else {
         button.innerHTML = "Cambiar a Tabla";
     }
