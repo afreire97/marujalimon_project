@@ -348,17 +348,18 @@
                                     type: "GET",
                                     success: function(lugar) {
                                         listaTareas.append(`
-  <div class='opcion-tarea' data-id='${tarea.id}' style="margin-bottom: 10px;">
+                                        <div class='opcion-tarea' data-id='${tarea.id}' style="margin-bottom: 10px;">
     <svg class='icono-tarea' fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
       <path d="M 10 4 L 10 6 L 4 6 L 4 20 L 20 20 L 20 6 L 14 6 L 14 4 L 10 4 z M 12 4 L 12 6 L 14 6 L 14 4 L 12 4 z M 6 8 L 18 8 L 18 18 L 6 18 L 6 8 z M 8 10 L 8 12 L 10 12 L 10 10 L 8 10 z M 12 10 L 12 12 L 16 12 L 16 10 L 12 10 z M 8 14 L 8 16 L 10 16 L 10 14 L 8 14 z M 12 14 L 12 16 L 16 16 L 16 14 L 12 14 z"/>
     </svg>
-    ${tarea.nombre}
-    <svg class='icono-lugar' fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
+    <span class='nombre-tarea' style="margin-right: 30px;">${tarea.nombre}</span> <!-- Aquí está el cambio -->
+    <svg class='icono-lugar' fill="#808080" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
       <path d="M 12 2 C 8.1458516 2 5 5.1458516 5 9 C 5 12.060703 6.5479097 15.446303 10.09375 18.96875 L 12 21 L 13.90625 18.96875 C 17.45209 15.446303 19 12.060703 19 9 C 19 5.1458516 15.854148 2 12 2 z M 12 4 C 14.773268 4 17 6.2267317 17 9 C 17 11.224902 15.777626 13.930926 12.59375 17.03125 L 12 17.71875 L 11.40625 17.03125 C 8.222374 13.930926 7 11.224902 7 9 C 7 6.2267317 9.2267317 4 12 4 z M 12 6 A 2 2 0 0 0 12 10 A 2 2 0 0 0 12 6 z"/>
     </svg>
     <span style="font-style: italic; color: #808080;">${lugar.LUG_nombre}</span>
-  </div>
+</div>
 `);
+
 
 
                                     },
@@ -383,12 +384,22 @@
 
         // Manejo de selección de tareas desde las sugerencias
         $(document).on('click', '.opcion-tarea', function() {
-            var tareaNombre = $(this).text();
-            var tareaId = $(this).data('id');
-            $("#buscadorTarea").val(tareaNombre);
-            $("#tareaSeleccionada").val(tareaId);
-            console.log("Tarea ID seleccionada:", tareaId); // Depuración
-            $("#listaTareas").empty().hide();
-        });
+    var tareaNombre = $(this).find('.nombre-tarea').text(); // Aquí está el cambio
+    var tareaId = $(this).data('id');
+    $("#buscadorTarea").val(tareaNombre);
+    $("#tareaSeleccionada").val(tareaId);
+    console.log("Tarea ID seleccionada:", tareaId); // Depuración
+    $("#listaTareas").empty().hide();
+});
     });
+</script>
+<script>
+document.getElementById("toggleViewButton").addEventListener("click", function() {
+    var button = document.getElementById("toggleViewButton");
+    if (button.innerHTML === "Cambiar a Tabla") {
+        button.innerHTML = "Cambiar a Cartas";
+    } else {
+        button.innerHTML = "Cambiar a Tabla";
+    }
+});
 </script>
