@@ -1,6 +1,11 @@
 <x-layout>
 
 
+    <a href="{{ route('lugares.showVoluntarios', ['lugar' => $lugar]) }}" class="btn btn-primary">
+        Ver Voluntarios
+    </a>
+    
+
     {{-- BOTON PARA AÑADIR TAREA --}}
 
 
