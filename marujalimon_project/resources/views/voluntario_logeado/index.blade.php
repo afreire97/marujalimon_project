@@ -119,7 +119,7 @@
                         </div> <!-- Fin del div card-body -->
                         <div style="position: absolute; top: 0; right: 0; padding: 10px;">
                             <form id="deleteForm"
-                                action="{{ route('voluntarios.destroy', ['voluntario' => $voluntario]) }}"
+                                action="{{ route('voluntario_logeado.destroy', ['voluntario' => $voluntario]) }}"
                                 method="POST">
                                 @csrf
                                 @method('DELETE')

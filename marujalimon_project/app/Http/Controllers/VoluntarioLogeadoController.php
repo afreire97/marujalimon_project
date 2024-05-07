@@ -132,8 +132,34 @@ class VoluntarioLogeadoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Voluntario $voluntario)
-    {
-        //
-    }
+
+     public function destroy(Voluntario $voluntario)
+     {
+         // Eliminar el voluntario
+
+
+         $authorizedUser = Auth::user();
+
+
+
+         $user = $voluntario->user;
+
+
+
+
+
+         $voluntario->delete();
+         $user->delete();
+
+
+         if ($authorizedUser->is_voluntario) {
+             return redirect()->route('login')->with('success', 'Voluntario eliminado correctamente');
+
+         }
+
+
+         return redirect()->route('voluntarios.index')->with('success', 'Voluntario eliminado correctamente');
+
+
+     }
 }

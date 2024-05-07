@@ -1,5 +1,29 @@
 <x-layout>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+
+
+
+    <div class="mode-container" style="display: flex; align-items: center; justify-content: space-between; background-color: #008080; padding: 10px; border-radius: 5px; width: 100%;">
+        <div style="flex-grow: 1; display: flex; justify-content: center;">
+            <div id="modeDisplay" class="text-position" style="color: white; font-size: 24px;">Lugares</div>
+        </div>
+        <div class="button-container d-flex justify-content-end align-items-center">
+            <div class="container d-flex justify-content-end">
+                <div class="row">
+                    <div class="col">
+                        <a href="#modal-dialog-tarea" class="btn btn-warning" id="tareaButton"
+                            data-bs-toggle="modal">Asignar nuevo lugar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
 
     <!-- Tarjetas de lugares con nuevo estilo -->
     <div id="cardView" class="row mt-5">
@@ -33,14 +57,7 @@
     </div>
 
 
-    <div class="container d-flex justify-content-end">
-        <div class="row">
-            <div class="col">
-                <a href="#modal-dialog-tarea" class="btn btn-sm btn-success" id="tareaButton"
-                    data-bs-toggle="modal">Asignar nuevo lugar</a>
-            </div>
-        </div>
-    </div>
+
 
     {{-- MODAL PARA AÑADIR TAREA --}}
     <div class="modal fade" id="modal-dialog-tarea">
@@ -109,7 +126,7 @@
         function asignarLugar() {
             // Obtener el formulario
             var form = document.getElementById("form-agregar-tarea");
-    
+
             // Enviar el formulario mediante fetch
             fetch(form.action, {
                     method: form.method,

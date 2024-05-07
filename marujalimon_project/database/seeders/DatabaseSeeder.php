@@ -36,9 +36,18 @@ class DatabaseSeeder extends Seeder
             // Puedes agregar más atributos según sea necesario
         ]);
 
+       $voluntarioUser=  User::factory()->create([
+            'name' => 'Jose',
+            'email' => 'jose@mail.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt('password'), // Usa bcrypt para encriptar la contraseña
+            'is_voluntario' => true, // Establecer el usuario como coordinador
+            // Puedes agregar más atributos según sea necesario
+        ]);
 
-
-
+        $voluntario = Voluntario::factory()->create();
+        $voluntario->user()->associate($voluntarioUser);
+        $voluntario->save();
 
 
         Provincia::factory(10)->create();
