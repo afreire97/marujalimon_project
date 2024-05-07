@@ -1,7 +1,6 @@
 <x-layout>
 
 
-
     {{-- BOTON PARA AÑADIR TAREA --}}
 
 

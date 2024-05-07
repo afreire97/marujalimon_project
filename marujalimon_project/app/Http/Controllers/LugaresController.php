@@ -57,14 +57,37 @@ class LugaresController extends Controller
 
     }
 
-    public function destroy(Lugar $lugar)
-{
-    // Eliminar el lugar
-    $lugar->delete();
+//     public function destroy(Lugar $lugar)
+// {
+//     // Eliminar el lugar
+//     $lugar->delete();
 
-    // Redireccionar o devolver una respuesta JSON según lo necesites
-    return redirect()->route('lugares.index');
-}
+//     // Redireccionar o devolver una respuesta JSON según lo necesites
+//     return redirect()->route('lugares.index');
+// }
+
+public function destroy(Lugar $lugar)
+    {
+        $user = Auth::user();
+
+        if($user->is_coordinador){
+
+            $coordinador= $user->coordinador;
+            // Eliminar la relación entre el coordinador y el lugar
+            $coordinador->lugares()->detach($lugar->LUG_id);
+    
+            return redirect()->route('lugares.index')
+                ->with('success', 'Relación entre el coordinador y el lugar eliminada correctamente.');
+
+        }elseif ($user->is_admin){
+            $lugar->delete();
+            return redirect()->route('lugares.index');
+
+        }
+       
+    }
+
+
 
     public function store(Request $request)
     {
