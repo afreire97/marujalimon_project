@@ -8,6 +8,7 @@ use App\Models\ImagenLugar;
 use Illuminate\Http\Request;
 use App\Models\Lugar;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class LugaresController extends Controller
@@ -44,6 +45,40 @@ class LugaresController extends Controller
         return view('tareas.index', ['tareas' => $tareasLugar, 'lugar' => $lugar]);
     }
 
+    public function showVoluntarios(Lugar $lugar)
+    {
+        $tareasLugar = $lugar->tareas;
+        $voluntarios = [];
+        $coordinadores = $lugar->coordinadores;
+        $fechasAsociacion = [];
+
+        foreach ($coordinadores as $coordinador) {
+            $fechaAsociacion = DB::table('coordinador_lugar')
+                ->where('COO_LUG_coordinador_id', $coordinador->COO_id)
+                ->latest('created_at')
+                ->value('created_at');
+            Log::info('fecha' . $fechaAsociacion);
+            $fechasAsociacion[$coordinador->COO_id] = $fechaAsociacion;
+        }
+        foreach ($tareasLugar as $tarea) {
+            foreach ($tarea->horas as $hora) {
+                if (!in_array($hora->voluntario, $voluntarios)) {
+                    $voluntarios[] = $hora->voluntario;
+
+                }
+            }
+        }
+
+        return view('lugares.show', [
+            'lugar' => $lugar,
+            'voluntarios' => $voluntarios,
+            'coordinadores' => $coordinadores,
+
+            'fechasAsociacion' => $fechasAsociacion
+        ]);
+    }
+
+
 
     public function create()
     {
@@ -57,34 +92,34 @@ class LugaresController extends Controller
 
     }
 
-//     public function destroy(Lugar $lugar)
+    //     public function destroy(Lugar $lugar)
 // {
 //     // Eliminar el lugar
 //     $lugar->delete();
 
-//     // Redireccionar o devolver una respuesta JSON según lo necesites
+    //     // Redireccionar o devolver una respuesta JSON según lo necesites
 //     return redirect()->route('lugares.index');
 // }
 
-public function destroy(Lugar $lugar)
+    public function destroy(Lugar $lugar)
     {
         $user = Auth::user();
 
-        if($user->is_coordinador){
+        if ($user->is_coordinador) {
 
-            $coordinador= $user->coordinador;
+            $coordinador = $user->coordinador;
             // Eliminar la relación entre el coordinador y el lugar
             $coordinador->lugares()->detach($lugar->LUG_id);
-    
+
             return redirect()->route('lugares.index')
                 ->with('success', 'Relación entre el coordinador y el lugar eliminada correctamente.');
 
-        }elseif ($user->is_admin){
+        } elseif ($user->is_admin) {
             $lugar->delete();
             return redirect()->route('lugares.index');
 
         }
-       
+
     }
 
 
@@ -154,16 +189,16 @@ public function destroy(Lugar $lugar)
     public function asignarCoordinador(Request $request)
     {
         // Validar la solicitud si es necesario
-    
+
         $user = Auth::user();
         if ($user->is_coordinador) {
             $coordinadorId = $user->coordinador->COO_id;
         } elseif ($user->is_admin) {
             $coordinadorId = $request->input('COO_id');
         }
-    
+
         $lugarId = $user->is_coordinador ? $request->input('LUG_COO_id') : $request->input('LUG_id');
-    
+
         // Verificar si el coordinador ya está asociado al lugar
         $lugar = Lugar::find($lugarId);
         if ($lugar->coordinadores->contains('COO_id', $coordinadorId)) {
@@ -171,11 +206,17 @@ public function destroy(Lugar $lugar)
             $success = false;
         } else {
             $coordinador = Coordinador::find($coordinadorId);
-            $lugar->coordinadores()->attach($coordinador);
+
+
+            $now = now();
+            $lugar->coordinadores()->attach($coordinador, ['created_at' => $now, 'updated_at' => $now]);
+
+
+
             $message = 'Coordinador asignado correctamente al lugar.';
             $success = true;
         }
-    
+
         // Redireccionar con el mensaje apropiado
         if ($user->is_admin) {
             $lugares = Lugar::all();
@@ -188,6 +229,6 @@ public function destroy(Lugar $lugar)
             return response()->json(['success' => $success, 'message' => $message, 'redirect' => route('lugares.index', ['lugares' => $lugares, 'lugaresAll' => $lugaresAll])]);
         }
     }
-    
+
 
 }

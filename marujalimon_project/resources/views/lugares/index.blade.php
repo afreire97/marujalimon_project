@@ -32,8 +32,8 @@
                 <div class="card h-100 border-0 shadow-sm">
                     <!-- Start of clickable image -->
                     <a href="{{ route('lugares.show', ['lugar' => $lugar]) }}">
-                        <img src="{{ $lugar->imagen->IMG_path }}" class="volunteer-card-img"
-                            alt="Imagen de perfil del voluntario">
+                        <img src="{{ optional($lugar->imagen)->IMG_path ? asset($lugar->imagen->IMG_path) : asset('img/default_img/lugar.png') }}" class="volunteer-card-img">
+                        alt="Imagen de perfil del voluntario">
                     </a>
                     <!-- End of clickable image -->
 
