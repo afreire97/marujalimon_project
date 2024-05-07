@@ -1,24 +1,34 @@
 <x-layout>
 
-    {{-- BOTON PARA ELIMINAR LUGAR --}}
-    <div class="d-flex justify-content-end">
-        <form id="deleteFormLugar" action="{{ route('lugares.destroy', ['lugar' => $lugar]) }}" method="POST">
-            @csrf
-            @method('DELETE')
-            <button type="button" class="btn btn-danger" onclick="confirmDeleteLugar()">Eliminar Lugar</button>
-        </form>
-    </div>
+
 
     {{-- BOTON PARA AÑADIR TAREA --}}
-    <div class="container d-flex justify-content-end">
-        <div class="row">
-            <div class="col">
-                <a href="#modal-dialog-tarea" class="btn btn-sm btn-success" id="tareaButton" data-bs-toggle="modal">Añadir
+
+
+
+
+
+
+
+
+
+                <div class="d-flex justify-content-end">
+
+                <a href="#modal-dialog-tarea" class="btn  btn-success" id="tareaButton" data-bs-toggle="modal">Añadir
                     tarea</a>
-            </div>
-        </div>
-    </div>
-    
+
+                    <form id="deleteFormLugar" action="{{ route('lugares.destroy', ['lugar' => $lugar]) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-danger" onclick="confirmDeleteLugar()">Eliminar Lugar</button>
+                    </form>
+                </div>
+
+
+
+
+
+
     {{-- MODAL PARA AÑADIR TAREA --}}
     <div class="modal fade" id="modal-dialog-tarea">
         <div class="modal-dialog">
@@ -56,7 +66,7 @@
         </div>
     </div>
 
-    
+
     {{-- MODAL PARA MODIFICAR TAREA --}}
     <div class="modal fade" id="modal-dialog-modificar-tarea">
         <div class="modal-dialog">
@@ -131,7 +141,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="button" class="btn btn-danger" onclick="eliminarTarea('{{ $tarea->TAR_id }}')">Eliminar Tarea</button>
-                                            
+
                                     </form>
                                 </div>
                             </td>
