@@ -1,6 +1,7 @@
 <x-layout>
 
-    {{-- BOTON PARA ELIMINAR LUGAR --}}
+    {{-- BOTON PARA ELIMINAR LUGAR --}}   
+    @endif
     <div class="d-flex justify-content-end">
         <form id="deleteFormLugar" action="{{ route('lugares.destroy', ['lugar' => $lugar]) }}" method="POST">
             @csrf
