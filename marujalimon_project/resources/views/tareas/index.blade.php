@@ -7,21 +7,36 @@
 
 
 
+    <div class="mode-container m-3" style="display: flex; align-items: center; justify-content: space-between; background-color: #008080; padding: 10px; border-radius: 5px; width: 100%;">
+        <div style="flex-grow: 1; display: flex; justify-content: center;">
+            <div id="modeDisplay" class="text-position" style="color: white; font-size: 24px;"> Tareas de: {{ $lugar->LUG_nombre }}</div>
+        </div>
+        <div class="button-container d-flex justify-content-end align-items-center">
+            <div class="container d-flex justify-content-end">
+                <div class="row">
 
 
 
 
                 <div class="d-flex justify-content-end">
 
-                <a href="#modal-dialog-tarea" class="btn  btn-success" id="tareaButton" data-bs-toggle="modal">Añadir
-                    tarea</a>
+                    <a href="#modal-dialog-tarea" class="btn  btn-success" id="tareaButton" data-bs-toggle="modal">Añadir
+                        tarea</a>
 
-                    <form id="deleteFormLugar" action="{{ route('lugares.destroy', ['lugar' => $lugar]) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" class="btn btn-danger" onclick="confirmDeleteLugar()">Eliminar Lugar</button>
-                    </form>
+                        <form id="deleteFormLugar" action="{{ route('lugares.destroy', ['lugar' => $lugar]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" class="btn btn-danger" onclick="confirmDeleteLugar()">Eliminar Lugar</button>
+                        </form>
+                    </div>
+
+
+
+
                 </div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -100,7 +115,7 @@
 
     {{-- TABLA --}}
     <div id="tableView" class="table-responsive">
-        <h2>Tareas de {{ $lugar->LUG_nombre }}</h2>
+
         <div class="table-responsive">
             <table id="data-table-default" width="100%" class="table table-bordered align-middle text-nowrap">
                 <thead>
