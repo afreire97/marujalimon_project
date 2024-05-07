@@ -33,6 +33,12 @@
 
     <!-- ================== BEGIN page-css ================== -->
     <link href="{{ asset('plugins/gritter/css/jquery.gritter.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/blog/card.list.css') }}" rel="stylesheet" />
+    <!-- CSS de DataTables -->
+    <link href="{{ asset('tabla/assets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('tabla/assets/plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 
 
 
