@@ -86,7 +86,7 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
     Route::get('/buscar-tareas', [TareasController::class, 'buscar'])->name('tareas.buscar');
     Route::get('/tareas/{tarea}/lugar', [TareasController::class, 'mostrarLugar'])->name('tareas.mostrarLugar');
 
-    
+
 
 
 
@@ -122,6 +122,7 @@ Route::middleware(VoluntarioMiddleware::class)->group(function () {
     Route::get('/voluntario/{voluntario}/calendario/', [CalendarioController::class, 'index'])->name('voluntario_logeado.calendario');
     Route::post('/voluntario/{voluntario}/calendario/', [CalendarioController::class, 'store'])->name('guardar_disponibilidad');
 
+    Route::delete('/voluntario/{voluntario}', [VoluntarioLogeadoController::class, 'destroy'])->name('voluntario_logeado.destroy');
 
 
 
