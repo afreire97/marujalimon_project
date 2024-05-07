@@ -1,20 +1,17 @@
 <x-layout>
 
 
-    <a href="{{ route('lugares.showVoluntarios', ['lugar' => $lugar]) }}" class="btn btn-primary">
-        Ver Voluntarios
-    </a>
-    
-
-    {{-- BOTON PARA AÑADIR TAREA --}}
 
 
 
 
 
-    <div class="mode-container m-3" style="display: flex; align-items: center; justify-content: space-between; background-color: #008080; padding: 10px; border-radius: 5px; width: 100%;">
+
+    <div class="mode-container m-3"
+        style="display: flex; align-items: center; justify-content: space-between; background-color: #008080; padding: 10px; border-radius: 5px; width: 100%;">
         <div style="flex-grow: 1; display: flex; justify-content: center;">
-            <div id="modeDisplay" class="text-position" style="color: white; font-size: 24px;"> Tareas de: {{ $lugar->LUG_nombre }}</div>
+            <div id="modeDisplay" class="text-position" style="color: white; font-size: 24px;"> Tareas de:
+                {{ $lugar->LUG_nombre }}</div>
         </div>
         <div class="button-container d-flex justify-content-end align-items-center">
             <div class="container d-flex justify-content-end">
@@ -23,15 +20,18 @@
 
 
 
-                <div class="d-flex justify-content-end">
+                    <div class="d-flex justify-content-end">
 
-                    <a href="#modal-dialog-tarea" class="btn  btn-success" id="tareaButton" data-bs-toggle="modal">Añadir
-                        tarea</a>
+                        <a href="#modal-dialog-tarea" class="btn  btn-success" id="tareaButton"
+                            data-bs-toggle="modal">Añadir
+                            tarea</a>
 
-                        <form id="deleteFormLugar" action="{{ route('lugares.destroy', ['lugar' => $lugar]) }}" method="POST">
+                        <form id="deleteFormLugar" action="{{ route('lugares.destroy', ['lugar' => $lugar]) }}"
+                            method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="button" class="btn btn-danger" onclick="confirmDeleteLugar()">Eliminar Lugar</button>
+                            <button type="button" class="btn btn-danger" onclick="confirmDeleteLugar()">Eliminar
+                                Lugar</button>
                         </form>
                     </div>
 
@@ -41,6 +41,21 @@
                 </div>
             </div>
         </div>
+    </div>
+
+
+    <div class="card">
+        <div class="card-body">
+            <h3>Detalles del Lugar:</h3>
+            <p><strong>Nombre del Lugar:</strong> {{ $lugar->LUG_nombre }}</p>
+            <p><strong>Dirección:</strong> {{ $lugar->LUG_direccion }}</p>
+
+            <a href="{{ route('lugares.showVoluntarios', ['lugar' => $lugar]) }}" class="btn btn-sm btn-primary">
+                Ver Voluntarios
+            </a>
+
+        </div>
+
     </div>
 
 
@@ -155,11 +170,12 @@
                             </td>
                             <td>
                                 <div style="position: relative;">
-                                    <form id="deleteForm"
-                                        action="{{ route('tareas.destroy', ['tarea' => $tarea]) }}" method="POST">
+                                    <form id="deleteForm" action="{{ route('tareas.destroy', ['tarea' => $tarea]) }}"
+                                        method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" class="btn btn-danger" onclick="eliminarTarea('{{ $tarea->TAR_id }}')">Eliminar Tarea</button>
+                                        <button type="button" class="btn btn-danger"
+                                            onclick="eliminarTarea('{{ $tarea->TAR_id }}')">Eliminar Tarea</button>
 
                                     </form>
                                 </div>
@@ -360,23 +376,23 @@
     {{-- SCRIPT PARA BORRAR TAREA --}}
     <script>
         function eliminarTarea(id) {
-    Swal.fire({
-        title: '¿Estás seguro?',
-        text: "No podrás revertir esto!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '¡Sí, bórralo!',
-        cancelButtonText: 'Cancelar',
-        focusCancel: true
-    }).then((result) => {
-        if (result.isConfirmed) {
-            document.getElementById('deleteForm').action = "/tareas/" + id;
-            document.getElementById('deleteForm').submit();
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '¡Sí, bórralo!',
+                cancelButtonText: 'Cancelar',
+                focusCancel: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('deleteForm').action = "/tareas/" + id;
+                    document.getElementById('deleteForm').submit();
+                }
+            })
         }
-    })
-}
     </script>
 
     <script>

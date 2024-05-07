@@ -133,6 +133,7 @@ class LugaresController extends Controller
         $lugar = new Lugar();
         $lugar->LUG_nombre = $request->input('LUG_nombre');
         $lugar->LUG_direccion = $request->input('LUG_direccion');
+        $lugar->LUG_url_maps = $request->input('LUG_url_maps');
         $lugar->save();
 
         // Guardar la imagen del lugar si se proporciona

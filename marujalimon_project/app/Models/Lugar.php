@@ -14,8 +14,10 @@ class Lugar extends Model
     protected $fillable = [
         'LUG_nombre',
         'LUG_direccion',
+        'LUG_url_maps',
 
     ];
+
 
     protected function tareas(){
         return $this->hasMany(Tarea::class, 'TAR_lugar_id');

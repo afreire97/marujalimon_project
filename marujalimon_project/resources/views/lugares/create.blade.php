@@ -34,11 +34,18 @@
                     </div>
                 </div>
                 <div class="mb-3 row">
+                    <label for="LUG_url_maps" class="col-md-4 col-form-label text-md-end">URL de Google Maps <span class="text-danger">*</span></label>
+                    <div class="col-md-6">
+                        <input type="text" name="LUG_url_maps" id="LUG_url_maps" class="form-control" required>
+                    </div>
+                </div>
+                <div class="mb-3 row">
                     <label for="IMG_path" class="col-md-4 col-form-label text-md-end">Imagen <span class="text-danger">*</span></label>
                     <div class="col-md-6">
                         <input type="file" name="IMG_path" id="IMG_path" class="form-control" required>
                     </div>
                 </div>
+
             </div>
 
             <!-- Botones del formulario -->
