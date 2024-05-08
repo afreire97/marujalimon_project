@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('lugares', function (Blueprint $table) {
             $table->id('LUG_id');
             $table->string('LUG_nombre');
-            $table->string('LUG_direccion');
-            $table->string('LUG_url_maps');
+            $table->string('LUG_direccion')->nullable();
+            $table->string('LUG_url_maps')->nullable();
 
 
             $table->timestamps();
