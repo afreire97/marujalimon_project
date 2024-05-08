@@ -1076,3 +1076,10 @@ p#fixedColorText {
     overflow: visible;
 
 }
+.opcion-tarea-blanco {
+    background-color: #FFFFFF; /* Blanco */
+}
+
+.opcion-tarea-gris {
+    background-color: #F0F0F0; /* Gris claro */
+}
