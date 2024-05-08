@@ -78,6 +78,8 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
     Route::get('/lugares/{lugar}/voluntarios', [LugaresController::class, 'showVoluntarios'])->name('lugares.showVoluntarios');
 
 
+
+
     //RUTAS DE TAREAS
 
     Route::delete('/tareas/{tarea}', [TareasController::class, 'destroy'])->name('tareas.destroy');
@@ -87,6 +89,8 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
 
     Route::get('/buscar-tareas', [TareasController::class, 'buscar'])->name('tareas.buscar');
     Route::get('/tareas/{tarea}/lugar', [TareasController::class, 'mostrarLugar'])->name('tareas.mostrarLugar');
+    Route::get('/tareas/{tarea}/lugarId', [TareasController::class, 'getLugarId'])->name('tareas.getLugarId');
+
 
 
 
