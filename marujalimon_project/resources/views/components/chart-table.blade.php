@@ -75,9 +75,9 @@
                 </form>
             </div>
 
-            <div class="modal-footer">
-                <a href="javascript:;" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</a>
-                <button type="button" class="btn btn-success" id="btn-agregar" onclick="agregarHoras()">Agregar</button>
+            <div class="modal-footer" style="background-color: #D3D3D3; display: flex; justify-content: center; gap: 20px;">
+                <a href="javascript:;" class="btn btn-danger" data-bs-dismiss="modal" style="font-size: 20px;">Cerrar</a>
+                <button type="button" class="btn btn-success" id="btn-agregar" onclick="agregarHoras()" style="font-size: 20px;">Agregar</button>
             </div>
         </div>
     </div>
@@ -228,9 +228,8 @@
         let horas = $('#horas').val();
         let tareaId = $('#tareaSeleccionada').val(); // Asegúrate de que este campo contiene el ID correcto
 
-        console.log("Horas: ", horas);
-        console.log("Tarea ID: ", tareaId); // Verifica que se capture el valor correcto
-        console.log("Voluntarios seleccionados JSON: ", voluntariosSeleccionadosJSON); // Nuevo console.log
+      
+
 
         // Verifica si el array de voluntarios seleccionados está vacío
         if (voluntariosSeleccionados.length === 0) {
@@ -252,43 +251,63 @@
         } else {
             // Envía los datos al servidor utilizando AJAX
             $.ajax({
-                url: "{{ route('horas.añadir') }}",
-                method: "POST",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    voluntariosSeleccionados: voluntariosSeleccionadosJSON,
-                    horas: horas,
-                    tarea_id: tareaId // Asegúrate de enviar el ID correcto
-                },
-                success: function(response) {
-                    // Muestra el modal de SweetAlert de éxito
-                    swal({
-                        title: '¡Éxito!',
-                        text: 'Las horas han sido añadidas.',
-                        icon: 'success',
-                        buttons: {
-                            confirm: {
-                                text: 'OK',
-                                value: true,
-                                visible: true,
-                                className: 'btn btn-primary',
-                                closeModal: true,
-                            }
-                        }
-                    });
+    url: "{{ route('horas.añadir') }}",
+    method: "POST",
+    data: {
+        _token: "{{ csrf_token() }}",
+        voluntariosSeleccionados: voluntariosSeleccionadosJSON,
+        horas: horas,
+        tarea_id: tareaId // Asegúrate de enviar el ID correcto
+    },
+    success: function(response) {
+        var url = `http://127.0.0.1:8000/tareas/${tareaId}/lugarId`;
 
-                    $('#modal-dialog').modal('hide');
-                },
-                error: function(xhr, status, error) {
-                    // Maneja cualquier error que ocurra durante la solicitud AJAX
-                    console.error("Error en la solicitud AJAX:", xhr.responseText);
-                    // Podrías mostrar un mensaje al usuario también
-                    swal({
-                        title: 'Error',
-                        text: 'Hubo un problema al añadir las horas, por favor revisa los datos.',
-                        icon: 'error',
-                        button: 'Ok'
-                    });
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                var lugarId = data.lugar_id; // Asegúrate de que 'lugar_id' es la clave correcta en la respuesta
+
+                // Muestra el modal de SweetAlert de éxito
+                swal({
+                    title: '¡Éxito!',
+    text: 'Las horas han sido añadidas a su tarea lugar correspondiente.',
+    icon: 'success',
+    buttons: {
+        cancel: {
+            text: 'Cerrar',
+            value: null,
+            visible: true,
+            className: 'btn btn-primary swal-button',
+            closeModal: true,
+        },
+        confirm: {
+            text: 'Ir al lugar',
+            value: true,
+            visible: true,
+            className: 'btn btn-primary swal-button'
+        }
+    }
+}).then((value) => {
+    if (value) {
+        // Redirige a la página de la tarea
+        window.location.href = "http://127.0.0.1:8000/lugares/" + lugarId; // Reemplaza 'response.lugar_id' con el ID del lugar que obtienes de tu solicitud AJAX  // Reemplaza '/ruta/a/la/tarea/' con la ruta real a la página de la tarea
+    }
+});
+
+$('#modal-dialog').modal('hide');
+            })
+            .catch(error => console.error('Error:', error));
+    },
+    error: function(xhr, status, error) {
+        // Maneja cualquier error que ocurra durante la solicitud AJAX
+        console.error("Error en la solicitud AJAX:", xhr.responseText);
+        // Podrías mostrar un mensaje al usuario también
+        swal({
+            title: 'Error',
+            text: 'Hubo un problema al añadir las horas, por favor revisa los datos.',
+            icon: 'error',
+            button: 'Ok'
+        });
                 }
             });
         }

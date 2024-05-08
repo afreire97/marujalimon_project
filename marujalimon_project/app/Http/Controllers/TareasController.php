@@ -147,6 +147,17 @@ public function mostrarLugar(Tarea $tarea)
     return response()->json($lugar);
 }
 
+public function getLugarId($tareaId)
+{
+    $tarea = Tarea::where('TAR_id', $tareaId)->first();
+    if ($tarea) {
+        return response()->json(['lugar_id' => $tarea->lugar->LUG_id]);
+    } else {
+        return response()->json(['error' => 'Tarea no encontrada'], 404);
+    }
+}
+
+
 
 
 

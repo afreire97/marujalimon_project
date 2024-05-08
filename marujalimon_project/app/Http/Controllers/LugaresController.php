@@ -122,6 +122,22 @@ class LugaresController extends Controller
 
     }
 
+    
+public function mostrarLugar($lugarId)
+{
+    // Busca el lugar en la base de datos
+    $lugar = Lugar::find($lugarId);
+
+    // Si el lugar no existe, devuelve un error 404
+    if (!$lugar) {
+        return response()->json(['error' => 'Lugar no encontrado'], 404);
+    }
+
+    // Devuelve la vista del lugar, pasando el lugar como dato
+    return view('lugares.mostrar', ['lugar' => $lugar]);
+}
+
+
 
 
     public function store(Request $request)
@@ -233,3 +249,6 @@ class LugaresController extends Controller
 
 
 }
+
+
+
