@@ -47,7 +47,7 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
 
 
 
-    Route::post('/voluntario/{voluntario}/horas', [VoluntarioController::class, 'calcularHoras'])->name('calcularHoras');
+    Route::get('/voluntario/{voluntario}/horas', [VoluntarioController::class, 'calcularHoras'])->name('calcularHoras');
     Route::post('/voluntario/{voluntario}/horas-por-mes', [VoluntarioController::class, 'mostrarHorasPorMes'])->name('mostrarHorasPorMes');
 
     //calcula el total de horas de los voluntarios por cada mes del año
