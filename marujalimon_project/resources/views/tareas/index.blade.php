@@ -9,9 +9,10 @@
 
     <div class="mode-container m-3"
         style="display: flex; align-items: center; justify-content: space-between; background-color: #008080; padding: 10px; border-radius: 5px; width: 100%;">
+        <a href="{{ route('lugares.index') }}" class="btn btn-success">Volver</a>
         <div style="flex-grow: 1; display: flex; justify-content: center;">
-            <div id="modeDisplay" class="text-position" style="color: white; font-size: 24px;"> Tareas de:
-                {{ $lugar->LUG_nombre }}</div>
+
+
         </div>
         <div class="button-container d-flex justify-content-end align-items-center">
             <div class="container d-flex justify-content-end">
@@ -43,23 +44,18 @@
         </div>
     </div>
 
+    <div class="card text-center">
+        <div class="card-body d-flex flex-column align-items-center">
+            <div id="modeDisplay" class="text-position" style="color: black; font-size: 24px;"> Tareas en:
+                {{ $lugar->LUG_nombre }}</div>
 
-    <div class="card">
-        <div class="card-body">
-            <h3>Detalles del Lugar:</h3>
-            <p><strong>Nombre del Lugar:</strong> {{ $lugar->LUG_nombre }}</p>
             <p><strong>Dirección:</strong> {{ $lugar->LUG_direccion }}</p>
 
             <a href="{{ route('lugares.showVoluntarios', ['lugar' => $lugar]) }}" class="btn btn-sm btn-primary">
-                Ver Voluntarios
+                Información del personal
             </a>
-
         </div>
-
     </div>
-
-
-
 
 
 
@@ -186,7 +182,6 @@
             </table>
         </div>
     </div>
-    <a href="{{ route('lugares.index') }}" class="btn btn-primary">Volver Atrás</a>
 
     <link href="{{ asset('css/blog/card.list.css') }}" rel="stylesheet" />
     <!-- CSS de DataTables -->
