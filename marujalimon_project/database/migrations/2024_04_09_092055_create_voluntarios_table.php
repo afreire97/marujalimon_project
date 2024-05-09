@@ -31,7 +31,13 @@ return new class extends Migration {
             $table->string('VOL_localidad');
             $table->string('VOL_provincia');
             $table->string('VOL_tel');
-            // $table->enum('VOL_sexo', ['Masculino', 'Femenino', 'Otro']);
+
+
+
+            // $table->enum('VOL_sexo', ['Mujer', 'Hombre', '']);
+
+
+
             $table->string('VOL_mail')->unique();
             $table->string('VOL_trabajo_actual');
             $table->date('VOL_fecha_inicio');

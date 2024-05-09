@@ -45,75 +45,75 @@ class DatabaseSeeder extends Seeder
             // Puedes agregar más atributos según sea necesario
         ]);
 
-        $voluntario = Voluntario::factory()->create();
-        $voluntario->user()->associate($voluntarioUser);
-        $voluntario->save();
+//         $voluntario = Voluntario::factory()->create();
+//         $voluntario->user()->associate($voluntarioUser);
+//         $voluntario->save();
 
 
-        Provincia::factory(10)->create();
+//         Provincia::factory(10)->create();
 
-        $coordinadores = Coordinador::factory(15)->create();
+//         $coordinadores = Coordinador::factory(15)->create();
 
-        // Crear delegaciones y asignarles un coordinador
-        $delegaciones = Delegacion::factory(4)->create();
-        $delegaciones->each(function ($delegacion) use ($coordinadores) {
-            $coordinador = $coordinadores->random();
-            $delegacion->coordinadores()->attach($coordinador);
-        });
+//         // Crear delegaciones y asignarles un coordinador
+//         $delegaciones = Delegacion::factory(4)->create();
+//         $delegaciones->each(function ($delegacion) use ($coordinadores) {
+//             $coordinador = $coordinadores->random();
+//             $delegacion->coordinadores()->attach($coordinador);
+//         });
 
-        // Crear voluntarios
-        $voluntarios = Voluntario::factory(200)->create();
-
-
+//         // Crear voluntarios
+//         $voluntarios = Voluntario::factory(200)->create();
 
 
-        // Asignar voluntarios a delegaciones (y por ende a coordinadores)
-        $voluntarios->each(function ($voluntario) use ($delegaciones) {
-            $delegacion = $delegaciones->random();
-            $voluntario->delegaciones()->attach($delegacion);
-            $voluntario->coordinadores()->attach($delegacion->coordinadores()->inRandomOrder()->first());
-        });
 
-        // Crear observaciones
-        Observacion::factory(50)->create();
 
-        // Crear errores
-        Error::factory(50)->create();
+//         // Asignar voluntarios a delegaciones (y por ende a coordinadores)
+//         $voluntarios->each(function ($voluntario) use ($delegaciones) {
+//             $delegacion = $delegaciones->random();
+//             $voluntario->delegaciones()->attach($delegacion);
+//             $voluntario->coordinadores()->attach($delegacion->coordinadores()->inRandomOrder()->first());
+//         });
 
-        // Crear lugares
-        $lugares = Lugar::factory(10)->create();
+//         // Crear observaciones
+//         Observacion::factory(50)->create();
 
-        // Asigna una imagen a cada lugar
-        $lugares->each(function ($lugar) {
-            App\Models\ImagenLugar::factory()->create(['IMG_lugar_id' => $lugar->LUG_id]);
-        });
-        $coordinadoresDisponibles = Coordinador::all();
+//         // Crear errores
+//         Error::factory(50)->create();
 
-        foreach ($lugares as $lugar) {
-            // Selecciona uno o varios coordinadores aleatorios
-            $coordinadores = $coordinadoresDisponibles->random(rand(1, 3)); // Cambia el rango según tus necesidades
+//         // Crear lugares
+//         $lugares = Lugar::factory(10)->create();
 
-            // Asigna los coordinadores al lugar utilizando el método de relación
-            $now = now(); // Obtiene la fecha y hora actual
-$lugar->coordinadores()->attach($coordinadores, ['created_at' => $now, 'updated_at' => $now]);
+//         // Asigna una imagen a cada lugar
+//         $lugares->each(function ($lugar) {
+//             App\Models\ImagenLugar::factory()->create(['IMG_lugar_id' => $lugar->LUG_id]);
+//         });
+//         $coordinadoresDisponibles = Coordinador::all();
 
-        }
-        // Crear tareas y asignarlas a lugares
-        Tarea::factory(100)->create()->each(function ($tarea) use ($lugares) {
-            $lugar = $lugares->random();
-            $tarea->lugar()->associate($lugar)->save();
+//         foreach ($lugares as $lugar) {
+//             // Selecciona uno o varios coordinadores aleatorios
+//             $coordinadores = $coordinadoresDisponibles->random(rand(1, 3)); // Cambia el rango según tus necesidades
 
-            // Obtener un número aleatorio de horas para la tarea (entre 1 y 12)
-            $numHoras = rand(3, 8);
+//             // Asigna los coordinadores al lugar utilizando el método de relación
+//             $now = now(); // Obtiene la fecha y hora actual
+// $lugar->coordinadores()->attach($coordinadores, ['created_at' => $now, 'updated_at' => $now]);
 
-            // Crear y asociar las horas a la tarea
-            for ($i = 0; $i < $numHoras; $i++) {
-                Horas::factory()->create([
-                    'HOR_tarea_id' => $tarea->TAR_id,
-                    'HOR_fecha_inicio' => $tarea->created_at,
-                ]);
-            }
-        });
+//         }
+//         // Crear tareas y asignarlas a lugares
+//         Tarea::factory(100)->create()->each(function ($tarea) use ($lugares) {
+//             $lugar = $lugares->random();
+//             $tarea->lugar()->associate($lugar)->save();
+
+//             // Obtener un número aleatorio de horas para la tarea (entre 1 y 12)
+//             $numHoras = rand(3, 8);
+
+//             // Crear y asociar las horas a la tarea
+//             for ($i = 0; $i < $numHoras; $i++) {
+//                 Horas::factory()->create([
+//                     'HOR_tarea_id' => $tarea->TAR_id,
+//                     'HOR_fecha_inicio' => $tarea->created_at,
+//                 ]);
+//             }
+//         });
 
     }
 }

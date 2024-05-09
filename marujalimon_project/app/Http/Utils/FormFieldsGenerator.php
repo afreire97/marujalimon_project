@@ -13,30 +13,28 @@ namespace App\Http\Utils;
             'VOL_fecha_nac' => 'Fecha de Nacimiento',
             'VOL_domicilio' => 'Domicilio',
             'VOL_cp' => 'Código Postal',
-            'VOL_tel1' => 'Teléfono',
-            'VOL_sexo' => 'Sexo',
+            'VOL_localidad' => 'Localidad',
+            'VOL_provincia' => 'Provincia',
+            'VOL_tel' => 'Teléfono',
             'VOL_mail' => 'Correo Electrónico',
-            'VOL_fecha_baja' => 'Fecha de Baja',
-            'VOL_col_pref' => 'Color Preferido',
+            'VOL_trabajo_actual' => 'Trabajo Actual',
+            'VOL_fecha_inicio' => 'Fecha de Inicio',
+            'VOL_preferencia' => 'Preferencia',
             'VOL_carnet' => 'Carnet',
             'VOL_seguro' => 'Seguro',
-            'VOL_seguro_exento' => 'Seguro Exento',
-            'VOL_cdns' => 'CDNS',
-            'VOL_cdns_pdf' => 'CDNS PDF',
             'VOL_curso' => 'Curso',
-            'VOL_demandas' => 'Demandas',
-            'VOL_lugar_voluntariado' => 'Lugar de Voluntariado',
-            'VOL_dispo_dot' => 'Disponibilidad DOT',
-            'VOL_dispo_cubierta' => 'Disponibilidad Cubierta',
-            'VOL_autoriza_uso_imagen' => 'Autoriza Uso de Imagen',
-            'VOL_autoriza_uso_imagen_cubierto' => 'Autoriza Uso de Imagen Cubierto',
-            'VOL_for_for_inicial' => 'For de Formación Inicial',
-            'VOL_for_mayores' => 'For de Mayores',
-            'VOL_for_menores' => 'For de Menores',
-            'VOL_for_discapacidad' => 'For de Discapacidad',
-            'VOL_for_otras' => 'For de Otras',
+            'VOL_autoriza_datos' => 'Autoriza Datos',
+            'VOL_autoriza_imagen' => 'Autoriza Imagen',
+            'VOL_sexo' => 'Sexo',
+            'VOL_dias_semana_dispo' => 'Días de la Semana Disponibles',
+            'imagen_perfil' => 'Imagen de Perfil',
+            
+            'password' => 'Contraseña',
+            'password2' => 'Confirmar contraseña',
+
         ];
     }
+
 }
 
 
