@@ -278,7 +278,7 @@ class VoluntarioController extends Controller
 
 
         // Obtener todos los datos de la solicitud
-        $datos = ValidacionUtils::validarDatosFormularioUpdate($request);
+        $datos = ValidacionUtils::validarVoluntarioUpdate($request, $voluntario);
 
 
         $voluntario->update($datos);
