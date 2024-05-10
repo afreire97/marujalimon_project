@@ -6,33 +6,30 @@
 
 
 
-    <div class="mode-container"
-        style="display: flex; align-items: center; justify-content: space-between; background-color: #008080; padding: 10px; border-radius: 5px; width: 100%;">
-        <div style="flex-grow: 1; display: flex; justify-content: center;">
-            <div id="modeDisplay" class="text-position" style="color: white; font-size: 24px;">
 
-                <ul class="nav nav-pills mb-2">
-                    <li class="nav-item">
-                        <a href="#nav-pills-tab-1" data-bs-toggle="tab" class="nav-link active">
-                            <span class="d-sm-none">Voluntarios</span>
-                            <span class="d-sm-block d-none">Voluntarios</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#nav-pills-tab-2" data-bs-toggle="tab" class="nav-link">
-                            <span class="d-sm-none">Coordinadores</span>
-                            <span class="d-sm-block d-none">Coordinadores</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+    <div class="mode-container" style="display: flex; align-items: center; justify-content: space-between; background-color: #008080; padding: 10px; border-radius: 5px; width: 100%;">
+
+
+        <a class="btn btn-success" href="{{ url()->previous() }}">Volver</a>
+
+        <div style="flex-grow: 1; display: flex; justify-content: center;">
+            <div id="modeDisplay" style="color: white; font-size: 24px;">Voluntarios</div>
         </div>
-        <div class="button-container d-flex justify-content-end align-items-center">
-            <div class="container d-flex justify-content-end">
-                <div class="row">
-                </div>
-            </div>
-        </div>
+
+        <ul class="nav nav-pills mb-2">
+            <li class="nav-item">
+                <a href="#nav-pills-tab-1" data-bs-toggle="tab" class="btn btn-info" onclick="changeMode('Voluntarios')">
+                    <span class="d-sm-none">Voluntarios</span>
+                    <span class="d-sm-block d-none">Voluntarios</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#nav-pills-tab-2" data-bs-toggle="tab" class="btn btn-warning" onclick="changeMode('Coordinadores')">
+                    <span class="d-sm-none">Coordinadores</span>
+                    <span class="d-sm-block d-none">Coordinadores</span>
+                </a>
+            </li>
+        </ul>
     </div>
 
         <div class="row d-flex justify-content-center">
@@ -102,7 +99,7 @@
                                                 <td>{{ $fechasAsociacion[$coordinador->COO_id] }}</td>
                                                 <td>
                                                     <a class="btn btn-sm btn-success"
-                                                        href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}">Más
+                                                        href="{{ route('coordinadores.show', ['coordinadore' => $coordinador]) }}">Más
                                                         información</a>
                                                 </td>
                                             </tr>
@@ -115,6 +112,8 @@
                 </div>
             </div>
         </div>
+
+
 
 
 
@@ -156,4 +155,8 @@
 
             });
         </script>
+
+@include('scripts.info_personal_js')
+
+
 </x-layout>

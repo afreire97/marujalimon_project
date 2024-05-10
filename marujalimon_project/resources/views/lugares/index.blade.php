@@ -32,7 +32,7 @@
                 <div class="card h-100 border-0 shadow-sm" id="cardViewLugar">
                     <!-- Start of clickable image -->
                     <a href="{{ route('lugares.show', ['lugar' => $lugar]) }}">
-                        <img src="{{ optional($lugar->imagen)->IMG_path ? asset($lugar->imagen->IMG_path) : asset('img/default_img/lugar.png') }}" class="volunteer-card-img">
+                        <img src="{{ optional($lugar->imagen)->IMG_path ? $lugar->imagen->IMG_path : asset('img/default_img/lugar.png') }}" class="volunteer-card-img">
 
                     </a>
                     <!-- End of clickable image -->

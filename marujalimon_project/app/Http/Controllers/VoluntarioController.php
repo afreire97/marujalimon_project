@@ -36,13 +36,13 @@ class VoluntarioController extends Controller
         // Verificamos si el usuario es administrador
         if ($user->is_admin) {
             // Si es administrador, obtenemos todos los voluntarios con paginación
-            $voluntarios = Voluntario::orderBy('created_at', 'desc')->paginate(8);
+            $voluntarios = Voluntario::orderBy('created_at', 'desc')->paginate(1000000);
             $voluntarios_all = Voluntario::all();
         } else {
             // Verificamos si el usuario está asociado a un coordinador
             if ($user->is_coordinador && $user->coordinador) { // Verificar si $user->coordinador no es null
                 // Si está asociado a un coordinador, obtenemos todos los voluntarios asociados a ese coordinador con paginación
-                $voluntarios = $user->coordinador->voluntarios()->orderBy('created_at', 'desc')->paginate(8);
+                $voluntarios = $user->coordinador->voluntarios()->orderBy('created_at', 'desc')->paginate(10000000);
                 $voluntarios_all = $user->coordinador->voluntarios()->get();
             } else {
                 // Manejar el caso en el que el usuario no está asociado a ningún coordinador
@@ -57,8 +57,10 @@ class VoluntarioController extends Controller
         $lugares = Lugar::all();
 
         // Retornamos la vista con los voluntarios y las tareas obtenidas
-        return view('voluntarios.index', ['voluntarios' => $voluntarios, 'tareas' => $tareas, 'lugares' => $lugares,'voluntarios_all' => $voluntarios_all]);
+        return view('voluntarios.index', ['voluntarios' => $voluntarios, 'tareas' => $tareas, 'lugares' => $lugares, 'voluntarios_all' => $voluntarios_all]);
     }
+
+
 
 
 
@@ -118,10 +120,7 @@ class VoluntarioController extends Controller
 
         $totalHoras = $voluntario->calcularHorasEntreFechas($fechaInicio, $fechaFin);
 
-        return view('voluntarios.informacion_voluntario', ['voluntario' => $voluntario, 'totalHoras' => $totalHoras]);
-
-
-
+        return response()->json(['totalHoras' => $totalHoras]);
     }
 
 
@@ -149,6 +148,12 @@ class VoluntarioController extends Controller
     }
 
 
+    public function api()
+    {
+        $voluntarios = Voluntario::all();
+        return response()->json($voluntarios);
+    }
+
 
 
 
@@ -162,8 +167,10 @@ class VoluntarioController extends Controller
 
         $coordinadores = Coordinador::all();
         $delegaciones = Delegacion::all();
+        $fields = FormFieldsGenerator::generateVoluntarioFields();
 
-        return view(('voluntarios.create'), ['coordinadores' => $coordinadores, 'delegaciones' => $delegaciones]);
+
+        return view(('voluntarios.create'), ['coordinadores' => $coordinadores, 'delegaciones' => $delegaciones, 'fields' => $fields]);
     }
 
     /**
@@ -184,11 +191,25 @@ class VoluntarioController extends Controller
         $voluntario->VOL_fecha_nac = $request->input('VOL_fecha_nac');
         $voluntario->VOL_domicilio = $request->input('VOL_domicilio');
         $voluntario->VOL_cp = $request->input('VOL_cp');
-        $voluntario->VOL_tel1 = $request->input('VOL_tel1');
-        $voluntario->VOL_sexo = $request->input('VOL_sexo');
+        $voluntario->VOL_localidad = $request->input('VOL_localidad');
+        $voluntario->VOL_provincia = $request->input('VOL_provincia');
+        $voluntario->VOL_tel = $request->input('VOL_tel');
         $voluntario->VOL_mail = $request->input('VOL_mail');
+        $voluntario->VOL_trabajo_actual = $request->input('VOL_trabajo_actual');
+        $voluntario->VOL_fecha_inicio = $request->input('VOL_fecha_inicio');
+        $voluntario->VOL_preferencia = $request->input('VOL_preferencia');
+        $voluntario->VOL_carnet = $request->has('VOL_carnet');
+        $voluntario->VOL_seguro = $request->has('VOL_seguro');
+        $voluntario->VOL_curso = $request->has('VOL_curso');
+        $voluntario->VOL_autoriza_datos = $request->has('VOL_autoriza_datos');
+        $voluntario->VOL_autoriza_imagen = $request->has('VOL_autoriza_imagen');
+        $voluntario->VOL_sexo = $request->input('VOL_sexo');
+        $voluntario->VOL_dias_semana_dispo = implode(',', $request->input('VOL_dias_semana_dispo'));
 
 
+
+
+        // Guardar la relación con el usuario
         $user = User::create([
             'name' => $voluntario->VOL_nombre,
             'email' =>  $voluntario->VOL_mail,
@@ -197,18 +218,17 @@ class VoluntarioController extends Controller
             'is_admin' => false,
             'is_voluntario' => true,
         ]);
-
-        $voluntario->user_id= ($user->id);
-
-
-        $voluntario->user()->associate($user);
+        $voluntario->user_id = $user->id;
         $voluntario->save();
-        event(new Registered($user));
 
 
-        // Asignar la delegación y el coordinador
-        $voluntario->delegaciones()->attach($request->input('DEL_id'));
-        $voluntario->coordinadores()->attach($request->input('COO_id'));
+        // Asignar la delegación y el coordinador si se proporcionan
+        if ($request->has('DEL_id')) {
+            $voluntario->delegaciones()->attach($request->input('DEL_id'));
+        }
+        if ($request->has('COO_id')) {
+            $voluntario->coordinadores()->attach($request->input('COO_id'));
+        }
 
         // Guardar la imagen de perfil si se proporciona
         if ($request->hasFile('imagen_perfil')) {
@@ -223,6 +243,10 @@ class VoluntarioController extends Controller
             $imagenPerfil->save();
         }
 
+        // Guardar el voluntario
+
+        event(new Registered($user));
+
         return redirect()->route('voluntarios.index')->with('success', 'Voluntario creado exitosamente.');
     }
 
@@ -234,9 +258,7 @@ class VoluntarioController extends Controller
     {
 
         $fields = FormFieldsGenerator::generateVoluntarioFields();
-        $selectFields = [
-            'VOL_sexo' => ['Masculino', 'Femenino', 'Otro'],
-        ];
+
         $delegaciones = $voluntario->delegaciones;
         $coordinadores = $voluntario->coordinadores;
 
@@ -248,7 +270,6 @@ class VoluntarioController extends Controller
                 'coordinadores',
                 $coordinadores,
                 'fields' => $fields,
-                'selectFields' => $selectFields
             ]
         );
     }
@@ -262,7 +283,7 @@ class VoluntarioController extends Controller
 
 
         // Obtener todos los datos de la solicitud
-        $datos = ValidacionUtils::validarDatosFormularioUpdate($request);
+        $datos = ValidacionUtils::validarVoluntarioUpdate($request, $voluntario);
 
 
         $voluntario->update($datos);
@@ -302,7 +323,24 @@ class VoluntarioController extends Controller
 
 
 
+    public function getImagenPerfil($id)
+    {
+        // Buscar el voluntario por VOL_id
+        $voluntario = Voluntario::with('imagenPerfil')->where('VOL_id', $id)->first();
 
+        // Verificar si el voluntario existe y tiene imagen de perfil
+        if ($voluntario && $voluntario->imagenPerfil) {
+            return response()->json([
+                'success' => true,
+                'imagenPerfil' => $voluntario->imagenPerfil
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Voluntario no encontrado o sin imagen de perfil.'
+            ], 404);
+        }
+    }
     public function destroy(Voluntario $voluntario)
     {
         // Eliminar el voluntario
@@ -316,17 +354,9 @@ class VoluntarioController extends Controller
 
         if ($authorizedUser->is_voluntario) {
             return redirect()->route('login')->with('success', 'Voluntario eliminado correctamente');
-
         }
 
 
         return redirect()->route('voluntarios.index')->with('success', 'Voluntario eliminado correctamente');
-
-
     }
-
-
-
-
 }
-

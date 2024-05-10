@@ -10,6 +10,25 @@
 
 
 
+<style>
+    #search {
+        width: 11%;
+        /* Ajusta el tamaño de la barra de búsqueda */
+        margin-left: auto;
+        /* Centra la barra de búsqueda a la izquierda */
+        margin-right: auto;
+        /* Centra la barra de búsqueda a la izquierda */
+        margin-top: 0.5rem;
+        /* Reduce el margen superior de la barra de búsqueda */
+    }
+
+    #cardView {
+        margin-top: 0;
+        /* Elimina el margen superior de las tarjetas */
+    }
+</style>
+
+<input type="text" id="search" placeholder="Buscar por nombre o DNI">
 
 
 
@@ -20,32 +39,18 @@
 
 
 <!-- Tarjetas de voluntarios con nuevo estilo -->
-<div id="cardView" class="row mt-5">
-    @foreach ($voluntarios as $voluntario)
-    <div class="col col-custom mb-4">
-        <div class="card h-100 border-0 shadow-sm">
-            <!-- Start of clickable image -->
-            <a href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}">
-                <img src="{{ $voluntario->imagenPerfil ? $voluntario->imagenPerfil->IMG_path : 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg' }}" class="volunteer-card-img" alt="Imagen de perfil del voluntario">
-            </a>
-            <!-- End of clickable image -->
 
-            <div class="volunteer-card-body">
-                <h5 class="volunteer-card-title">
-                    <i class="fas fa-user"></i> {{ $voluntario->VOL_nombre }} {{ $voluntario->VOL_apellidos }}
-                </h5>
-                <p class="volunteer-card-text">
-                    <i class="fas fa-id-card"></i> DNI: {{ $voluntario->VOL_dni }}
-                </p>
-                <div class="volunteer-card-buttons">
-                    <a href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}" class="volunteer-info btn btn-primary">Más información</a>
-                    <a href="{{ route('voluntarios.edit', ['voluntario' => $voluntario]) }}" class="volunteer-modify btn btn-primary">Modificar</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endforeach
+
+<!-- Contenedor para las tarjetas de voluntarios -->
+<div id="cardView" class="row mt-0">
+    <!-- Este contenedor inicialmente está vacío y se llenará dinámicamente mediante JavaScript -->
 </div>
+<div id="pagination" class="pagination-controls">
+    <button id="prevPage">Anterior</button>
+    <span id="pageInfo"></span>
+    <button id="nextPage">Siguiente</button>
+</div>
+
 
 
 
@@ -53,9 +58,9 @@
 <div class="modal fade" id="modal-dialog">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-        <div class="modal-header" style="background-color: #008080; display: flex; justify-content: center; align-items: center;">
-    <h4 class="modal-title" style="color: white; font-weight: bold;">Añadir horas</h4>
-</div>
+            <div class="modal-header" style="background-color: #008080; display: flex; justify-content: center; align-items: center;">
+                <h4 class="modal-title" style="color: white; font-weight: bold;">Añadir horas</h4>
+            </div>
             <!-- Modal body -->
             <div class="modal-body">
                 <!-- Aquí está el formulario -->
@@ -75,9 +80,9 @@
                 </form>
             </div>
 
-            <div class="modal-footer">
-                <a href="javascript:;" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</a>
-                <button type="button" class="btn btn-success" id="btn-agregar" onclick="agregarHoras()">Agregar</button>
+            <div class="modal-footer" style="background-color: #D3D3D3; display: flex; justify-content: center; gap: 20px;">
+                <a href="javascript:;" class="btn btn-danger" data-bs-dismiss="modal" style="font-size: 20px;">Cerrar</a>
+                <button type="button" class="btn btn-success" id="btn-agregar" onclick="agregarHoras()" style="font-size: 20px;">Agregar</button>
             </div>
         </div>
     </div>
@@ -92,8 +97,8 @@
 <div id="tableView" class="table-responsive " style="display: none;">
     <!-- Contenido de la vista de tabla -->
     <div class="table-responsive">
-    <table id="data-table-default" width="100%" class="table table-bordered align-middle text-nowrap table-striped">
-    <thead style="background-color: #40E0D0;">
+        <table id="data-table-default" width="100%" class="table table-bordered align-middle text-nowrap table-striped">
+            <thead style="background-color: #40E0D0;">
                 <tr>
                     <th width="1%">ID</th>
                     <th width="1%">Nombre</th>
@@ -217,9 +222,8 @@
 
         // Agrega la cadena al div en el cuerpo del modal
         $('#modal-dialog .modal-body #voluntarios-seleccionados').append(
-            `<p>Se le <strong>añadirán horas</strong> a ${nombresConcatenados}</p>`);
+            `<p style="font-size: 20px;">Se le <strong>añadirán horas</strong> a ${nombresConcatenados}</p>`);
     });
-
 
     function agregarHoras() {
         // Recolecta los voluntarios seleccionados
@@ -229,9 +233,8 @@
         let horas = $('#horas').val();
         let tareaId = $('#tareaSeleccionada').val(); // Asegúrate de que este campo contiene el ID correcto
 
-        console.log("Horas: ", horas);
-        console.log("Tarea ID: ", tareaId); // Verifica que se capture el valor correcto
-        console.log("Voluntarios seleccionados JSON: ", voluntariosSeleccionadosJSON); // Nuevo console.log
+
+
 
         // Verifica si el array de voluntarios seleccionados está vacío
         if (voluntariosSeleccionados.length === 0) {
@@ -262,23 +265,43 @@
                     tarea_id: tareaId // Asegúrate de enviar el ID correcto
                 },
                 success: function(response) {
-                    // Muestra el modal de SweetAlert de éxito
-                    swal({
-                        title: '¡Éxito!',
-                        text: 'Las horas han sido añadidas.',
-                        icon: 'success',
-                        buttons: {
-                            confirm: {
-                                text: 'OK',
-                                value: true,
-                                visible: true,
-                                className: 'btn btn-primary',
-                                closeModal: true,
-                            }
-                        }
-                    });
+                    var url = `http://127.0.0.1:8000/tareas/${tareaId}/lugarId`;
 
-                    $('#modal-dialog').modal('hide');
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            var lugarId = data.lugar_id; // Asegúrate de que 'lugar_id' es la clave correcta en la respuesta
+
+                            // Muestra el modal de SweetAlert de éxito
+                            swal({
+                                title: '¡Éxito!',
+                                text: 'Las horas han sido añadidas a su tarea lugar correspondiente.',
+                                icon: 'success',
+                                buttons: {
+                                    cancel: {
+                                        text: 'Cerrar',
+                                        value: null,
+                                        visible: true,
+                                        className: 'btn btn-primary swal-button',
+                                        closeModal: true,
+                                    },
+                                    confirm: {
+                                        text: 'Ir al lugar',
+                                        value: true,
+                                        visible: true,
+                                        className: 'btn btn-primary swal-button'
+                                    }
+                                }
+                            }).then((value) => {
+                                if (value) {
+                                    // Redirige a la página de la tarea
+                                    window.location.href = "http://127.0.0.1:8000/lugares/" + lugarId; // Reemplaza 'response.lugar_id' con el ID del lugar que obtienes de tu solicitud AJAX  // Reemplaza '/ruta/a/la/tarea/' con la ruta real a la página de la tarea
+                                }
+                            });
+
+                            $('#modal-dialog').modal('hide');
+                        })
+                        .catch(error => console.error('Error:', error));
                 },
                 error: function(xhr, status, error) {
                     // Maneja cualquier error que ocurra durante la solicitud AJAX
@@ -325,7 +348,6 @@
 
 <script>
     $(document).ready(function() {
-        // Manejo del autocompletado
         $("#buscadorTarea").on('input', function() {
             var inputValue = $(this).val();
             if (inputValue.length >= 1) {
@@ -338,37 +360,44 @@
                     success: function(data) {
                         var listaTareas = $("#listaTareas");
                         listaTareas.empty();
+                        var colorToggle = false; // Variable para alternar colores
                         if (data.length) {
                             data.forEach(function(tarea) {
-                                // Hacer una solicitud adicional para obtener el nombre del lugar
                                 $.ajax({
                                     url: "/tareas/" + tarea.id + "/lugar",
                                     type: "GET",
                                     success: function(lugar) {
+                                        var colorClass = colorToggle ? 'opcion-tarea-gris' : 'opcion-tarea-blanco'; // Alternar clase basado en colorToggle
+                                        colorToggle = !colorToggle; // Cambiar el estado de colorToggle para la próxima iteración
+
                                         listaTareas.append(`
-                                        <div class='opcion-tarea' data-id='${tarea.id}' style="margin-bottom: 10px;">
-    <svg class='icono-tarea' fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
-      <path d="M 10 4 L 10 6 L 4 6 L 4 20 L 20 20 L 20 6 L 14 6 L 14 4 L 10 4 z M 12 4 L 12 6 L 14 6 L 14 4 L 12 4 z M 6 8 L 18 8 L 18 18 L 6 18 L 6 8 z M 8 10 L 8 12 L 10 12 L 10 10 L 8 10 z M 12 10 L 12 12 L 16 12 L 16 10 L 12 10 z M 8 14 L 8 16 L 10 16 L 10 14 L 8 14 z M 12 14 L 12 16 L 16 16 L 16 14 L 12 14 z"/>
-    </svg>
-    <span class='nombre-tarea' style="margin-right: 30px;">${tarea.nombre}</span> <!-- Aquí está el cambio -->
-    <svg class='icono-lugar' fill="#808080" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
-      <path d="M 12 2 C 8.1458516 2 5 5.1458516 5 9 C 5 12.060703 6.5479097 15.446303 10.09375 18.96875 L 12 21 L 13.90625 18.96875 C 17.45209 15.446303 19 12.060703 19 9 C 19 5.1458516 15.854148 2 12 2 z M 12 4 C 14.773268 4 17 6.2267317 17 9 C 17 11.224902 15.777626 13.930926 12.59375 17.03125 L 12 17.71875 L 11.40625 17.03125 C 8.222374 13.930926 7 11.224902 7 9 C 7 6.2267317 9.2267317 4 12 4 z M 12 6 A 2 2 0 0 0 12 10 A 2 2 0 0 0 12 6 z"/>
-    </svg>
-    <span style="font-style: italic; color: #808080;">${lugar.LUG_nombre}</span>
+                                        <div class='opcion-tarea ${colorClass}' data-id='${tarea.id}' style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding: 5px;">
+    <!-- Contenedor para la tarea y su icono -->
+    <div style="display: flex; align-items: center;">
+        <svg class='icono-tarea' fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
+            <path d="M 10 4 L 10 6 L 4 6 L 4 20 L 20 20 L 20 6 L 14 6 L 14 4 L 10 4 z M 12 4 L 12 6 L 14 6 L 14 4 L 12 4 z M 6 8 L 18 8 L 18 18 L 6 18 L 6 8 z M 8 10 L 8 12 L 10 12 L 10 10 L 8 10 z M 12 10 L 12 12 L 16 12 L 16 10 L 12 10 z M 8 14 L 8 16 L 10 16 L 10 14 L 8 14 z M 12 14 L 12 16 L 16 16 L 16 14 L 12 14 z"/>
+        </svg>
+        <span class='nombre-tarea'>${tarea.nombre}</span>
+    </div>
+    <!-- Contenedor para el lugar y su icono -->
+    <div style="display: flex; align-items: center;">
+        <svg class='icono-lugar' fill="#808080" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
+            <path d="M 12 2 C 8.1458516 2 5 5.1458516 5 9 C 5 12.060703 6.5479097 15.446303 10.09375 18.96875 L 12 21 L 13.90625 18.96875 C 17.45209 15.446303 19 12.060703 19 9 C 19 5.1458516 15.854148 2 12 2 z M 12 4 C 14.773268 4 17 6.2267317 17 9 C 17 11.224902 15.777626 13.930926 12.59375 17.03125 L 12 17.71875 L 11.40625 17.03125 C 8.222374 13.930926 7 11.224902 7 9 C 7 6.2267317 9.2267317 4 12 4 z M 12 6 A 2 2 0 0 0 12 10 A 2 2 0 0 0 12 6 z"/>
+        </svg>
+        <span style="font-style: italic; color: #808080;">${lugar.LUG_nombre}</span>
+    </div>
 </div>
-`);
 
-
-
+                                    `);
                                     },
                                     error: function(xhr, status, error) {
                                         console.error("Error en la solicitud AJAX: " + error);
                                     }
                                 });
                             });
-                            listaTareas.show(); // Muestra las sugerencias
+                            listaTareas.show();
                         } else {
-                            listaTareas.hide(); // Oculta el contenedor si no hay datos
+                            listaTareas.hide();
                         }
                     },
                     error: function(xhr, status, error) {
@@ -380,24 +409,183 @@
             }
         });
 
-        // Manejo de selección de tareas desde las sugerencias
         $(document).on('click', '.opcion-tarea', function() {
-    var tareaNombre = $(this).find('.nombre-tarea').text(); // Aquí está el cambio
-    var tareaId = $(this).data('id');
-    $("#buscadorTarea").val(tareaNombre);
-    $("#tareaSeleccionada").val(tareaId);
-    console.log("Tarea ID seleccionada:", tareaId); // Depuración
-    $("#listaTareas").empty().hide();
-});
+            var tareaNombre = $(this).find('.nombre-tarea').text();
+            var tareaId = $(this).data('id');
+            $("#buscadorTarea").val(tareaNombre);
+            $("#tareaSeleccionada").val(tareaId);
+            console.log("Tarea ID seleccionada:", tareaId);
+            $("#listaTareas").empty().hide();
+        });
     });
 </script>
 <script>
-document.getElementById("toggleViewButton").addEventListener("click", function() {
-    var button = document.getElementById("toggleViewButton");
-    if (button.innerHTML === "Cambiar a Tabla") {
-        button.innerHTML = "Cambiar a Tarjetas";
-    } else {
-        button.innerHTML = "Cambiar a Tabla";
-    }
-});
+    document.getElementById("toggleViewButton").addEventListener("click", function() {
+        var button = document.getElementById("toggleViewButton");
+        if (button.innerHTML === "Cambiar a Tabla") {
+            button.innerHTML = "Cambiar a Tarjetas";
+        } else {
+            button.innerHTML = "Cambiar a Tabla";
+        }
+    });
+</script>
+
+<script>
+    // Selecciona el botón y el elemento de entrada
+    var button = document.getElementById('toggleViewButton');
+    var input = document.getElementById('search');
+
+    // Añade un evento de clic al botón
+    button.addEventListener('click', function() {
+        // Cambia la propiedad de display del elemento de entrada
+        if (input.style.display !== 'none') {
+            input.style.display = 'none';
+        } else {
+            input.style.display = '';
+        }
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let allVolunteers = [];
+        let currentPage = 1;
+        const volunteersPerPage = 32; // Número de voluntarios por página
+
+        function displayVolunteers(volunteers) {
+            const cardsContainer = document.getElementById('cardView');
+            const startIndex = (currentPage - 1) * volunteersPerPage;
+            const endIndex = startIndex + volunteersPerPage;
+            const volunteersToShow = volunteers.slice(startIndex, endIndex);
+
+            cardsContainer.innerHTML = ''; // Limpia el contenedor antes de agregar nuevas tarjetas
+
+            volunteersToShow.forEach(vol => {
+
+
+
+                let volId = vol.VOL_id;
+
+                let url = `/voluntario/${volId}/imagen-perfil`;
+
+
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('No se pudo obtener la imagen de perfil');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success && data.imagenPerfil) {
+                            console.log('Imagen de perfil:', data.imagenPerfil.IMG_path);
+                            // Aquí puedes guardar el valor de IMG_path en una variable
+                            const imagePath = data.imagenPerfil.IMG_path;
+                            // Puedes hacer algo con imgPath, como mostrar la imagen en el DOM
+
+                            if (imagePath == null) {
+                                imagePath = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
+                            }
+                                const volElement = document.createElement('div');
+                                volElement.className = 'col col-custom mb-4';
+                                volElement.innerHTML = `
+        <div class="card h-100 border-0 shadow-sm">
+            <a href="/voluntarios/${vol.VOL_id}">
+                <img src="${imagePath}" class="volunteer-card-img" alt="Imagen de perfil del voluntario" style="border-radius: 5px; max-width: 100%; height: auto;">
+            </a>
+            <div class="volunteer-card-body">
+                <h5 class="volunteer-card-title"><i class="fas fa-user"></i> ${vol.VOL_nombre} ${vol.VOL_apellidos}</h5>
+                <p class="volunteer-card-text"><i class="fas fa-id-card"></i> DNI: ${vol.VOL_dni}</p>
+                <div class="volunteer-card-buttons">
+                    <a href="/voluntarios/${vol.VOL_id}" class="volunteer-info btn btn-primary">Más información</a>
+                    <a href="/voluntarios/${vol.VOL_id}/edit" class="volunteer-modify btn btn-primary">Modificar</a>
+                </div>
+            </div>
+        </div>
+    `;
+                                cardsContainer.appendChild(volElement);
+                            
+
+                        } else {
+                            console.log('No se encontró imagen de perfil para este voluntario.');
+                        }
+                    })
+                    .catch(error => {
+
+
+                        const imagePath = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
+
+                        const volElement = document.createElement('div');
+                                volElement.className = 'col col-custom mb-4';
+                                volElement.innerHTML = `
+        <div class="card h-100 border-0 shadow-sm">
+            <a href="/voluntarios/${vol.VOL_id}">
+                <img src="${imagePath}" class="volunteer-card-img" alt="Imagen de perfil del voluntario" style="border-radius: 5px; max-width: 100%; height: auto;">
+            </a>
+            <div class="volunteer-card-body">
+                <h5 class="volunteer-card-title"><i class="fas fa-user"></i> ${vol.VOL_nombre} ${vol.VOL_apellidos}</h5>
+                <p class="volunteer-card-text"><i class="fas fa-id-card"></i> DNI: ${vol.VOL_dni}</p>
+                <div class="volunteer-card-buttons">
+                    <a href="/voluntarios/${vol.VOL_id}" class="volunteer-info btn btn-primary">Más información</a>
+                    <a href="/voluntarios/${vol.VOL_id}/edit" class="volunteer-modify btn btn-primary">Modificar</a>
+                </div>
+            </div>
+        </div>
+    `;
+                                cardsContainer.appendChild(volElement);
+
+
+
+
+                    });
+
+
+
+
+
+            });
+
+            updatePaginationControls();
+        }
+
+        function updatePaginationControls() {
+            const pageInfo = document.getElementById('pageInfo');
+            const totalPages = Math.ceil(allVolunteers.length / volunteersPerPage);
+            pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage === totalPages;
+        }
+
+        document.getElementById('prevPage').addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                displayVolunteers(allVolunteers);
+            }
+        });
+
+        document.getElementById('nextPage').addEventListener('click', function() {
+            if (currentPage * volunteersPerPage < allVolunteers.length) {
+                currentPage++;
+                displayVolunteers(allVolunteers);
+            }
+        });
+
+        // Cargar todos los voluntarios desde la API
+        fetch('/api/voluntarios')
+            .then(response => response.json())
+            .then(data => {
+                allVolunteers = data;
+                displayVolunteers(allVolunteers); // Muestra todos los voluntarios inicialmente
+            });
+
+        const searchInput = document.getElementById('search');
+        searchInput.addEventListener('keyup', function() {
+            const searchValue = searchInput.value.toLowerCase();
+            const filteredVolunteers = allVolunteers.filter(vol =>
+                vol.VOL_nombre.toLowerCase().includes(searchValue) ||
+                vol.VOL_dni.toLowerCase().includes(searchValue)
+            );
+            currentPage = 1; // Reinicia la paginación
+            displayVolunteers(filteredVolunteers); // Muestra solo los voluntarios filtrados
+        });
+    });
 </script>

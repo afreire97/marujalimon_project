@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('lugares', function (Blueprint $table) {
             $table->id('LUG_id');
-            $table->string('LUG_nombre');
-            $table->string('LUG_direccion');
-            $table->string('LUG_url_maps');
+            $table->integer('LUG_cp')->nullable();
+            $table->string('LUG_localidad')->nullable();
+            $table->string('LUG_provincia')->nullable();
+            $table->string('LUG_delegacion')->nullable();
+            $table->string('LUG_nombre')->nullable();
+            $table->string('LUG_direccion')->nullable();
+            $table->string('LUG_url_maps')->nullable()->default('https://maps.app.goo.gl/7tATAr8gv1oj2CXu8');
+
 
 
             $table->timestamps();

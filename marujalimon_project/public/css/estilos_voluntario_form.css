@@ -1076,3 +1076,37 @@ p#fixedColorText {
     overflow: visible;
 
 }
+.opcion-tarea-blanco {
+    background-color: #FFFFFF; /* Blanco */
+}
+
+.opcion-tarea-gris {
+    background-color: #F0F0F0; /* Gris claro */
+}
+.swal-button--confirm {
+    float: left; /* Alinea el botón "Ir al lugar" a la izquierda */
+    margin-right: auto; /* Espacio entre botones */
+}
+
+.swal-button--cancel {
+    float: none; /* Asegura que el botón "Cerrar" esté centrado */
+    margin: auto; /* Centra el botón horizontalmente */
+    display: block;
+}
+
+.swal-footer {
+    text-align: center; /* Centra los botones en el footer del modal */
+}
+
+.swal-footer {
+    display: flex;  /* Utiliza flexbox para controlar la disposición de los botones */
+    align-items: center; /* Alinea los botones verticalmente al centro */
+    justify-content: center; /* Alinea los botones horizontalmente al centro */
+    gap: 10px; /* Añade espacio entre los botones */
+}
+
+.swal-button {
+    flex: 1; /* Permite que ambos botones crezcan igualmente y ocupen el espacio disponible */
+    min-width: 100px; /* Asegúrate de que los botones tengan un mínimo de anchura */
+}
+

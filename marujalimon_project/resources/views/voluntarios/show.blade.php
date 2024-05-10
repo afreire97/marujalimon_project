@@ -82,7 +82,7 @@
                             </div>
                             <hr class="my-4">
                             <!-- Puedes usar un separador para distinguir claramente las secciones -->
-                            <form action="{{ route('calcularHoras', ['voluntario' => $voluntario]) }}" method="post">
+                            <form action="{{ route('calcularHoras', ['voluntario' => $voluntario]) }}" method="get" id="calcularHorasForm" >
                                 @csrf
 
                                 <fieldset>
@@ -291,5 +291,6 @@
 
 
 
+@include('scripts.calcular_horas')
 
 </x-layout>

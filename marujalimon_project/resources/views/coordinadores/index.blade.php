@@ -13,19 +13,39 @@
     <script src="{{ asset('tabla/assets/plugins/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('tabla/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('tabla/assets/plugins/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
+
+
+
+
     <div class="mode-container" style="display: flex; align-items: center; justify-content: space-between; background-color: #008080; padding: 10px; border-radius: 5px; width: 100%;">
     <div style="flex-grow: 1; display: flex; justify-content: center;">
     <div id="modeDisplay" style="color: white; font-size: 24px;">Coordinadores</div>
     </div>
+
+
+
+
     <button id="toggleViewButton" class="btn btn-danger">Cambiar a Tabla</button>
 </div>
 
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+    #search {
+        width: 11%; /* Ajusta el tamaño de la barra de búsqueda */
+        margin-left: auto; /* Centra la barra de búsqueda a la izquierda */
+        margin-right: auto; /* Centra la barra de búsqueda a la izquierda */
+        margin-top: 0.5rem; /* Reduce el margen superior de la barra de búsqueda */
+    }
+    #cardView {
+        margin-top: 0; /* Elimina el margen superior de las tarjetas */
+    }
+</style>
 
+<input type="text" id="search" placeholder="Buscar por nombre o DNI">
     <!-- Tarjetas de coordinadores con estilo unificado -->
-    <div id="cardView" class="row mt-5">
+    <div id="cardView" class="row mt-0">
         @foreach ($coordinadores as $coordinador)
         <div class="col col-custom mb-4">
             <div class="card h-100 border-0 shadow-sm card-coordinador">
@@ -36,8 +56,8 @@
                     @php
                     $nombre = $coordinador->COO_nombre;
                     $posicionEspacio = strpos($nombre, ' ');
-                    if ($posicionEspacio !== false && $posicionEspacio <= 7) { $nombreFinal=substr($nombre, 0, $posicionEspacio) . '<br>' . substr($nombre, $posicionEspacio + 1); } else { $nombreFinal=$nombre; } @endphp <h5 class="card-title">
-                        <i class="fa fa-user-tie"></i> {!! $nombreFinal !!}
+                    if ($posicionEspacio !== false && $posicionEspacio <= 7) { $nombreFinal=substr($nombre, 0, $posicionEspacio) . '<br>' . substr($nombre, $posicionEspacio + 1); } else { $nombreFinal=$nombre; } @endphp <h6 class="card-title">
+                        <i class="fa fa-user-tie"></i> {{ $coordinador->COO_nombre }} {{ $coordinador->COO_apellidos }}
                         </h5>
                         <p class="card-text">
                             <i class="fas fa-id-card"></i> DNI: {{ $coordinador->COO_dni }}
@@ -152,6 +172,32 @@ document.getElementById("toggleViewButton").addEventListener("click", function()
     }
 });
 </script>
+<script>
+// Selecciona el botón y el elemento de entrada
+var button = document.getElementById('toggleViewButton');
+var input = document.getElementById('search');
+
+// Añade un evento de clic al botón
+button.addEventListener('click', function() {
+  // Cambia la propiedad de display del elemento de entrada
+  if (input.style.display !== 'none') {
+    input.style.display = 'none';
+  } else {
+    input.style.display = '';
+  }
+});
+</script>
+<script>
+    $(document).ready(function() {
+        $('#search').on('keyup', function() {
+            var value = $(this).val().toLowerCase();
+            $("#cardView .col").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
 
 
 </x-layout>

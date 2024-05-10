@@ -17,57 +17,37 @@ return new class extends Migration {
 
             //nullable
             $table->string('VOL_apellidos');
-
-
             $table->string('VOL_dni')->unique();
             $table->date('VOL_fecha_nac');
             ;
             $table->string('VOL_domicilio');
             $table->string('VOL_cp');
-            $table->string('VOL_tel1');
-            $table->enum('VOL_sexo', ['Masculino', 'Femenino', 'Otro']);
-            $table->string('VOL_mail')->unique();
+            $table->string('VOL_localidad');
+            $table->string('VOL_provincia');
+            $table->string('VOL_tel');
 
+            // $table->enum('VOL_sexo', ['Mujer', 'Hombre', '']);
+
+            $table->string('VOL_mail')->unique();
+            $table->string('VOL_trabajo_actual');
+            $table->date('VOL_fecha_inicio');
+            $table->string('VOL_preferencia');
+
+            $table->boolean('VOL_carnet');
+            $table->boolean('VOL_seguro');
+            $table->string('VOL_curso')->nullable();
+            $table->boolean('VOL_autoriza_datos');
+            $table->boolean('VOL_autoriza_imagen');
+            $table->string('VOL_sexo');
 
             //LUEGO ARREGLAR EL NULLABLE
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade'); // Relación con usuarios
 
 
-            $table->timestamps();
-
-
-            $table->date('VOL_fecha_baja')->nullable();
-            $table->string('VOL_col_pref')->nullable();
-
-
-
-
-            $table->string('VOL_carnet')->nullable();
-            $table->string('VOL_seguro')->nullable();
-            $table->string('VOL_seguro_exento')->nullable();
-            $table->string('VOL_cdns')->nullable();
-            $table->string('VOL_cdns_pdf')->nullable();
-
-            $table->string('VOL_curso')->nullable();
-            $table->boolean('VOL_tiene_usuario')->nullable();
-            $table->string('VOL_demandas')->nullable();
-            $table->boolean('VOL_autoriza_datos')->nullable();
-            $table->string('VOL_lugar_voluntariado')->nullable();
-             //todo comprobar que se pueden poner mas de un dia a la semana
             $table->set('VOL_dias_semana_dispo', ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'])
             ->nullable();
+            $table->timestamps();
 
-
-            $table->boolean('VOL_dispo_dot')->nullable();
-            $table->boolean('VOL_dispo_cubierta')->nullable();
-            $table->boolean('VOL_autoriza_uso_imagen')->nullable();
-            $table->boolean('VOL_autoriza_uso_imagen_cubierto')->nullable();
-            $table->boolean('VOL_for_for_inicial')->nullable();
-            $table->boolean('VOL_for_mayores')->nullable();
-            $table->boolean('VOL_for_menores')->nullable();
-            $table->boolean('VOL_for_discapacidad')->nullable();
-            $table->boolean('VOL_for_otras')->nullable();
-
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade'); // Relación con usuarios
 
 
         });

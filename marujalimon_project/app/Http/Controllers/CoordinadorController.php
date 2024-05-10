@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Utils\FormFieldsGenerator;
 use App\Http\Utils\ValidacionUtils;
 use App\Models\Coordinador;
 use App\Models\Delegacion;
@@ -26,7 +27,7 @@ class CoordinadorController extends Controller
     {
 
 
-        $coordinadores = Coordinador::orderBy('created_at', 'desc')->paginate(8);
+        $coordinadores = Coordinador::orderBy('created_at', 'desc')->paginate(32);
 
         $tareas = Tarea::all();
 
@@ -49,30 +50,20 @@ class CoordinadorController extends Controller
     public function create()
     {
 
-        $fields = [
-            'COO_nombre' => 'Nombre',
-            'COO_apellidos' => 'Apellidos',
-            'COO_dni' => 'DNI',
-            'COO_fecha_nac' => 'Fecha de nacimiento',
-            'COO_domicilio' => 'Dirección',
-            'COO_cp' => 'Código Postal',
-            'COO_tel1' => 'Teléfono',
-            'COO_sexo' => 'Género',
-            'COO_mail' => 'Correo Electrónico',
-        ];
+        $fields = FormFieldsGenerator::generateCoordinadorFields();
 
-        $selectFields = [
-            'COO_sexo' => ['Masculino', 'Femenino', 'Otro'],
-        ];
+
 
         $delegaciones = Delegacion::all();
 
         return view('coordinadores.create', [
             'delegaciones' => $delegaciones,
             'fields' => $fields,
-            'selectFields' => $selectFields
+
         ]);
     }
+
+
     public function store(Request $request)
     {
 
@@ -86,13 +77,25 @@ class CoordinadorController extends Controller
         $coordinador->COO_fecha_nac = $request->input('COO_fecha_nac');
         $coordinador->COO_domicilio = $request->input('COO_domicilio');
         $coordinador->COO_cp = $request->input('COO_cp');
-        $coordinador->COO_tel1 = $request->input('COO_tel1');
-        $coordinador->COO_sexo = $request->input('COO_sexo');
+        $coordinador->COO_localidad = $request->input('COO_localidad');
+        $coordinador->COO_provincia = $request->input('COO_provincia');
+        $coordinador->COO_tel = $request->input('COO_tel');
         $coordinador->COO_mail = $request->input('COO_mail');
+        $coordinador->COO_trabajo_actual = $request->input('COO_trabajo_actual');
+        $coordinador->COO_fecha_inicio = $request->input('COO_fecha_inicio');
+        $coordinador->COO_preferencia = $request->input('COO_preferencia');
+        $coordinador->COO_carnet = $request->has('COO_carnet');
+        $coordinador->COO_seguro = $request->has('COO_seguro');
+        $coordinador->COO_curso = $request->has('COO_curso');
+        $coordinador->COO_autoriza_datos = $request->has('COO_autoriza_datos');
+        $coordinador->COO_autoriza_imagen = $request->has('COO_autoriza_imagen');
+        $coordinador->COO_sexo = $request->input('COO_sexo');
+        $coordinador->COO_dias_semana_dispo = implode(',', $request->input('COO_dias_semana_dispo'));
 
-       $user = User::create([
+
+        $user = User::create([
             'name' => $coordinador->COO_nombre,
-            'email' =>  $coordinador->COO_mail,
+            'email' => $coordinador->COO_mail,
             'password' => Hash::make($request->password),
             'is_coordinador' => true,
             'is_admin' => false,
@@ -133,21 +136,8 @@ class CoordinadorController extends Controller
 
     public function edit(Coordinador $coordinadore)
     {
-        $fields = [
-            'COO_nombre' => 'Nombre',
-            'COO_apellidos' => 'Apellidos',
-            'COO_dni' => 'DNI',
-            'COO_fecha_nac' => 'Fecha de nacimiento',
-            'COO_domicilio' => 'Dirección',
-            'COO_cp' => 'Código Postal',
-            'COO_tel1' => 'Teléfono',
-            'COO_sexo' => 'Género',
-            'COO_mail' => 'Correo Electrónico',
-        ];
 
-        $selectFields = [
-            'COO_sexo' => ['Masculino', 'Femenino', 'Otro'],
-        ];
+        $fields = FormFieldsGenerator::generateCoordinadorFields();
 
         $delegaciones = Delegacion::all();
 
@@ -155,7 +145,6 @@ class CoordinadorController extends Controller
             'coordinador' => $coordinadore,
             'delegaciones' => $delegaciones,
             'fields' => $fields,
-            'selectFields' => $selectFields
         ]);
     }
 
@@ -166,12 +155,16 @@ class CoordinadorController extends Controller
 
 
         // Validar los datos del formulario
-        $validatedData = $this->validateCoordinadorData($request, $coordinadore);
-
+        $validatedData = ValidacionUtils::validarCoordinadorUpdate($request, $coordinadore);
         // Procesar la actualización del coordinador
 
 
+
+
+
         $coordinadore->update($validatedData);
+
+
         if ($request->hasFile('imagen_perfil')) {
             // Obtiene la imagen actual asociada al voluntario
             $imagenPerfilActual = $coordinadore->imagenPerfil;
@@ -199,14 +192,19 @@ class CoordinadorController extends Controller
 
 
 
-
-
-
-            // Redirigir a la vista correspondiente con un mensaje de éxito
-            return redirect()->route('coordinador.show', ['coordinador' => $coordinadore])
-                ->with('success', '¡El coordinador ha sido actualizado exitosamente!');
         }
+
+
+        // Redirigir a la vista correspondiente con un mensaje de éxito
+        return redirect()->route('coordinadores.show', ['coordinadore' => $coordinadore])
+            ->with('success', '¡El coordinador ha sido actualizado exitosamente!');
+
+
+
+
+
     }
+
 
 
 
@@ -222,45 +220,5 @@ class CoordinadorController extends Controller
 
     }
 
-    protected function validateCoordinadorData(Request $request, Coordinador $coordinadore)
-    {
-        return $request->validate([
-            'COO_nombre' => 'required|string|max:255',
-            'COO_apellidos' => 'nullable|string|max:255',
-            'COO_dni' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('coordinadores', 'COO_dni')->ignore($coordinadore->COO_id, 'COO_id'),
-            ],
-            'COO_fecha_nac' => 'nullable|date',
-            'COO_domicilio' => 'nullable|string|max:255',
-            'COO_cp' => 'nullable|string|max:255',
-            'COO_tel1' => 'nullable|string|max:255',
-            'COO_sexo' => 'nullable|in:Masculino,Femenino,Otro',
-            'COO_mail' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique('coordinadores', 'COO_mail')->ignore($coordinadore->COO_mail, 'COO_mail'),
-            ],
-            'delegacion_id' => 'nullable|exists:delegaciones,DEL_id',
-            'imagen_perfil' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validación de la imagen de perfil
-
-
-        ], [
-            'COO_nombre.required' => 'El nombre del coordinador es obligatorio.',
-            'COO_dni.required' => 'El DNI del coordinador es obligatorio.',
-            'COO_dni.unique' => 'El DNI ya está en uso.',
-            'COO_mail.required' => 'El correo electrónico del coordinador es obligatorio.',
-            'COO_mail.email' => 'El correo electrónico debe ser válido.',
-            'COO_mail.unique' => 'El correo electrónico ya está en uso.',
-            'delegacion_id.exists' => 'La delegación seleccionada no es válida.',
-            'imagen_perfil.image' => 'El archivo debe ser una imagen.',
-            'imagen_perfil.mimes' => 'El archivo debe ser de tipo: jpeg, png, jpg o gif.',
-            'imagen_perfil.max' => 'El tamaño máximo del archivo es de 2048 kilobytes (2MB).',
-        ]);
-    }
 
 }

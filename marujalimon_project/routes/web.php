@@ -47,7 +47,7 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
 
 
 
-    Route::post('/voluntario/{voluntario}/horas', [VoluntarioController::class, 'calcularHoras'])->name('calcularHoras');
+    Route::get('/voluntario/{voluntario}/horas', [VoluntarioController::class, 'calcularHoras'])->name('calcularHoras');
     Route::post('/voluntario/{voluntario}/horas-por-mes', [VoluntarioController::class, 'mostrarHorasPorMes'])->name('mostrarHorasPorMes');
 
     //calcula el total de horas de los voluntarios por cada mes del año
@@ -55,6 +55,9 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
 
     Route::post('/voluntarios/horas/agregar', [HorasController::class, 'añadirHoras'])->name('horas.añadir');
     Route::post('/totalTareasPorMes', [TareasController::class, 'totalTareasPorMes'])->name('totalTareasPorMes');
+    Route::get('/api/voluntarios', [VoluntarioController::class, 'api']);
+    Route::get('/voluntario/{id}/imagen-perfil', [VoluntarioController::class, 'getImagenPerfil'])->name('voluntario.imagen-perfil');
+
 
 
     //RUTA DE COORDINADORES
@@ -78,6 +81,8 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
     Route::get('/lugares/{lugar}/voluntarios', [LugaresController::class, 'showVoluntarios'])->name('lugares.showVoluntarios');
 
 
+
+
     //RUTAS DE TAREAS
 
     Route::delete('/tareas/{tarea}', [TareasController::class, 'destroy'])->name('tareas.destroy');
@@ -87,6 +92,8 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
 
     Route::get('/buscar-tareas', [TareasController::class, 'buscar'])->name('tareas.buscar');
     Route::get('/tareas/{tarea}/lugar', [TareasController::class, 'mostrarLugar'])->name('tareas.mostrarLugar');
+    Route::get('/tareas/{tarea}/lugarId', [TareasController::class, 'getLugarId'])->name('tareas.getLugarId');
+
 
 
 
