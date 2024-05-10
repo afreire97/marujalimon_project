@@ -1,17 +1,9 @@
 <?php
 
 use App\Models\Coordinador;
-use App\Models\Delegacion;
-use App\Models\Error;
-use App\Models\Horas;
-use App\Models\Lugar;
-use App\Models\Observacion;
-use App\Models\Provincia;
-use App\Models\Tarea;
-use App\Models\User;
 use App\Models\Voluntario;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,98 +14,92 @@ class DatabaseSeeder extends Seeder
             'name' => 'aaron',
             'email' => 'aaron@mail.com',
             'email_verified_at' => now(),
-            'password' => bcrypt('password'), // Usa bcrypt para encriptar la contraseña
-            'is_coordinador' => true, // Establecer el usuario como coordinador
-            // Puedes agregar más atributos según sea necesario
+            'password' => bcrypt('password'),
+            'is_coordinador' => true,
         ]);
 
+        // Crear un usuario administrador
         User::factory()->create([
             'name' => 'PEPE',
             'email' => 'pepe@mail.com',
             'email_verified_at' => now(),
-            'password' => bcrypt('password'), // Usa bcrypt para encriptar la contraseña
-            'is_admin' => true, // Establecer el usuario como coordinador
-            // Puedes agregar más atributos según sea necesario
+            'password' => bcrypt('password'),
+            'is_admin' => true,
         ]);
 
-       $voluntarioUser=  User::factory()->create([
+        // Crear un usuario voluntario
+        $voluntarioUser = User::factory()->create([
             'name' => 'Jose',
             'email' => 'jose@mail.com',
             'email_verified_at' => now(),
-            'password' => bcrypt('password'), // Usa bcrypt para encriptar la contraseña
-            'is_voluntario' => true, // Establecer el usuario como coordinador
-            // Puedes agregar más atributos según sea necesario
+            'password' => bcrypt('password'),
+            'is_voluntario' => true,
         ]);
 
-//         $voluntario = Voluntario::factory()->create();
-//         $voluntario->user()->associate($voluntarioUser);
-//         $voluntario->save();
+        // Obtener voluntarios y coordinadores
+        $voluntarios = Voluntario::all();
+        $coordinadores = Coordinador::all();
 
+        // Preparar datos para inserción masiva de voluntarios
+        $voluntariosData = $voluntarios->map(function ($voluntario) {
+            return [
+                'name' => $voluntario->VOL_nombre,
+                'email' => $voluntario->VOL_mail ?: generateEmail($voluntario->VOL_nombre, $voluntario->VOL_apellidos),
+                'password' => bcrypt('password'),
+                'is_voluntario' => true,
+            ];
+        })->toArray();
 
-//         Provincia::factory(10)->create();
+        // Preparar datos para inserción masiva de coordinadores
+        $coordinadoresData = $coordinadores->map(function ($coordinador) {
+            return [
+                'name' => $coordinador->COO_nombre ?: 'Unknown',
+                'email' => $coordinador->COO_mail ?: generateEmail($coordinador->COO_nombre, $coordinador->COO_apellidos),
+                'password' => bcrypt('password'),
+                'is_coordinador' => true,
+            ];
+        })->toArray();
 
-//         $coordinadores = Coordinador::factory(15)->create();
+        // Insertar usuarios voluntarios de forma masiva
+        $voluntariosIds = [];
+        foreach ($voluntariosData as $userData) {
+            $voluntariosIds[] = User::insertGetId($userData);
+        }
 
-//         // Crear delegaciones y asignarles un coordinador
-//         $delegaciones = Delegacion::factory(4)->create();
-//         $delegaciones->each(function ($delegacion) use ($coordinadores) {
-//             $coordinador = $coordinadores->random();
-//             $delegacion->coordinadores()->attach($coordinador);
-//         });
+        // Asociar los usuarios voluntarios con los modelos Voluntario correspondientes
+        foreach ($voluntariosIds as $key => $userId) {
+            $voluntario = Voluntario::where('VOL_nombre', $voluntariosData[$key]['name'])->first();
+            if ($voluntario) {
+                $voluntario->user_id = $userId;
+                $voluntario->save();
+            }
+        }
 
-//         // Crear voluntarios
-//         $voluntarios = Voluntario::factory(200)->create();
+        // Insertar usuarios coordinadores de forma masiva
+        $coordinadoresIds = [];
+        foreach ($coordinadoresData as $userData) {
+            $coordinadoresIds[] = User::insertGetId($userData);
+        }
 
-
-
-
-//         // Asignar voluntarios a delegaciones (y por ende a coordinadores)
-//         $voluntarios->each(function ($voluntario) use ($delegaciones) {
-//             $delegacion = $delegaciones->random();
-//             $voluntario->delegaciones()->attach($delegacion);
-//             $voluntario->coordinadores()->attach($delegacion->coordinadores()->inRandomOrder()->first());
-//         });
-
-//         // Crear observaciones
-//         Observacion::factory(50)->create();
-
-//         // Crear errores
-//         Error::factory(50)->create();
-
-//         // Crear lugares
-//         $lugares = Lugar::factory(10)->create();
-
-//         // Asigna una imagen a cada lugar
-//         $lugares->each(function ($lugar) {
-//             App\Models\ImagenLugar::factory()->create(['IMG_lugar_id' => $lugar->LUG_id]);
-//         });
-//         $coordinadoresDisponibles = Coordinador::all();
-
-//         foreach ($lugares as $lugar) {
-//             // Selecciona uno o varios coordinadores aleatorios
-//             $coordinadores = $coordinadoresDisponibles->random(rand(1, 3)); // Cambia el rango según tus necesidades
-
-//             // Asigna los coordinadores al lugar utilizando el método de relación
-//             $now = now(); // Obtiene la fecha y hora actual
-// $lugar->coordinadores()->attach($coordinadores, ['created_at' => $now, 'updated_at' => $now]);
-
-//         }
-//         // Crear tareas y asignarlas a lugares
-//         Tarea::factory(100)->create()->each(function ($tarea) use ($lugares) {
-//             $lugar = $lugares->random();
-//             $tarea->lugar()->associate($lugar)->save();
-
-//             // Obtener un número aleatorio de horas para la tarea (entre 1 y 12)
-//             $numHoras = rand(3, 8);
-
-//             // Crear y asociar las horas a la tarea
-//             for ($i = 0; $i < $numHoras; $i++) {
-//                 Horas::factory()->create([
-//                     'HOR_tarea_id' => $tarea->TAR_id,
-//                     'HOR_fecha_inicio' => $tarea->created_at,
-//                 ]);
-//             }
-//         });
-
+        // Asociar los usuarios coordinadores con los modelos Coordinador correspondientes
+        foreach ($coordinadoresIds as $key => $userId) {
+            $coordinador = Coordinador::where('COO_nombre', $coordinadoresData[$key]['name'])->first();
+            if ($coordinador) {
+                $coordinador->user_id = $userId;
+                $coordinador->save();
+            }
+        }
     }
 }
+
+function generateEmail($nombre, $apellidos)
+        {
+            // Limpiar el nombre para eliminar caracteres especiales y convertir a minúsculas
+            $nombre_limpio = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $nombre));
+
+            // Tomar las primeras cinco letras del apellido si existe
+            $apellido = $apellidos ? substr(preg_replace('/[^a-zA-Z0-9]/', '', $apellidos), 0, 5) : '';
+
+            // Crear un correo electrónico único para el usuario
+            return $nombre_limpio . $apellido . '@mail.com';
+        }
