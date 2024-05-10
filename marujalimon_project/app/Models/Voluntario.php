@@ -79,9 +79,12 @@ class Voluntario extends Model
         return \DateTime::createFromFormat('!m', $numeroMes)->format('F');
     }
 
-    public function imagenPerfil(){
-        return $this->hasOne(ImagenPerfil::class, 'IMG_voluntario_id');
-    }
+
+    // En tu modelo Voluntario
+public function imagenPerfil() {
+    return $this->hasOne('App\Models\ImagenPerfil', 'IMG_voluntario_id');
+}
+
 
 
     public function user()
