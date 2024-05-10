@@ -10,6 +10,25 @@
 
 
 
+<style>
+    #search {
+        width: 11%;
+        /* Ajusta el tamaño de la barra de búsqueda */
+        margin-left: auto;
+        /* Centra la barra de búsqueda a la izquierda */
+        margin-right: auto;
+        /* Centra la barra de búsqueda a la izquierda */
+        margin-top: 0.5rem;
+        /* Reduce el margen superior de la barra de búsqueda */
+    }
+
+    #cardView {
+        margin-top: 0;
+        /* Elimina el margen superior de las tarjetas */
+    }
+</style>
+
+<input type="text" id="search" placeholder="Buscar por nombre o DNI">
 
 
 
@@ -20,32 +39,18 @@
 
 
 <!-- Tarjetas de voluntarios con nuevo estilo -->
-<div id="cardView" class="row mt-5">
-    @foreach ($voluntarios as $voluntario)
-    <div class="col col-custom mb-4">
-        <div class="card h-100 border-0 shadow-sm">
-            <!-- Start of clickable image -->
-            <a href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}">
-                <img src="{{ $voluntario->imagenPerfil ? $voluntario->imagenPerfil->IMG_path : 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg' }}" class="volunteer-card-img" alt="Imagen de perfil del voluntario">
-            </a>
-            <!-- End of clickable image -->
 
-            <div class="volunteer-card-body">
-                <h5 class="volunteer-card-title">
-                    <i class="fas fa-user"></i> {{ $voluntario->VOL_nombre }} {{ $voluntario->VOL_apellidos }}
-                </h5>
-                <p class="volunteer-card-text">
-                    <i class="fas fa-id-card"></i> DNI: {{ $voluntario->VOL_dni }}
-                </p>
-                <div class="volunteer-card-buttons">
-                    <a href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}" class="volunteer-info btn btn-primary">Más información</a>
-                    <a href="{{ route('voluntarios.edit', ['voluntario' => $voluntario]) }}" class="volunteer-modify btn btn-primary">Modificar</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endforeach
+
+<!-- Contenedor para las tarjetas de voluntarios -->
+<div id="cardView" class="row mt-0">
+    <!-- Este contenedor inicialmente está vacío y se llenará dinámicamente mediante JavaScript -->
 </div>
+<div id="pagination" class="pagination-controls">
+    <button id="prevPage">Anterior</button>
+    <span id="pageInfo"></span>
+    <button id="nextPage">Siguiente</button>
+</div>
+
 
 
 
@@ -228,7 +233,7 @@
         let horas = $('#horas').val();
         let tareaId = $('#tareaSeleccionada').val(); // Asegúrate de que este campo contiene el ID correcto
 
-      
+
 
 
         // Verifica si el array de voluntarios seleccionados está vacío
@@ -251,63 +256,63 @@
         } else {
             // Envía los datos al servidor utilizando AJAX
             $.ajax({
-    url: "{{ route('horas.añadir') }}",
-    method: "POST",
-    data: {
-        _token: "{{ csrf_token() }}",
-        voluntariosSeleccionados: voluntariosSeleccionadosJSON,
-        horas: horas,
-        tarea_id: tareaId // Asegúrate de enviar el ID correcto
-    },
-    success: function(response) {
-        var url = `http://127.0.0.1:8000/tareas/${tareaId}/lugarId`;
+                url: "{{ route('horas.añadir') }}",
+                method: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    voluntariosSeleccionados: voluntariosSeleccionadosJSON,
+                    horas: horas,
+                    tarea_id: tareaId // Asegúrate de enviar el ID correcto
+                },
+                success: function(response) {
+                    var url = `http://127.0.0.1:8000/tareas/${tareaId}/lugarId`;
 
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                var lugarId = data.lugar_id; // Asegúrate de que 'lugar_id' es la clave correcta en la respuesta
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            var lugarId = data.lugar_id; // Asegúrate de que 'lugar_id' es la clave correcta en la respuesta
 
-                // Muestra el modal de SweetAlert de éxito
-                swal({
-                    title: '¡Éxito!',
-    text: 'Las horas han sido añadidas a su tarea lugar correspondiente.',
-    icon: 'success',
-    buttons: {
-        cancel: {
-            text: 'Cerrar',
-            value: null,
-            visible: true,
-            className: 'btn btn-primary swal-button',
-            closeModal: true,
-        },
-        confirm: {
-            text: 'Ir al lugar',
-            value: true,
-            visible: true,
-            className: 'btn btn-primary swal-button'
-        }
-    }
-}).then((value) => {
-    if (value) {
-        // Redirige a la página de la tarea
-        window.location.href = "http://127.0.0.1:8000/lugares/" + lugarId; // Reemplaza 'response.lugar_id' con el ID del lugar que obtienes de tu solicitud AJAX  // Reemplaza '/ruta/a/la/tarea/' con la ruta real a la página de la tarea
-    }
-});
+                            // Muestra el modal de SweetAlert de éxito
+                            swal({
+                                title: '¡Éxito!',
+                                text: 'Las horas han sido añadidas a su tarea lugar correspondiente.',
+                                icon: 'success',
+                                buttons: {
+                                    cancel: {
+                                        text: 'Cerrar',
+                                        value: null,
+                                        visible: true,
+                                        className: 'btn btn-primary swal-button',
+                                        closeModal: true,
+                                    },
+                                    confirm: {
+                                        text: 'Ir al lugar',
+                                        value: true,
+                                        visible: true,
+                                        className: 'btn btn-primary swal-button'
+                                    }
+                                }
+                            }).then((value) => {
+                                if (value) {
+                                    // Redirige a la página de la tarea
+                                    window.location.href = "http://127.0.0.1:8000/lugares/" + lugarId; // Reemplaza 'response.lugar_id' con el ID del lugar que obtienes de tu solicitud AJAX  // Reemplaza '/ruta/a/la/tarea/' con la ruta real a la página de la tarea
+                                }
+                            });
 
-$('#modal-dialog').modal('hide');
-            })
-            .catch(error => console.error('Error:', error));
-    },
-    error: function(xhr, status, error) {
-        // Maneja cualquier error que ocurra durante la solicitud AJAX
-        console.error("Error en la solicitud AJAX:", xhr.responseText);
-        // Podrías mostrar un mensaje al usuario también
-        swal({
-            title: 'Error',
-            text: 'Hubo un problema al añadir las horas, por favor revisa los datos.',
-            icon: 'error',
-            button: 'Ok'
-        });
+                            $('#modal-dialog').modal('hide');
+                        })
+                        .catch(error => console.error('Error:', error));
+                },
+                error: function(xhr, status, error) {
+                    // Maneja cualquier error que ocurra durante la solicitud AJAX
+                    console.error("Error en la solicitud AJAX:", xhr.responseText);
+                    // Podrías mostrar un mensaje al usuario también
+                    swal({
+                        title: 'Error',
+                        text: 'Hubo un problema al añadir las horas, por favor revisa los datos.',
+                        icon: 'error',
+                        button: 'Ok'
+                    });
                 }
             });
         }
@@ -422,5 +427,165 @@ $('#modal-dialog').modal('hide');
         } else {
             button.innerHTML = "Cambiar a Tabla";
         }
+    });
+</script>
+
+<script>
+    // Selecciona el botón y el elemento de entrada
+    var button = document.getElementById('toggleViewButton');
+    var input = document.getElementById('search');
+
+    // Añade un evento de clic al botón
+    button.addEventListener('click', function() {
+        // Cambia la propiedad de display del elemento de entrada
+        if (input.style.display !== 'none') {
+            input.style.display = 'none';
+        } else {
+            input.style.display = '';
+        }
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let allVolunteers = [];
+        let currentPage = 1;
+        const volunteersPerPage = 32; // Número de voluntarios por página
+
+        function displayVolunteers(volunteers) {
+            const cardsContainer = document.getElementById('cardView');
+            const startIndex = (currentPage - 1) * volunteersPerPage;
+            const endIndex = startIndex + volunteersPerPage;
+            const volunteersToShow = volunteers.slice(startIndex, endIndex);
+
+            cardsContainer.innerHTML = ''; // Limpia el contenedor antes de agregar nuevas tarjetas
+
+            volunteersToShow.forEach(vol => {
+
+
+
+                let volId = vol.VOL_id;
+
+                let url = `/voluntario/${volId}/imagen-perfil`;
+
+
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('No se pudo obtener la imagen de perfil');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success && data.imagenPerfil) {
+                            console.log('Imagen de perfil:', data.imagenPerfil.IMG_path);
+                            // Aquí puedes guardar el valor de IMG_path en una variable
+                            const imagePath = data.imagenPerfil.IMG_path;
+                            // Puedes hacer algo con imgPath, como mostrar la imagen en el DOM
+
+                            if (imagePath == null) {
+                                imagePath = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
+                            }
+                                const volElement = document.createElement('div');
+                                volElement.className = 'col col-custom mb-4';
+                                volElement.innerHTML = `
+        <div class="card h-100 border-0 shadow-sm">
+            <a href="/voluntarios/${vol.VOL_id}">
+                <img src="${imagePath}" class="volunteer-card-img" alt="Imagen de perfil del voluntario" style="border-radius: 5px; max-width: 100%; height: auto;">
+            </a>
+            <div class="volunteer-card-body">
+                <h5 class="volunteer-card-title"><i class="fas fa-user"></i> ${vol.VOL_nombre} ${vol.VOL_apellidos}</h5>
+                <p class="volunteer-card-text"><i class="fas fa-id-card"></i> DNI: ${vol.VOL_dni}</p>
+                <div class="volunteer-card-buttons">
+                    <a href="/voluntarios/${vol.VOL_id}" class="volunteer-info btn btn-primary">Más información</a>
+                    <a href="/voluntarios/${vol.VOL_id}/edit" class="volunteer-modify btn btn-primary">Modificar</a>
+                </div>
+            </div>
+        </div>
+    `;
+                                cardsContainer.appendChild(volElement);
+                            
+
+                        } else {
+                            console.log('No se encontró imagen de perfil para este voluntario.');
+                        }
+                    })
+                    .catch(error => {
+
+
+                        const imagePath = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
+
+                        const volElement = document.createElement('div');
+                                volElement.className = 'col col-custom mb-4';
+                                volElement.innerHTML = `
+        <div class="card h-100 border-0 shadow-sm">
+            <a href="/voluntarios/${vol.VOL_id}">
+                <img src="${imagePath}" class="volunteer-card-img" alt="Imagen de perfil del voluntario" style="border-radius: 5px; max-width: 100%; height: auto;">
+            </a>
+            <div class="volunteer-card-body">
+                <h5 class="volunteer-card-title"><i class="fas fa-user"></i> ${vol.VOL_nombre} ${vol.VOL_apellidos}</h5>
+                <p class="volunteer-card-text"><i class="fas fa-id-card"></i> DNI: ${vol.VOL_dni}</p>
+                <div class="volunteer-card-buttons">
+                    <a href="/voluntarios/${vol.VOL_id}" class="volunteer-info btn btn-primary">Más información</a>
+                    <a href="/voluntarios/${vol.VOL_id}/edit" class="volunteer-modify btn btn-primary">Modificar</a>
+                </div>
+            </div>
+        </div>
+    `;
+                                cardsContainer.appendChild(volElement);
+
+
+
+
+                    });
+
+
+
+
+
+            });
+
+            updatePaginationControls();
+        }
+
+        function updatePaginationControls() {
+            const pageInfo = document.getElementById('pageInfo');
+            const totalPages = Math.ceil(allVolunteers.length / volunteersPerPage);
+            pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage === totalPages;
+        }
+
+        document.getElementById('prevPage').addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                displayVolunteers(allVolunteers);
+            }
+        });
+
+        document.getElementById('nextPage').addEventListener('click', function() {
+            if (currentPage * volunteersPerPage < allVolunteers.length) {
+                currentPage++;
+                displayVolunteers(allVolunteers);
+            }
+        });
+
+        // Cargar todos los voluntarios desde la API
+        fetch('/api/voluntarios')
+            .then(response => response.json())
+            .then(data => {
+                allVolunteers = data;
+                displayVolunteers(allVolunteers); // Muestra todos los voluntarios inicialmente
+            });
+
+        const searchInput = document.getElementById('search');
+        searchInput.addEventListener('keyup', function() {
+            const searchValue = searchInput.value.toLowerCase();
+            const filteredVolunteers = allVolunteers.filter(vol =>
+                vol.VOL_nombre.toLowerCase().includes(searchValue) ||
+                vol.VOL_dni.toLowerCase().includes(searchValue)
+            );
+            currentPage = 1; // Reinicia la paginación
+            displayVolunteers(filteredVolunteers); // Muestra solo los voluntarios filtrados
+        });
     });
 </script>
