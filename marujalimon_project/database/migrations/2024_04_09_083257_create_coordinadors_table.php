@@ -37,6 +37,9 @@ return new class extends Migration {
 
 
 
+            $table->set('COO_dias_semana_dispo', ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'])
+            ->nullable();
+
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade'); // Relación con usuarios
             $table->timestamps();
 

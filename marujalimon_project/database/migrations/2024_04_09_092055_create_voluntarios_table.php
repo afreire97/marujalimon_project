@@ -17,21 +17,17 @@ return new class extends Migration {
 
             //nullable
             $table->string('VOL_apellidos');
-
-
             $table->string('VOL_dni')->unique();
             $table->date('VOL_fecha_nac');
             ;
             $table->string('VOL_domicilio');
             $table->string('VOL_cp');
-
-
-
-
             $table->string('VOL_localidad');
             $table->string('VOL_provincia');
             $table->string('VOL_tel');
-            // $table->enum('VOL_sexo', ['Masculino', 'Femenino', 'Otro']);
+
+            // $table->enum('VOL_sexo', ['Mujer', 'Hombre', '']);
+
             $table->string('VOL_mail')->unique();
             $table->string('VOL_trabajo_actual');
             $table->date('VOL_fecha_inicio');

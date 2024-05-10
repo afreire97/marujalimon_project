@@ -13,9 +13,13 @@ return new class extends Migration
     {
         Schema::create('lugares', function (Blueprint $table) {
             $table->id('LUG_id');
+            $table->integer('LUG_cp');
+            $table->string('LUG_Localidad');
+            $table->string('LUG_Delegacion');
             $table->string('LUG_nombre');
             $table->string('LUG_direccion')->nullable();
             $table->string('LUG_url_maps')->nullable();
+
 
 
             $table->timestamps();

@@ -36,13 +36,13 @@ class VoluntarioController extends Controller
         // Verificamos si el usuario es administrador
         if ($user->is_admin) {
             // Si es administrador, obtenemos todos los voluntarios con paginación
-            $voluntarios = Voluntario::orderBy('created_at', 'desc')->paginate(8);
+            $voluntarios = Voluntario::orderBy('created_at', 'desc')->paginate(64);
             $voluntarios_all = Voluntario::all();
         } else {
             // Verificamos si el usuario está asociado a un coordinador
             if ($user->is_coordinador && $user->coordinador) { // Verificar si $user->coordinador no es null
                 // Si está asociado a un coordinador, obtenemos todos los voluntarios asociados a ese coordinador con paginación
-                $voluntarios = $user->coordinador->voluntarios()->orderBy('created_at', 'desc')->paginate(8);
+                $voluntarios = $user->coordinador->voluntarios()->orderBy('created_at', 'desc')->paginate(64);
                 $voluntarios_all = $user->coordinador->voluntarios()->get();
             } else {
                 // Manejar el caso en el que el usuario no está asociado a ningún coordinador
@@ -162,8 +162,10 @@ class VoluntarioController extends Controller
 
         $coordinadores = Coordinador::all();
         $delegaciones = Delegacion::all();
+        $fields = FormFieldsGenerator::generateVoluntarioFields();
 
-        return view(('voluntarios.create'), ['coordinadores' => $coordinadores, 'delegaciones' => $delegaciones]);
+
+        return view(('voluntarios.create'), ['coordinadores' => $coordinadores, 'delegaciones' => $delegaciones, 'fields' => $fields]);
     }
 
     /**
@@ -172,59 +174,76 @@ class VoluntarioController extends Controller
 
 
 
-    public function store(Request $request)
-    {
-        ValidacionUtils::validarVoluntario($request);
+     public function store(Request $request)
+     {
+         ValidacionUtils::validarVoluntario($request);
 
-        // Crear y guardar el voluntario
-        $voluntario = new Voluntario();
-        $voluntario->VOL_nombre = $request->input('VOL_nombre');
-        $voluntario->VOL_apellidos = $request->input('VOL_apellidos');
-        $voluntario->VOL_dni = $request->input('VOL_dni');
-        $voluntario->VOL_fecha_nac = $request->input('VOL_fecha_nac');
-        $voluntario->VOL_domicilio = $request->input('VOL_domicilio');
-        $voluntario->VOL_cp = $request->input('VOL_cp');
-        $voluntario->VOL_tel1 = $request->input('VOL_tel1');
-        $voluntario->VOL_sexo = $request->input('VOL_sexo');
-        $voluntario->VOL_mail = $request->input('VOL_mail');
-
-
-        $user = User::create([
-            'name' => $voluntario->VOL_nombre,
-            'email' =>  $voluntario->VOL_mail,
-            'password' => Hash::make($request->password),
-            'is_coordinador' => false,
-            'is_admin' => false,
-            'is_voluntario' => true,
-        ]);
-
-        $voluntario->user_id= ($user->id);
-
-
-        $voluntario->user()->associate($user);
-        $voluntario->save();
-        event(new Registered($user));
+         // Crear y guardar el voluntario
+         $voluntario = new Voluntario();
+         $voluntario->VOL_nombre = $request->input('VOL_nombre');
+         $voluntario->VOL_apellidos = $request->input('VOL_apellidos');
+         $voluntario->VOL_dni = $request->input('VOL_dni');
+         $voluntario->VOL_fecha_nac = $request->input('VOL_fecha_nac');
+         $voluntario->VOL_domicilio = $request->input('VOL_domicilio');
+         $voluntario->VOL_cp = $request->input('VOL_cp');
+         $voluntario->VOL_localidad = $request->input('VOL_localidad');
+         $voluntario->VOL_provincia = $request->input('VOL_provincia');
+         $voluntario->VOL_tel = $request->input('VOL_tel');
+         $voluntario->VOL_mail = $request->input('VOL_mail');
+         $voluntario->VOL_trabajo_actual = $request->input('VOL_trabajo_actual');
+         $voluntario->VOL_fecha_inicio = $request->input('VOL_fecha_inicio');
+         $voluntario->VOL_preferencia = $request->input('VOL_preferencia');
+         $voluntario->VOL_carnet = $request->has('VOL_carnet');
+         $voluntario->VOL_seguro = $request->has('VOL_seguro');
+         $voluntario->VOL_curso = $request->has('VOL_curso');
+         $voluntario->VOL_autoriza_datos = $request->has('VOL_autoriza_datos');
+         $voluntario->VOL_autoriza_imagen = $request->has('VOL_autoriza_imagen');
+         $voluntario->VOL_sexo = $request->input('VOL_sexo');
+         $voluntario->VOL_dias_semana_dispo = implode(',', $request->input('VOL_dias_semana_dispo'));
 
 
-        // Asignar la delegación y el coordinador
-        $voluntario->delegaciones()->attach($request->input('DEL_id'));
-        $voluntario->coordinadores()->attach($request->input('COO_id'));
 
-        // Guardar la imagen de perfil si se proporciona
-        if ($request->hasFile('imagen_perfil')) {
-            $imagen = $request->file('imagen_perfil');
-            $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension();
-            $rutaImagen = $imagen->storeAs('public/img/imagenes_perfil', $nombreImagen);
 
-            // Crear y guardar el registro de la imagen asociado al voluntario
-            $imagenPerfil = new ImagenPerfil();
-            $imagenPerfil->IMG_voluntario_id = $voluntario->VOL_id;
-            $imagenPerfil->IMG_path = str_replace('public/', '/storage/', $rutaImagen); // Ajustar la ruta para ser accesible desde la web
-            $imagenPerfil->save();
-        }
+         // Guardar la relación con el usuario
+         $user = User::create([
+             'name' => $voluntario->VOL_nombre,
+             'email' =>  $voluntario->VOL_mail,
+             'password' => Hash::make($request->password),
+             'is_coordinador' => false,
+             'is_admin' => false,
+             'is_voluntario' => true,
+         ]);
+         $voluntario->user_id = $user->id;
+         $voluntario->save();
 
-        return redirect()->route('voluntarios.index')->with('success', 'Voluntario creado exitosamente.');
-    }
+
+         // Asignar la delegación y el coordinador si se proporcionan
+         if ($request->has('DEL_id')) {
+             $voluntario->delegaciones()->attach($request->input('DEL_id'));
+         }
+         if ($request->has('COO_id')) {
+             $voluntario->coordinadores()->attach($request->input('COO_id'));
+         }
+
+         // Guardar la imagen de perfil si se proporciona
+         if ($request->hasFile('imagen_perfil')) {
+             $imagen = $request->file('imagen_perfil');
+             $nombreImagen = time() . '.' . $imagen->getClientOriginalExtension();
+             $rutaImagen = $imagen->storeAs('public/img/imagenes_perfil', $nombreImagen);
+
+             // Crear y guardar el registro de la imagen asociado al voluntario
+             $imagenPerfil = new ImagenPerfil();
+             $imagenPerfil->IMG_voluntario_id = $voluntario->VOL_id;
+             $imagenPerfil->IMG_path = str_replace('public/', '/storage/', $rutaImagen); // Ajustar la ruta para ser accesible desde la web
+             $imagenPerfil->save();
+         }
+
+         // Guardar el voluntario
+
+         event(new Registered($user));
+
+         return redirect()->route('voluntarios.index')->with('success', 'Voluntario creado exitosamente.');
+     }
 
 
     /**
@@ -234,9 +253,7 @@ class VoluntarioController extends Controller
     {
 
         $fields = FormFieldsGenerator::generateVoluntarioFields();
-        $selectFields = [
-            'VOL_sexo' => ['Masculino', 'Femenino', 'Otro'],
-        ];
+
         $delegaciones = $voluntario->delegaciones;
         $coordinadores = $voluntario->coordinadores;
 
@@ -248,7 +265,6 @@ class VoluntarioController extends Controller
                 'coordinadores',
                 $coordinadores,
                 'fields' => $fields,
-                'selectFields' => $selectFields
             ]
         );
     }
@@ -262,7 +278,7 @@ class VoluntarioController extends Controller
 
 
         // Obtener todos los datos de la solicitud
-        $datos = ValidacionUtils::validarDatosFormularioUpdate($request);
+        $datos = ValidacionUtils::validarVoluntarioUpdate($request, $voluntario);
 
 
         $voluntario->update($datos);
