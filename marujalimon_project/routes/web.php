@@ -55,6 +55,9 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
 
     Route::post('/voluntarios/horas/agregar', [HorasController::class, 'añadirHoras'])->name('horas.añadir');
     Route::post('/totalTareasPorMes', [TareasController::class, 'totalTareasPorMes'])->name('totalTareasPorMes');
+    Route::get('/api/voluntarios', [VoluntarioController::class, 'api']);
+    Route::get('/voluntario/{id}/imagen-perfil', [VoluntarioController::class, 'getImagenPerfil'])->name('voluntario.imagen-perfil');
+
 
 
     //RUTA DE COORDINADORES

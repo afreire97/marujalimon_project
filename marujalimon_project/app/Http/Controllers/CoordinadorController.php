@@ -27,7 +27,7 @@ class CoordinadorController extends Controller
     {
 
 
-        $coordinadores = Coordinador::orderBy('created_at', 'desc')->paginate(8);
+        $coordinadores = Coordinador::orderBy('created_at', 'desc')->paginate(32);
 
         $tareas = Tarea::all();
 
