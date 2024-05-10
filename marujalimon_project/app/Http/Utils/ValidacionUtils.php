@@ -245,7 +245,7 @@ public static function validarVoluntario(Request $request)
             'COO_localidad' => 'nullable|string',
             'COO_provincia' => 'nullable|string',
             'COO_tel' => 'nullable|string',
-            'COO_mail' => 'nullable|email|unique:cordinadores,COO_mail',
+            'COO_mail' => 'nullable|email|unique:coordinadores,COO_mail',
             'COO_trabajo_actual' => 'nullable|string',
             'COO_fecha_inicio' => 'nullable|date',
             'COO_preferencia' => 'nullable|string',
