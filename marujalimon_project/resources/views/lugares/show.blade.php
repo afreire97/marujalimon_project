@@ -99,7 +99,7 @@
                                                 <td>{{ $fechasAsociacion[$coordinador->COO_id] }}</td>
                                                 <td>
                                                     <a class="btn btn-sm btn-success"
-                                                        href="{{ route('voluntarios.show', ['voluntario' => $voluntario]) }}">Más
+                                                        href="{{ route('coordinadores.show', ['coordinadore' => $coordinador]) }}">Más
                                                         información</a>
                                                 </td>
                                             </tr>
