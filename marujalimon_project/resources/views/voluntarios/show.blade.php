@@ -38,14 +38,12 @@
                     <div class="col-md-8" style="position: relative;"> <!-- Añade posición relativa aquí -->
                         <div class="card-body">
                             <h3 class="card-title">{{ $voluntario->VOL_nombre }} {{ $voluntario->VOL_apellidos }}</h3>
-                            <div class="mb-3">
-                                <i class="bi bi-person-fill me-2"></i><strong>DNI:</strong> {{ $voluntario->VOL_dni }}
-                            </div>
+
 
                             @foreach ($voluntario->observaciones as $observacion)
 
 
-                                <p>{{$observacion->OBS_contenido}}</p>
+                            <p>{{$observacion->OBS_contenido}}</p>
 
 
                             @endforeach
@@ -56,33 +54,79 @@
 
 
 
-                            <div class="mb-3">
-                                <i class="bi bi-calendar3 me-2"></i><strong>Fecha de nacimiento:</strong>
-                                {{ date('d-m-Y', strtotime($voluntario->VOL_fecha_nac)) }}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <i class="bi bi-person-fill me-2"></i><strong>DNI:</strong> {{ $voluntario->VOL_dni }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-calendar3 me-2"></i><strong>Fecha de nacimiento:</strong>
+                                        {{ date('d-m-Y', strtotime($voluntario->VOL_fecha_nac)) }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-geo-alt-fill me-2"></i><strong>Dirección:</strong>
+                                        {{ $voluntario->VOL_domicilio }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-geo-alt-fill me-2"></i><strong>Código Postal:</strong>
+                                        {{ $voluntario->VOL_cp }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-telephone-fill me-2"></i><strong>Teléfono:</strong>
+                                        {{ $voluntario->VOL_tel }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-gender-ambiguous me-2"></i><strong>Género:</strong>
+                                        {{ $voluntario->VOL_sexo }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-envelope-fill me-2"></i><strong>Correo Electrónico:</strong>
+                                        {{ $voluntario->VOL_mail }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-card-text me-2"></i><strong>Trabajo Actual:</strong>
+                                        {{ $voluntario->VOL_trabajo_actual }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <i class="bi bi-calendar3 me-2"></i><strong>Fecha de Inicio:</strong>
+                                        {{ date('d-m-Y', strtotime($voluntario->VOL_fecha_inicio)) }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-heart-fill me-2"></i><strong>Preferencia:</strong>
+                                        {{ $voluntario->VOL_preferencia }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-calendar3 me-2"></i><strong>Días de la Semana Disponibles:</strong>
+                                        {{ $voluntario->VOL_dias_semana_dispo }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-check2-circle me-2"></i><strong>Carnet:</strong>
+                                        {{ $voluntario->VOL_carnet ? 'Sí' : 'No' }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-shield-fill-check me-2"></i><strong>Seguro:</strong>
+                                        {{ $voluntario->VOL_seguro ? 'Sí' : 'No' }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-book-half me-2"></i><strong>Curso:</strong>
+                                        {{ $voluntario->VOL_curso ? 'Sí' : 'No' }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-check2-circle me-2"></i><strong>Autoriza Datos:</strong>
+                                        {{ $voluntario->VOL_autoriza_datos ? 'Sí' : 'No' }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-check2-circle me-2"></i><strong>Autoriza Imagen:</strong>
+                                        {{ $voluntario->VOL_autoriza_imagen ? 'Sí' : 'No' }}
+                                    </div>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <i class="bi bi-geo-alt-fill me-2"></i><strong>Dirección:</strong>
-                                {{ $voluntario->VOL_domicilio }}
-                            </div>
-                            <div class="mb-3">
-                                <i class="bi bi-geo-alt-fill me-2"></i><strong>Código Postal:</strong>
-                                {{ $voluntario->VOL_cp }}
-                            </div>
-                            <div class="mb-3">
-                                <i class="bi bi-telephone-fill me-2"></i><strong>Teléfono:</strong>
-                                {{ $voluntario->VOL_tel1 }}
-                            </div>
-                            <div class="mb-3">
-                                <i class="bi bi-gender-ambiguous me-2"></i><strong>Género:</strong>
-                                {{ $voluntario->VOL_sexo }}
-                            </div>
-                            <div class="mb-3">
-                                <i class="bi bi-envelope-fill me-2"></i><strong>Correo Electrónico:</strong>
-                                {{ $voluntario->VOL_mail }}
-                            </div>
+
                             <hr class="my-4">
                             <!-- Puedes usar un separador para distinguir claramente las secciones -->
-                            <form action="{{ route('calcularHoras', ['voluntario' => $voluntario]) }}" method="get" id="calcularHorasForm" >
+                            <form action="{{ route('calcularHoras', ['voluntario' => $voluntario]) }}" method="get" id="calcularHorasForm">
                                 @csrf
 
                                 <fieldset>
@@ -103,7 +147,7 @@
                                         </div>
                                     </div>
                                     <div class="d-grid gap-2">
-                                    <button type="submit" class="btn btn-primary">Calcular horas</button>
+                                        <button type="submit" class="btn btn-primary">Calcular horas</button>
                                     </div>
                                 </fieldset>
                             </form>
@@ -291,6 +335,6 @@
 
 
 
-@include('scripts.calcular_horas')
+            @include('scripts.calcular_horas')
 
 </x-layout>
