@@ -1109,4 +1109,14 @@ p#fixedColorText {
     flex: 1; /* Permite que ambos botones crezcan igualmente y ocupen el espacio disponible */
     min-width: 100px; /* Asegúrate de que los botones tengan un mínimo de anchura */
 }
+.fade-in {
+    opacity: 0;
+    animation: fadeInAnimation 3s forwards; /* Ajusta la duración según prefieras */
+}
+
+@keyframes fadeInAnimation {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 
