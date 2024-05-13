@@ -526,12 +526,13 @@
     });
 
     // Cargar todos los voluntarios desde la API
-    fetch('/api/voluntarios')
-        .then(response => response.json())
-        .then(data => {
-            allVolunteers = data;
-            displayVolunteers(allVolunteers); // Muestra todos los voluntarios inicialmente
-        });
+    // Cargar todos los voluntarios desde la API
+fetch('/api/voluntarios')
+    .then(response => response.json())
+    .then(data => {
+        allVolunteers = data.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at)); // Ordena los voluntarios por fecha de actualización más reciente
+        displayVolunteers(allVolunteers); // Muestra todos los voluntarios inicialmente
+    });
 
         document.getElementById('search').addEventListener('keyup', function(e) {
         currentSearch = e.target.value.toLowerCase();

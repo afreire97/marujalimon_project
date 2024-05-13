@@ -48,36 +48,78 @@
                 <div class="col-md-8" style="position: relative;"> <!-- Añade posición relativa aquí -->
                     <div class="card-body">
                         <h3 class="card-title">{{ $coordinador->COO_nombre }} {{ $coordinador->COO_apellidos }}</h3>
-                        <div class="mb-3">
-                            <i class="bi bi-person-fill me-2"></i><strong>DNI:</strong> {{ $coordinador->COO_dni }}
-                        </div>
+                        
 
 
-
-                        <div class="mb-3">
-                            <i class="bi bi-calendar3 me-2"></i><strong>Fecha de nacimiento:</strong>
-                            {{ date('d-m-Y', strtotime($coordinador->COO_fecha_nac)) }}
-                        </div>
-                        <div class="mb-3">
-                            <i class="bi bi-geo-alt-fill me-2"></i><strong>Dirección:</strong>
-                            {{ $coordinador->COO_domicilio }}
-                        </div>
-                        <div class="mb-3">
-                            <i class="bi bi-geo-alt-fill me-2"></i><strong>Código Postal:</strong>
-                            {{ $coordinador->COO_cp }}
-                        </div>
-                        <div class="mb-3">
-                            <i class="bi bi-telephone-fill me-2"></i><strong>Teléfono:</strong>
-                            {{ $coordinador->COO_tel1 }}
-                        </div>
-                        <div class="mb-3">
-                            <i class="bi bi-gender-ambiguous me-2"></i><strong>Género:</strong>
-                            {{ $coordinador->COO_sexo }}
-                        </div>
-                        <div class="mb-3">
-                            <i class="bi bi-envelope-fill me-2"></i><strong>Correo Electrónico:</strong>
-                            {{ $coordinador->COO_mail }}
-                        </div>
+                        <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <i class="bi bi-person-fill me-2"></i><strong>DNI:</strong> {{ $coordinador->COO_apellidos }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-calendar3 me-2"></i><strong>Fecha de nacimiento:</strong>
+                                        {{ date('d-m-Y', strtotime($coordinador->COO_fecha_nac)) }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-geo-alt-fill me-2"></i><strong>Dirección:</strong>
+                                        {{ $coordinador->COO_domicilio }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-geo-alt-fill me-2"></i><strong>Código Postal:</strong>
+                                        {{ $coordinador->COO_cp}}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-telephone-fill me-2"></i><strong>Teléfono:</strong>
+                                        {{ $coordinador->COO_tel }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-gender-ambiguous me-2"></i><strong>Género:</strong>
+                                        {{ $coordinador->COO_sexo }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-envelope-fill me-2"></i><strong>Correo Electrónico:</strong>
+                                        {{ $coordinador->COO_mail }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-card-text me-2"></i><strong>Trabajo Actual:</strong>
+                                        {{ $coordinador->COO_trabajo_actual }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <i class="bi bi-calendar3 me-2"></i><strong>Fecha de Inicio:</strong>
+                                        {{ date('d-m-Y', strtotime($coordinador->COO_fecha_inicio)) }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-heart-fill me-2"></i><strong>Preferencia:</strong>
+                                        {{ $coordinador->COO_preferencia }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-calendar3 me-2"></i><strong>Días de la Semana Disponibles:</strong>
+                                        {{ $coordinador->COO_dias_semana_dispo }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-check2-circle me-2"></i><strong>Carnet:</strong>
+                                        {{ $coordinador->COO_carnet ? 'Sí' : 'No' }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-shield-fill-check me-2"></i><strong>Seguro:</strong>
+                                        {{ $coordinador->COO_seguro ? 'Sí' : 'No' }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-book-half me-2"></i><strong>Curso:</strong>
+                                        {{ $coordinador->COO_curso ? 'Sí' : 'No' }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-check2-circle me-2"></i><strong>Autoriza Datos:</strong>
+                                        {{ $coordinador->COO_autoriza_datos ? 'Sí' : 'No' }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-check2-circle me-2"></i><strong>Autoriza Imagen:</strong>
+                                        {{ $coordinador->COO_autoriza_imagen ? 'Sí' : 'No' }}
+                                    </div>
+                                </div>
+                            </div>
                         <hr class="my-4">
                         <!-- Puedes usar un separador para distinguir claramente las secciones -->
 
