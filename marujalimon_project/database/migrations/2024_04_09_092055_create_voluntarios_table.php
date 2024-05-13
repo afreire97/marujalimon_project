@@ -59,12 +59,7 @@ return new class extends Migration {
 
 
         });
-        Schema::create('delegacion_voluntario', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('DEL_VOL_delegacion_id')->constrained('delegaciones', 'DEL_id')->onDelete('cascade');
-            $table->foreignId('DEL_VOL_voluntario_id')->constrained('voluntarios', 'VOL_id')->onDelete('cascade');
-            $table->timestamps();
-        });
+
     }
 
     /**

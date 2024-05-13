@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Utils\FormFieldsGenerator;
 use App\Http\Utils\ValidacionUtils;
 use App\Models\Coordinador;
-use App\Models\Delegacion;
 use App\Models\ImagenPerfil;
+use App\Models\Lugar;
 use App\Models\Tarea;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -39,10 +39,11 @@ class CoordinadorController extends Controller
     {
 
 
+        $voluntarios=$coordinadore->voluntarios;
 
 
 
-        return view('coordinadores.show', ['coordinador' => $coordinadore]);
+        return view('coordinadores.show', ['coordinador' => $coordinadore,'voluntarios' => $voluntarios]);
 
 
     }
@@ -51,45 +52,43 @@ class CoordinadorController extends Controller
     {
 
         $fields = FormFieldsGenerator::generateCoordinadorFields();
+        $lugares = Lugar::all();
 
-
-
-        $delegaciones = Delegacion::all();
 
         return view('coordinadores.create', [
-            'delegaciones' => $delegaciones,
-            'fields' => $fields,
 
+            'fields' => $fields,
+            'lugares' => $lugares,
         ]);
     }
 
     // En tu controlador API
-public function api()
-{
-    $coordinadores = Coordinador::all(); // Asegúrate de tener el modelo correcto y los datos necesarios
-    return response()->json($coordinadores);
-}
-
-
-
-public function getImagenPerfil($id)
-{
-    // Buscar el coordinador por COO_id
-    $coordinador = Coordinador::with('imagenPerfil')->where('COO_id', $id)->first();
-
-    // Verificar si el coordinador existe y tiene imagen de perfil
-    if ($coordinador && $coordinador->imagenPerfil) {
-        return response()->json([
-            'success' => true,
-            'imagenPerfil' => $coordinador->imagenPerfil
-        ]);
-    } else {
-        return response()->json([
-            'success' => false,
-            'message' => 'Coordinador no encontrado o sin imagen de perfil.'
-        ], 404);
+    public function api()
+    {
+        $coordinadores = Coordinador::all(); // Asegúrate de tener el modelo correcto y los datos necesarios
+        return response()->json($coordinadores);
     }
-}
+
+
+
+    public function getImagenPerfil($id)
+    {
+        // Buscar el coordinador por COO_id
+        $coordinador = Coordinador::with('imagenPerfil')->where('COO_id', $id)->first();
+
+        // Verificar si el coordinador existe y tiene imagen de perfil
+        if ($coordinador && $coordinador->imagenPerfil) {
+            return response()->json([
+                'success' => true,
+                'imagenPerfil' => $coordinador->imagenPerfil
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Coordinador no encontrado o sin imagen de perfil.'
+            ], 404);
+        }
+    }
 
 
 
@@ -142,11 +141,39 @@ public function getImagenPerfil($id)
         $user->coordinador()->save($coordinador);
 
         event(new Registered($user));
-
+        $listaVoluntarios = [];
 
         // Asignar la delegación si se proporciona
-        if ($request->has('delegacion_id')) {
-            $coordinador->delegaciones()->attach($request->input('delegacion_id'));
+        if ($request->has('LUG_id')) {
+            $coordinador->lugares()->attach($request->input('LUG_id'));
+            $tareas = Lugar::where('LUG_id', $request->input('LUG_id'))->first()->tareas;
+            if (!$tareas->isEmpty()) {
+
+                foreach ($tareas as $tarea) {
+
+                    $horas = $tarea->horas;
+
+                    if (!$horas->isEmpty()) {
+
+                        foreach ($horas as $hora) {
+                            $voluntarioID = $hora->voluntario->VOL_id;
+                            $voluntario = $hora->voluntario;
+                            if (!in_array($voluntarioID, $listaVoluntarios)) {
+                                $listaVoluntarios[] = $voluntario->VOL_id;
+                            }
+
+                        }
+
+                    }
+
+
+                }
+                if (count($listaVoluntarios)>0) {
+                    $coordinador->voluntarios()->attach($listaVoluntarios);
+                }
+
+            }
+
         }
 
         // Guardar la imagen de perfil si se proporciona
@@ -171,11 +198,10 @@ public function getImagenPerfil($id)
 
         $fields = FormFieldsGenerator::generateCoordinadorFields();
 
-        $delegaciones = Delegacion::all();
 
         return view('coordinadores.edit', [
             'coordinador' => $coordinadore,
-            'delegaciones' => $delegaciones,
+
             'fields' => $fields,
         ]);
     }

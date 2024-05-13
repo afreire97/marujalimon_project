@@ -34,31 +34,9 @@
         <div class="card-body">
             <!-- Campos del formulario -->
             @foreach ($fields as $name => $label)
-                @if ($name === 'DEL_id' && !$delegaciones->isEmpty())
-                    <div class="mb-3 row">
-                        <label class="col-md-4 col-form-label text-md-end">Delegación</label>
-                        <div class="col-md-6">
-                            <select name="DEL_id" class="form-select">
-                                <option value="" selected disabled>Selecciona una delegación</option>
-                                @foreach ($delegaciones as $delegacion)
-                                    <option value="{{ $delegacion->id }}">{{ $delegacion->DEL_nombre }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                @elseif ($name === 'COO_id' && !$coordinadores->isEmpty())
-                    <div class="mb-3 row">
-                        <label class="col-md-4 col-form-label text-md-end">Coordinador</label>
-                        <div class="col-md-6">
-                            <select name="COO_id" class="form-select">
-                                <option value="" selected disabled>Selecciona un coordinador</option>
-                                @foreach ($coordinadores as $coordinador)
-                                    <option value="{{ $coordinador->id }}">{{ $coordinador->COO_nombre }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                @elseif ($name === 'VOL_dias_semana_dispo')
+
+
+                @if ($name === 'VOL_dias_semana_dispo')
                     <div class="mb-3 row">
                         <label class="col-md-4 col-form-label text-md-end">{{ $label }}</label>
                         <div class="col-md-6">
@@ -111,6 +89,19 @@
                     </div>
                 @endif
             @endforeach
+            @if (!$coordinadores->isEmpty())
+            <div class="mb-3 row">
+                <label class="col-md-4 col-form-label text-md-end">Coordinador</label>
+                <div class="col-md-6">
+                    <select name="COO_id" class="form-select">
+                        <option value="" selected disabled>Selecciona un coordinador</option>
+                        @foreach ($coordinadores as $coordinador)
+                            <option value="{{ $coordinador->COO_id }}">{{ $coordinador->COO_nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            @endif
 
             <!-- Botón de envío -->
             <div class="mt-3">

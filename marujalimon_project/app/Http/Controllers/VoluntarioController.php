@@ -36,7 +36,7 @@ class VoluntarioController extends Controller
         // Verificamos si el usuario es administrador
         if ($user->is_admin) {
             // Si es administrador, obtenemos todos los voluntarios con paginación
-            $voluntarios = Voluntario::orderBy('created_at', 'desc')->paginate(1000000);
+            $voluntarios = Voluntario::orderBy('created_at', 'desc');
             $voluntarios_all = Voluntario::all();
         } else {
             // Verificamos si el usuario está asociado a un coordinador
@@ -175,11 +175,10 @@ class VoluntarioController extends Controller
     {
 
         $coordinadores = Coordinador::all();
-        $delegaciones = Delegacion::all();
         $fields = FormFieldsGenerator::generateVoluntarioFields();
 
 
-        return view(('voluntarios.create'), ['coordinadores' => $coordinadores, 'delegaciones' => $delegaciones, 'fields' => $fields]);
+        return view(('voluntarios.create'), ['coordinadores' => $coordinadores, 'fields' => $fields]);
     }
 
     /**
@@ -218,10 +217,11 @@ class VoluntarioController extends Controller
 
 
 
+
         // Guardar la relación con el usuario
         $user = User::create([
             'name' => $voluntario->VOL_nombre,
-            'email' =>  $voluntario->VOL_mail,
+            'email' => $voluntario->VOL_mail,
             'password' => Hash::make($request->password),
             'is_coordinador' => false,
             'is_admin' => false,
@@ -231,12 +231,13 @@ class VoluntarioController extends Controller
         $voluntario->save();
 
 
-        // Asignar la delegación y el coordinador si se proporcionan
-        if ($request->has('DEL_id')) {
-            $voluntario->delegaciones()->attach($request->input('DEL_id'));
-        }
+
         if ($request->has('COO_id')) {
+
+            Log::info('Esta es la id del coordinador: ' . $request->input('COO_id'));
             $voluntario->coordinadores()->attach($request->input('COO_id'));
+
+            Log::info('Se supone que esto son los coordinadores:' . $voluntario->coordinadores);
         }
 
         // Guardar la imagen de perfil si se proporciona
@@ -268,16 +269,15 @@ class VoluntarioController extends Controller
 
         $fields = FormFieldsGenerator::generateVoluntarioFields();
 
-        $delegaciones = $voluntario->delegaciones;
-        $coordinadores = $voluntario->coordinadores;
+        $coordinadores = Coordinador::all();
+
+
 
         return view(
             'voluntarios.edit',
             [
                 'voluntario' => $voluntario,
-                'delegaciones' => $delegaciones,
-                'coordinadores',
-                $coordinadores,
+                'coordinadores' => $coordinadores,
                 'fields' => $fields,
             ]
         );
@@ -296,6 +296,24 @@ class VoluntarioController extends Controller
 
 
         $voluntario->update($datos);
+
+
+
+        if ($request->has('COO_id')) {
+            $coordinadorId = $request->input('COO_id');
+
+            // Verificar si el coordinador ya está asociado al voluntario
+            if (!$voluntario->coordinadores()->where('COO_VOL_coordinador_id', $coordinadorId)->exists()) {
+                // Si no está asociado, entonces asociarlo
+                $voluntario->coordinadores()->attach($coordinadorId);
+                // Opcional: puedes agregar un mensaje de éxito o realizar otras acciones aquí
+            } else {
+
+        return redirect()->back()->with('error', 'El coordinador ya está asociado al voluntario.');
+            }
+        }
+
+
 
         // Guardar la imagen de perfil si se proporciona
         if ($request->hasFile('imagen_perfil')) {

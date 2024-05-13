@@ -19,22 +19,65 @@
                 <div class="mb-3 row">
                     <label for="LUG_nombre" class="col-md-4 col-form-label text-md-end">Nombre <span class="text-danger">*</span></label>
                     <div class="col-md-6">
-                        <input type="text" name="LUG_nombre" id="LUG_nombre" class="form-control" value="{{ $lugar->LUG_nombre }}" required>
+                        <input type="text" name="LUG_nombre" id="LUG_nombre" class="form-control" required>
                     </div>
                 </div>
+
+
+
                 <div class="mb-3 row">
                     <label for="LUG_direccion" class="col-md-4 col-form-label text-md-end">Dirección <span class="text-danger">*</span></label>
                     <div class="col-md-6">
-                        <input type="text" name="LUG_direccion" id="LUG_direccion" class="form-control" value="{{ $lugar->LUG_direccion }}" required>
+                        <input type="text" name="LUG_direccion" id="LUG_direccion" class="form-control" required>
                     </div>
                 </div>
+
+                <div class="mb-3 row">
+                    <label for="LUG_provincia" class="col-md-4 col-form-label text-md-end">Provincia <span class="text-danger">*</span></label>
+                    <div class="col-md-6">
+                        <input type="text" name="LUG_provincia" id="LUG_provincia" class="form-control" required>
+                    </div>
+                </div>
+
+
+                <div class="mb-3 row">
+                    <label for="LUG_localidad" class="col-md-4 col-form-label text-md-end">Localidad <span class="text-danger">*</span></label>
+                    <div class="col-md-6">
+                        <input type="text" name="LUG_localidad" id="LUG_localidad" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="LUG_delegacion" class="col-md-4 col-form-label text-md-end">Delegacion <span class="text-danger">*</span></label>
+                    <div class="col-md-6">
+                        <input type="text" name="LUG_delegacion" id="LUG_delegacion" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="LUG_cp" class="col-md-4 col-form-label text-md-end">CP<span class="text-danger">*</span></label>
+                    <div class="col-md-6">
+                        <input type="text" name="LUG_cp" id="LUG_cp" class="form-control" required>
+                    </div>
+                </div>
+
+
+                <div class="mb-3 row">
+                    <label for="LUG_url_maps" class="col-md-4 col-form-label text-md-end">URL de Google Maps <span class="text-danger">*</span></label>
+                    <div class="col-md-6">
+                        <input type="text" name="LUG_url_maps" id="LUG_url_maps" class="form-control" required>
+                    </div>
+                </div>
+
+
+
+
                 <div class="mb-3 row">
                     <label for="IMG_path" class="col-md-4 col-form-label text-md-end">Imagen <span class="text-danger">*</span></label>
                     <div class="col-md-6">
-                        <input type="file" name="IMG_path" id="IMG_path" class="form-control">
+                        <input type="file" name="IMG_path" id="IMG_path" class="form-control" required>
                     </div>
                 </div>
-            </div>
 
             <!-- Botones del formulario -->
             <div class="card-footer text-end">

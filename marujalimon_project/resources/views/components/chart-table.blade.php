@@ -132,12 +132,6 @@
     </div>
 </div>
 
-@if ($voluntarios->count() > 0)
-<div class="paginacion" id="paginacion">
-    {{ $voluntarios->links() }}
-</div>
-@endif
-
 
 
 
@@ -449,7 +443,7 @@
    document.addEventListener("DOMContentLoaded", function() {
     let allVolunteers = [];
     let currentPage = 1;
-    const volunteersPerPage = 32; 
+    const volunteersPerPage = 32;
     const cardsContainer = document.getElementById('cardView');
     let currentSearch = ''; // Almacena la búsqueda actual
     let abortController = new AbortController(); // Controlador para abortar fetch
@@ -459,7 +453,7 @@
         const endIndex = startIndex + volunteersPerPage;
         const volunteersToShow = volunteers.slice(startIndex, endIndex);
 
-        cardsContainer.innerHTML = ''; 
+        cardsContainer.innerHTML = '';
 
         volunteersToShow.forEach(vol => {
             let volId = vol.VOL_id;
@@ -542,7 +536,7 @@ fetch('/api/voluntarios')
             vol.VOL_dni.toLowerCase().includes(currentSearch) ||
             (`${vol.VOL_nombre.toLowerCase()} ${vol.VOL_apellidos.toLowerCase()}`).includes(currentSearch)
         );
-        currentPage = 1; 
+        currentPage = 1;
         abortController.abort(); // Cancela cualquier solicitud fetch en progreso
         abortController = new AbortController(); // Crea un nuevo controlador para futuras solicitudes
         displayVolunteers(filteredVolunteers);

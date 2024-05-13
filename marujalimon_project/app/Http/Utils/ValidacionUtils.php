@@ -155,20 +155,25 @@ public static function validarVoluntario(Request $request)
 
 
 
-    public static function validarLugar(Request $request)
-    {
-        return $request->validate([
-            'LUG_nombre' => 'required|string|max:255',
-            'LUG_direccion' => 'required|string|max:255',
-            'IMG_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación de la imagen si se proporciona
-        ], [
-            'LUG_nombre.required' => 'El campo Nombre es obligatorio.',
-            'LUG_direccion.required' => 'El campo Dirección es obligatorio.',
-            'IMG_path.image' => 'El archivo debe ser una imagen.',
-            'IMG_path.mimes' => 'El archivo debe ser de tipo: jpeg, png, jpg o gif.',
-            'IMG_path.max' => 'El tamaño máximo del archivo es de 2048 kilobytes (2MB).',
-        ]);
-    }
+public static function validarLugar(Request $request)
+{
+    return $request->validate([
+        'LUG_nombre' => 'required|string|max:255',
+        'LUG_direccion' => 'required|string|max:255',
+        'LUG_cp' => 'nullable|integer',
+        'LUG_localidad' => 'nullable|string|max:255',
+        'LUG_provincia' => 'nullable|string|max:255',
+        'LUG_delegacion' => 'nullable|string|max:255',
+        'IMG_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación de la imagen si se proporciona
+    ], [
+        'LUG_nombre.required' => 'El campo Nombre es obligatorio.',
+        'LUG_direccion.required' => 'El campo Dirección es obligatorio.',
+        'LUG_cp.integer' => 'El código postal debe ser un número entero.',
+        'IMG_path.image' => 'El archivo debe ser una imagen.',
+        'IMG_path.mimes' => 'El archivo debe ser de tipo: jpeg, png, jpg o gif.',
+        'IMG_path.max' => 'El tamaño máximo del archivo es de 2048 kilobytes (2MB).',
+    ]);
+}
     public static function validarCoordinadorUpdate(Request $request,Coordinador $coordinador)
     {
 
