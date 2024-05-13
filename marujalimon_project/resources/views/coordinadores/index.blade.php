@@ -44,34 +44,14 @@
 </style>
 
 <input type="text" id="search" placeholder="Buscar por nombre o DNI">
-    <!-- Tarjetas de coordinadores con estilo unificado -->
-    <div id="cardView" class="row mt-0">
-        @foreach ($coordinadores as $coordinador)
-        <div class="col col-custom mb-4">
-            <div class="card h-100 border-0 shadow-sm card-coordinador">
-                <a href="{{ route('coordinadores.show', ['coordinadore' => $coordinador]) }}">
-                    <img src="{{ $coordinador->imagenPerfil ? $coordinador->imagenPerfil->IMG_path : 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg' }}" class="card-img-top" alt="Imagen de perfil del coordinador">
-                </a>
-                <div class="card-body">
-                    @php
-                    $nombre = $coordinador->COO_nombre;
-                    $posicionEspacio = strpos($nombre, ' ');
-                    if ($posicionEspacio !== false && $posicionEspacio <= 7) { $nombreFinal=substr($nombre, 0, $posicionEspacio) . '<br>' . substr($nombre, $posicionEspacio + 1); } else { $nombreFinal=$nombre; } @endphp <h6 class="card-title">
-                        <i class="fa fa-user-tie"></i> {{ $coordinador->COO_nombre }} {{ $coordinador->COO_apellidos }}
-                        </h5>
-                        <p class="card-text">
-                            <i class="fas fa-id-card"></i> DNI: {{ $coordinador->COO_dni }}
-                        </p>
-                        <div class="volunteer-card-buttons d-flex justify-content-center mt-3">
-                            <a href="{{ route('coordinadores.show', ['coordinadore' => $coordinador]) }}" class="coordinator-info btn btn-primary">Más información</a>
-                            <a href="{{ route('coordinadores.edit', ['coordinadore' => $coordinador]) }}" class="coordinator-modify btn btn-primary">Modificar</a>
-                        </div>
-                </div>
-            </div>
-        </div>
-        @endforeach
-    </div>
-
+<!-- Tarjetas de coordinadores con estilo unificado -->
+<div id="cardView" class="row mt-0">
+    <!-- Este contenedor inicialmente está vacío y se llenará dinámicamente mediante JavaScript -->
+</div>
+<div id="paginationControls">
+    <button id="prevPage" disabled>Anterior</button>
+    <button id="nextPage" disabled>Siguiente</button>
+</div>
 
 
 
@@ -197,6 +177,103 @@ button.addEventListener('click', function() {
         });
     });
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    let allCoordinators = [];
+    let currentPage = 1;
+    const coordinatorsPerPage = 10; 
+    const cardsContainer = document.getElementById('cardView');
+    let currentSearch = ''; 
+    let abortController = new AbortController(); 
+
+    async function displayCoordinators(coordinators) {
+    const startIndex = (currentPage - 1) * coordinatorsPerPage;
+    const endIndex = startIndex + coordinatorsPerPage;
+    const coordinatorsToShow = coordinators.slice(startIndex, endIndex);
+
+    cardsContainer.innerHTML = '';
+
+    for (const coordinator of coordinatorsToShow) {
+        // URL por defecto (placeholder)
+        let imageUrl = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
+        try {
+            const response = await fetch(`/coordinador/${coordinator.COO_id}/imagen-perfil`);
+            const data = await response.json();
+            if (response.ok && data.success) {
+                imageUrl = data.imagenPerfil.IMG_path; // Usando la propiedad IMG_path que contiene la URL de la imagen
+            }
+        } catch (error) {
+            console.error('Failed to fetch profile image:', error);
+        }
+
+        const cardHTML = `
+        <div class="col col-custom mb-4">
+            <div class="card h-100 border-0 shadow-sm card-coordinador">
+                <a href="/coordinadores/${coordinator.COO_id}">
+                    <img src="${imageUrl}" class="card-img-top" alt="Imagen de perfil del coordinador">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fa fa-user-tie"></i> ${coordinator.COO_nombre} ${coordinator.COO_apellidos}</h5>
+                    <p class="card-text"> <i class="fas fa-id-card"></i> DNI: ${coordinator.COO_dni}</p>
+                    <div class="volunteer-card-buttons d-flex justify-content-center mt-3">
+                        <a href="/coordinadores/${coordinator.COO_id}" class="coordinator-info btn btn-primary">Más información</a>
+                        <a href="/coordinadores/${coordinator.COO_id}/edit" class="coordinator-modify btn btn-primary">Modificar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+        cardsContainer.innerHTML += cardHTML;
+    }
+
+    updatePaginationControls(coordinators);
+}
+
+
+
+    function updatePaginationControls(coordinators) {
+        const totalPages = Math.ceil(coordinators.length / coordinatorsPerPage);
+        document.getElementById('prevPage').disabled = currentPage === 1;
+        document.getElementById('nextPage').disabled = currentPage === totalPages;
+    }
+
+    document.getElementById('prevPage').addEventListener('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            displayCoordinators(allCoordinators);
+        }
+    });
+
+    document.getElementById('nextPage').addEventListener('click', function() {
+        if (currentPage * coordinatorsPerPage < allCoordinators.length) {
+            currentPage++;
+            displayCoordinators(allCoordinators);
+        }
+    });
+
+    fetch('/api/coordinadores')
+        .then(response => response.json())
+        .then(data => {
+            allCoordinators = data;
+            displayCoordinators(allCoordinators); 
+        });
+
+    document.getElementById('search').addEventListener('keyup', function(e) {
+        currentSearch = e.target.value.toLowerCase();
+        const filteredCoordinators = allCoordinators.filter(coordinator =>
+            coordinator.COO_nombre.toLowerCase().includes(currentSearch) ||
+            coordinator.COO_apellidos.toLowerCase().includes(currentSearch) ||
+            coordinator.COO_dni.toLowerCase().includes(currentSearch)
+        );
+        currentPage = 1; 
+        abortController.abort(); 
+        abortController = new AbortController(); 
+        displayCoordinators(filteredCoordinators);
+    });
+});
+</script>
+
+
 
 
 

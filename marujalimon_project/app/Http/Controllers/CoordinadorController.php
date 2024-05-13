@@ -63,6 +63,38 @@ class CoordinadorController extends Controller
         ]);
     }
 
+    // En tu controlador API
+public function api()
+{
+    $coordinadores = Coordinador::all(); // Asegúrate de tener el modelo correcto y los datos necesarios
+    return response()->json($coordinadores);
+}
+
+
+
+public function getImagenPerfil($id)
+{
+    // Buscar el coordinador por COO_id
+    $coordinador = Coordinador::with('imagenPerfil')->where('COO_id', $id)->first();
+
+    // Verificar si el coordinador existe y tiene imagen de perfil
+    if ($coordinador && $coordinador->imagenPerfil) {
+        return response()->json([
+            'success' => true,
+            'imagenPerfil' => $coordinador->imagenPerfil
+        ]);
+    } else {
+        return response()->json([
+            'success' => false,
+            'message' => 'Coordinador no encontrado o sin imagen de perfil.'
+        ], 404);
+    }
+}
+
+
+
+
+
 
     public function store(Request $request)
     {

@@ -446,146 +446,105 @@
     });
 </script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        let allVolunteers = [];
-        let currentPage = 1;
-        const volunteersPerPage = 32; // Número de voluntarios por página
+   document.addEventListener("DOMContentLoaded", function() {
+    let allVolunteers = [];
+    let currentPage = 1;
+    const volunteersPerPage = 32; 
+    const cardsContainer = document.getElementById('cardView');
+    let currentSearch = ''; // Almacena la búsqueda actual
+    let abortController = new AbortController(); // Controlador para abortar fetch
 
-        function displayVolunteers(volunteers) {
-            const cardsContainer = document.getElementById('cardView');
-            const startIndex = (currentPage - 1) * volunteersPerPage;
-            const endIndex = startIndex + volunteersPerPage;
-            const volunteersToShow = volunteers.slice(startIndex, endIndex);
+    function displayVolunteers(volunteers) {
+        const startIndex = (currentPage - 1) * volunteersPerPage;
+        const endIndex = startIndex + volunteersPerPage;
+        const volunteersToShow = volunteers.slice(startIndex, endIndex);
 
-            cardsContainer.innerHTML = ''; // Limpia el contenedor antes de agregar nuevas tarjetas
+        cardsContainer.innerHTML = ''; 
 
-            volunteersToShow.forEach(vol => {
+        volunteersToShow.forEach(vol => {
+            let volId = vol.VOL_id;
+            let url = `/voluntario/${volId}/imagen-perfil`;
 
+            fetch(url, { signal: abortController.signal })
+                .then(response => response.json())
+                .then(data => {
+                    if (currentSearch !== document.getElementById('search').value.toLowerCase()) return;
+                    const imagePath = data.success && data.imagenPerfil ? data.imagenPerfil.IMG_path : 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
+                    createVolunteerCard(vol, imagePath, cardsContainer);
+                })
+                .catch(error => {
+                    if (error.name === 'AbortError') return; // Ignorar si fue abortado
+                    console.error('Error fetching image:', error);
+                    createVolunteerCard(vol, 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg', cardsContainer);
+                });
+        });
 
+        updatePaginationControls();
+    }
 
-                let volId = vol.VOL_id;
-
-                let url = `/voluntario/${volId}/imagen-perfil`;
-
-
-                fetch(url)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('No se pudo obtener la imagen de perfil');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.success && data.imagenPerfil) {
-                            console.log('Imagen de perfil:', data.imagenPerfil.IMG_path);
-                            // Aquí puedes guardar el valor de IMG_path en una variable
-                            const imagePath = data.imagenPerfil.IMG_path;
-                            // Puedes hacer algo con imgPath, como mostrar la imagen en el DOM
-
-                            if (imagePath == null) {
-                                imagePath = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
-                            }
-                                const volElement = document.createElement('div');
-                                volElement.className = 'col col-custom mb-4';
-                                volElement.innerHTML = `
-        <div class="card h-100 border-0 shadow-sm">
-            <a href="/voluntarios/${vol.VOL_id}">
-                <img src="${imagePath}" class="volunteer-card-img" alt="Imagen de perfil del voluntario" style="border-radius: 5px; max-width: 100%; height: auto;">
-            </a>
-            <div class="volunteer-card-body">
-                <h5 class="volunteer-card-title"><i class="fas fa-user"></i> ${vol.VOL_nombre} ${vol.VOL_apellidos}</h5>
-                <p class="volunteer-card-text"><i class="fas fa-id-card"></i> DNI: ${vol.VOL_dni}</p>
-                <div class="volunteer-card-buttons">
-                    <a href="/voluntarios/${vol.VOL_id}" class="volunteer-info btn btn-primary">Más información</a>
-                    <a href="/voluntarios/${vol.VOL_id}/edit" class="volunteer-modify btn btn-primary">Modificar</a>
+    function createVolunteerCard(vol, imagePath, container) {
+        const volElement = document.createElement('div');
+        volElement.className = 'col col-custom mb-4';
+        volElement.innerHTML = `
+            <div class="card h-100 border-0 shadow-sm">
+                <a href="/voluntarios/${vol.VOL_id}">
+                    <img src="${imagePath}" class="volunteer-card-img" alt="Imagen de perfil del voluntario" style="border-radius: 5px; max-width: 100%; height: auto;">
+                </a>
+                <div class="volunteer-card-body">
+                    <h5 class="volunteer-card-title"><i class="fas fa-user"></i> ${vol.VOL_nombre} ${vol.VOL_apellidos}</h5>
+                    <p class="volunteer-card-text"><i class="fas fa-id-card"></i> DNI: ${vol.VOL_dni}</p>
+                    <div class="volunteer-card-buttons">
+                        <a href="/voluntarios/${vol.VOL_id}" class="volunteer-info btn btn-primary">Más información</a>
+                        <a href="/voluntarios/${vol.VOL_id}/edit" class="volunteer-modify btn btn-primary">Modificar</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    `;
-                                cardsContainer.appendChild(volElement);
-                            
+        `;
+        container.appendChild(volElement);
+    }
 
-                        } else {
-                            console.log('No se encontró imagen de perfil para este voluntario.');
-                        }
-                    })
-                    .catch(error => {
+    function updatePaginationControls() {
+        const pageInfo = document.getElementById('pageInfo');
+        const totalPages = Math.ceil(allVolunteers.length / volunteersPerPage);
+        pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+        document.getElementById('prevPage').disabled = currentPage === 1;
+        document.getElementById('nextPage').disabled = currentPage === totalPages;
+    }
 
-
-                        const imagePath = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
-
-                        const volElement = document.createElement('div');
-                                volElement.className = 'col col-custom mb-4';
-                                volElement.innerHTML = `
-        <div class="card h-100 border-0 shadow-sm">
-            <a href="/voluntarios/${vol.VOL_id}">
-                <img src="${imagePath}" class="volunteer-card-img" alt="Imagen de perfil del voluntario" style="border-radius: 5px; max-width: 100%; height: auto;">
-            </a>
-            <div class="volunteer-card-body">
-                <h5 class="volunteer-card-title"><i class="fas fa-user"></i> ${vol.VOL_nombre} ${vol.VOL_apellidos}</h5>
-                <p class="volunteer-card-text"><i class="fas fa-id-card"></i> DNI: ${vol.VOL_dni}</p>
-                <div class="volunteer-card-buttons">
-                    <a href="/voluntarios/${vol.VOL_id}" class="volunteer-info btn btn-primary">Más información</a>
-                    <a href="/voluntarios/${vol.VOL_id}/edit" class="volunteer-modify btn btn-primary">Modificar</a>
-                </div>
-            </div>
-        </div>
-    `;
-                                cardsContainer.appendChild(volElement);
-
-
-
-
-                    });
-
-
-
-
-
-            });
-
-            updatePaginationControls();
+    document.getElementById('prevPage').addEventListener('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            displayVolunteers(allVolunteers);
         }
-
-        function updatePaginationControls() {
-            const pageInfo = document.getElementById('pageInfo');
-            const totalPages = Math.ceil(allVolunteers.length / volunteersPerPage);
-            pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
-            document.getElementById('prevPage').disabled = currentPage === 1;
-            document.getElementById('nextPage').disabled = currentPage === totalPages;
-        }
-
-        document.getElementById('prevPage').addEventListener('click', function() {
-            if (currentPage > 1) {
-                currentPage--;
-                displayVolunteers(allVolunteers);
-            }
-        });
-
-        document.getElementById('nextPage').addEventListener('click', function() {
-            if (currentPage * volunteersPerPage < allVolunteers.length) {
-                currentPage++;
-                displayVolunteers(allVolunteers);
-            }
-        });
-
-        // Cargar todos los voluntarios desde la API
-        fetch('/api/voluntarios')
-            .then(response => response.json())
-            .then(data => {
-                allVolunteers = data;
-                displayVolunteers(allVolunteers); // Muestra todos los voluntarios inicialmente
-            });
-
-        const searchInput = document.getElementById('search');
-        searchInput.addEventListener('keyup', function() {
-            const searchValue = searchInput.value.toLowerCase();
-            const filteredVolunteers = allVolunteers.filter(vol =>
-                vol.VOL_nombre.toLowerCase().includes(searchValue) ||
-                vol.VOL_dni.toLowerCase().includes(searchValue)
-            );
-            currentPage = 1; // Reinicia la paginación
-            displayVolunteers(filteredVolunteers); // Muestra solo los voluntarios filtrados
-        });
     });
+
+    document.getElementById('nextPage').addEventListener('click', function() {
+        if (currentPage * volunteersPerPage < allVolunteers.length) {
+            currentPage++;
+            displayVolunteers(allVolunteers);
+        }
+    });
+
+    // Cargar todos los voluntarios desde la API
+    fetch('/api/voluntarios')
+        .then(response => response.json())
+        .then(data => {
+            allVolunteers = data;
+            displayVolunteers(allVolunteers); // Muestra todos los voluntarios inicialmente
+        });
+
+        document.getElementById('search').addEventListener('keyup', function(e) {
+        currentSearch = e.target.value.toLowerCase();
+        const filteredVolunteers = allVolunteers.filter(vol =>
+            vol.VOL_nombre.toLowerCase().includes(currentSearch) ||
+            vol.VOL_apellidos.toLowerCase().includes(currentSearch) ||
+            vol.VOL_dni.toLowerCase().includes(currentSearch) ||
+            (`${vol.VOL_nombre.toLowerCase()} ${vol.VOL_apellidos.toLowerCase()}`).includes(currentSearch)
+        );
+        currentPage = 1; 
+        abortController.abort(); // Cancela cualquier solicitud fetch en progreso
+        abortController = new AbortController(); // Crea un nuevo controlador para futuras solicitudes
+        displayVolunteers(filteredVolunteers);
+    });
+});
 </script>

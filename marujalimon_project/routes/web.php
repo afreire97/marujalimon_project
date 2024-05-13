@@ -63,6 +63,9 @@ Route::middleware(AdminOrCoordMiddleware::class)->group(function () {
     //RUTA DE COORDINADORES
 
     Route::resource('coordinadores', CoordinadorController::class);
+    Route::get('/api/coordinadores', [CoordinadorController::class, 'api']);
+    Route::get('/coordinador/{id}/imagen-perfil', [CoordinadorController::class, 'getImagenPerfil'])->name('coordinador.imagen-perfil');
+
 
 
 

@@ -33,7 +33,6 @@ class VoluntarioFactory extends Factory
             'VOL_tel1' => fake()->phoneNumber(),
             'VOL_sexo' => fake()->randomElement(['Masculino', 'Femenino', 'Otro']),
             'VOL_mail' => fake()->unique()->email(),
-
             'VOL_dias_semana_dispo' => fake()->randomElement(['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo', null]),
             'user_id' => null,
 
