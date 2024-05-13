@@ -4,7 +4,8 @@
 
 
 
-    <div class="mode-container" style="display: flex; align-items: center; justify-content: space-between; background-color: #008080; padding: 10px; border-radius: 5px; width: 100%;">
+    <div class="mode-container"
+        style="display: flex; align-items: center; justify-content: space-between; background-color: #008080; padding: 10px; border-radius: 5px; width: 100%;">
         <div style="flex-grow: 1; display: flex; justify-content: center;">
             <div id="modeDisplay" class="text-position" style="color: white; font-size: 24px;">Lugares</div>
         </div>
@@ -13,7 +14,7 @@
                 <div class="row">
                     <div class="col">
                         <a href="#modal-dialog-tarea" class="btn btn-warning" id="tareaButton"
-                            data-bs-toggle="modal">Asignar coordinador</a>
+                            data-bs-toggle="modal">Asignar cordinador/es a un lugar</a>
                     </div>
                 </div>
             </div>
@@ -27,38 +28,58 @@
 
     <!-- Tarjetas de lugares con nuevo estilo -->
     <div id="cardView" class="row mt-5">
-        @foreach ($lugares as $lugar)
-            <div class="col col-custom mb-4">
-                <div class="card h-100 border-0 shadow-sm" id="cardViewLugar">
-                    <!-- Start of clickable image -->
-                    <a href="{{ route('lugares.show', ['lugar' => $lugar]) }}">
-                        <img src="{{ optional($lugar->imagen)->IMG_path ? $lugar->imagen->IMG_path : asset('img/default_img/lugar.png') }}" class="volunteer-card-img">
 
-                    </a>
-                    <!-- End of clickable image -->
+        @if ($lugares)
 
-                    <div class="volunteer-card-body">
-                        <h5 class="volunteer-card-title mt-3">
-                            <i class="fas fa-user"></i> {{ $lugar->LUG_nombre }}
-                        </h5>
-                        <p class="text-break">
-                            <i class="fas fa-id-card"></i> Dirección: {{ $lugar->LUG_direccion }}
-                        </p>
-                        <p>
-                            <a target="_blank" href="{{$lugar->LUG_url_maps}}"
-                                >Visitar sitio</a>
-                        </p>
-                        <div class="volunteer-card-buttons">
-                            <a href="{{ route('lugares.show', ['lugar' => $lugar]) }}"
-                                class="volunteer-info btn btn-primary">Más información</a>
-                            <a href="{{ route('lugares.edit', ['lugar' => $lugar]) }}"
-                                class="volunteer-modify btn btn-primary">Modificar</a>
+            @foreach ($lugares as $lugar)
+                <div class="col col-custom mb-4">
+                    <div class="card h-100 border-0 shadow-sm" id="cardViewLugar">
+                        <!-- Start of clickable image -->
+                        <a href="{{ route('lugares.show', ['lugar' => $lugar]) }}">
+                            <img src="{{ optional($lugar->imagen)->IMG_path ? $lugar->imagen->IMG_path : asset('img/default_img/lugar.png') }}"
+                                class="volunteer-card-img">
 
+                        </a>
+                        <!-- End of clickable image -->
+
+                        <div class="volunteer-card-body">
+                            <h5 class="volunteer-card-title mt-3">
+                                <i class="fas fa-user"></i> {{ $lugar->LUG_nombre }}
+                            </h5>
+
+                            <p></p>
+                            @if ($lugar->LUG_direccion)
+                                <p class="text-break">
+                                    <i class="fas fa-id-card"></i> Dirección: {{ $lugar->LUG_direccion }}
+                                </p>
+                            @endif
+
+                            @if ($lugar->LUG_provincia)
+                                <p class="text-break">
+                                    <i class="fas fa-id-card"></i> Provincia: {{ $lugar->LUG_provincia }}
+                                </p>
+                            @endif
+
+                            @if ($lugar->LUG_localidad)
+                                <p class="text-break">
+                                    <i class="fas fa-id-card"></i> Localidad: {{ $lugar->LUG_localidad }}
+                                </p>
+                            @endif
+                            <p>
+                                <a target="_blank" href="{{ $lugar->LUG_url_maps }}">Visitar sitio</a>
+                            </p>
+                            <div class="volunteer-card-buttons">
+                                <a href="{{ route('lugares.show', ['lugar' => $lugar]) }}"
+                                    class="volunteer-info btn btn-primary">Más información</a>
+                                <a href="{{ route('lugares.edit', ['lugar' => $lugar]) }}"
+                                    class="volunteer-modify btn btn-primary">Modificar</a>
+
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        @endif
     </div>
 
 
@@ -103,7 +124,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="descripcion 2" class="form-label">Coordinadores</label>
-                                <select name="COO_id" id="COO_id" required>
+                                <select name="COO_id[]" id="COO_id" multiple required>
                                     @foreach ($coordinadores as $coordinador)
                                         <option value="{{ $coordinador->COO_id }}">{{ $coordinador->COO_nombre }}
                                         </option>
@@ -112,11 +133,11 @@
                             </div>
 
 
+
                         @endif
-
-
-
                     </form>
+
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
@@ -126,7 +147,11 @@
             </div>
         </div>
     </div>
-
+    <script>
+        $(document).ready(function() {
+            $('#COO_id').select2();
+        });
+    </script>
     <script>
         function asignarLugar() {
             // Obtener el formulario
@@ -138,9 +163,7 @@
                     body: new FormData(form)
                 })
                 .then(function(response) {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
+
                     // Si la respuesta del servidor es exitosa, muestra un mensaje de éxito
                     return response.json();
                 })
@@ -178,7 +201,7 @@
                     console.error('Error:', error);
                     swal({
                         title: 'Error',
-                        text: 'Hubo un problema al añadir las horas, por favor revisa los datos.',
+                        text: 'Hubo un problema al añadir el lugar de trabajo a este cordinador',
                         icon: 'error',
                         button: 'Ok'
                     });

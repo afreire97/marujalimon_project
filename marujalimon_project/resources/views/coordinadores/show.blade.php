@@ -41,6 +41,7 @@
                         <a href="{{ route('coordinadores.edit', ['coordinadore' => $coordinador]) }}"
                             class="btn btn-primary d-block w-100">Editar Perfil</a>
                     </div>
+
                 </div>
 
 
@@ -101,6 +102,32 @@
 
         </div>
     </div>
+
+    <div class="row row-cols-4">
+        @foreach ($voluntarios as $voluntario)
+            <div class="col card border-0 shadow-sm">
+                <a href="#">
+                    @if ($voluntario->imagenPerfil)
+                        <img src="{{$voluntario->imagenPerfil->IMG_path}}" class="img-fluid" alt="Imagen de perfil del voluntario">
+                    @else
+                        <img src="https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg" class="img-fluid" alt="Avatar placeholder">
+                    @endif
+                </a>
+                <div class="volunteer-card-body">
+                    <h5 class="volunteer-card-title"><i class="fas fa-user"></i>{{$voluntario->VOL_nombre . " " . $voluntario->VOL_apellidos}}</h5>
+                    <p class="volunteer-card-text text-truncate"><i class="fas fa-id-card"></i>DNI: {{$voluntario->VOL_dni}}</p>
+                    <div class="volunteer-card-buttons">
+                        <a href="/voluntarios/{{$voluntario->VOL_id}}" class="volunteer-info btn btn-primary">Más información</a>
+                        <a href="/voluntarios/{{$voluntario->VOL_id}}/edit" class="volunteer-modify btn btn-primary">Modificar</a>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+
+
+   </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

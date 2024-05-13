@@ -26,9 +26,6 @@ class Voluntario extends Model
     ];
 
 
-    public function delegaciones(){
-        return $this->belongsToMany(Delegacion::class,'delegacion_voluntario' ,'DEL_VOL_voluntario_id', 'DEL_VOL_delegacion_id');
-    }
    public function coordinadores(){
         return $this->belongsToMany(Coordinador::class, 'coordinador_voluntario', 'COO_VOL_voluntario_id', 'COO_VOL_coordinador_id');
     }

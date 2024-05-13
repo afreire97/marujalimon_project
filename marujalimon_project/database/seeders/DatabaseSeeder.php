@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
         // Preparar datos para inserción masiva de voluntarios
         $voluntariosData = $voluntarios->map(function ($voluntario) {
             return [
-                'name' => $voluntario->VOL_nombre,
+                'name' => $voluntario->VOL_nombre ?: 'Unknown',
                 'email' => $voluntario->VOL_mail ?: generateEmail($voluntario->VOL_nombre, $voluntario->VOL_apellidos),
                 'password' => bcrypt('password'),
                 'is_voluntario' => true,

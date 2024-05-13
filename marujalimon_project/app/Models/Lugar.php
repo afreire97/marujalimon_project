@@ -15,6 +15,10 @@ class Lugar extends Model
         'LUG_nombre',
         'LUG_direccion',
         'LUG_url_maps',
+        'LUG_cp',
+        'LUG_localidad',
+        'LUG_provincia',
+        'LUG_delegacion',
 
     ];
 

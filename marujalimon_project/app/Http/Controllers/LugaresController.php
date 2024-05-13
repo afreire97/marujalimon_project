@@ -17,20 +17,26 @@ class LugaresController extends Controller
     public function index()
     {
 
-
-
         if (Auth::user()->is_admin) {
-            $lugares = Lugar::all();
+            $lugares = Lugar::orderBy('updated_at', 'desc')->get();
             $coordinadores = Coordinador::all();
             return view('lugares.index', ['lugares' => $lugares, 'coordinadores' => $coordinadores]);
         } else {
             $coordinador = Auth::user()->coordinador;
+
+            $lugaresAll = Lugar::orderBy('updated_at', 'desc')->get();
+
+            if ($coordinador === null || $coordinador->lugares->isEmpty()) {
+
+                return view('lugares.index', ['lugares' => null, 'lugaresAll' => $lugaresAll]);
+            }
+
             $lugares = $coordinador->lugares;
-            $lugaresAll = Lugar::all();
+
             return view('lugares.index', ['lugares' => $lugares, 'lugaresAll' => $lugaresAll]);
+
+
         }
-
-
 
     }
 
@@ -122,20 +128,20 @@ class LugaresController extends Controller
 
     }
 
-    
-public function mostrarLugar($lugarId)
-{
-    // Busca el lugar en la base de datos
-    $lugar = Lugar::find($lugarId);
 
-    // Si el lugar no existe, devuelve un error 404
-    if (!$lugar) {
-        return response()->json(['error' => 'Lugar no encontrado'], 404);
+    public function mostrarLugar($lugarId)
+    {
+        // Busca el lugar en la base de datos
+        $lugar = Lugar::find($lugarId);
+
+        // Si el lugar no existe, devuelve un error 404
+        if (!$lugar) {
+            return response()->json(['error' => 'Lugar no encontrado'], 404);
+        }
+
+        // Devuelve la vista del lugar, pasando el lugar como dato
+        return view('lugares.mostrar', ['lugar' => $lugar]);
     }
-
-    // Devuelve la vista del lugar, pasando el lugar como dato
-    return view('lugares.mostrar', ['lugar' => $lugar]);
-}
 
 
 
@@ -149,6 +155,10 @@ public function mostrarLugar($lugarId)
         $lugar = new Lugar();
         $lugar->LUG_nombre = $request->input('LUG_nombre');
         $lugar->LUG_direccion = $request->input('LUG_direccion');
+        $lugar->LUG_localidad = $request->input('LUG_localidad');
+        $lugar->LUG_provincia = $request->input('LUG_provincia');
+        $lugar->LUG_delegacion = $request->input('LUG_delegacion');
+        $lugar->LUG_cp = $request->input('LUG_cp');
         $lugar->LUG_url_maps = $request->input('LUG_url_maps');
         $lugar->save();
 
@@ -173,18 +183,24 @@ public function mostrarLugar($lugarId)
 
     public function edit(Lugar $lugar)
     {
+
         return view('lugares.edit', ['lugar' => $lugar]);
     }
+
+
+
+
+
+
+
+
     public function update(Request $request, Lugar $lugar)
     {
         // Validar los datos del formulario
-        ValidacionUtils::validarLugar($request);
+        $datos = ValidacionUtils::validarLugar($request);
 
         // Actualizar los datos del lugar
-        $lugar->update([
-            'LUG_nombre' => $request->input('LUG_nombre'),
-            'LUG_direccion' => $request->input('LUG_direccion'),
-        ]);
+        $lugar->update($datos);
 
         // Actualizar la imagen si se proporciona
         if ($request->hasFile('IMG_path')) {
@@ -208,8 +224,17 @@ public function mostrarLugar($lugarId)
         // Validar la solicitud si es necesario
 
         $user = Auth::user();
+
+
+
         if ($user->is_coordinador) {
-            $coordinadorId = $user->coordinador->COO_id;
+
+            $coordinador = $user->coordinador;
+
+
+
+            $coordinadorId = $coordinador->COO_id;
+
         } elseif ($user->is_admin) {
             $coordinadorId = $request->input('COO_id');
         }
@@ -238,11 +263,21 @@ public function mostrarLugar($lugarId)
         if ($user->is_admin) {
             $lugares = Lugar::all();
             $coordinadores = Coordinador::all();
+
             return response()->json(['success' => $success, 'message' => $message, 'redirect' => route('lugares.index', ['lugares' => $lugares, 'coordinadores' => $coordinadores])]);
-        } else {
+
+        } elseif ($user->is_coordinador) {
+
+
+
             $coordinador = $user->coordinador;
             $lugares = $coordinador->lugares;
             $lugaresAll = Lugar::all();
+
+
+
+
+
             return response()->json(['success' => $success, 'message' => $message, 'redirect' => route('lugares.index', ['lugares' => $lugares, 'lugaresAll' => $lugaresAll])]);
         }
     }

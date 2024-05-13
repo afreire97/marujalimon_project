@@ -26,12 +26,7 @@ class Tarea extends Model
 
     public function horas()
     {
-
-
         return $this->hasMany(Horas::class, 'HOR_tarea_id');
-
-
-
     }
     public function horasTotalesTareaAnioActual()
     {
