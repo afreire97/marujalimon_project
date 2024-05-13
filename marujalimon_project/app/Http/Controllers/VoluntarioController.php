@@ -150,7 +150,16 @@ class VoluntarioController extends Controller
 
     public function api()
     {
+
+        $user = Auth::user();
         $voluntarios = Voluntario::all();
+
+        if($user->is_coordinador){
+            $voluntarios = $user->coordinador->voluntarios;
+
+        }
+
+
         return response()->json($voluntarios);
     }
 

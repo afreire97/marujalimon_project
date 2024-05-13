@@ -181,7 +181,7 @@ button.addEventListener('click', function() {
 document.addEventListener("DOMContentLoaded", function() {
     let allCoordinators = [];
     let currentPage = 1;
-    const coordinatorsPerPage = 10; 
+    const coordinatorsPerPage = 32; 
     const cardsContainer = document.getElementById('cardView');
     let currentSearch = ''; 
     let abortController = new AbortController(); 
@@ -252,11 +252,11 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     fetch('/api/coordinadores')
-        .then(response => response.json())
-        .then(data => {
-            allCoordinators = data;
-            displayCoordinators(allCoordinators); 
-        });
+    .then(response => response.json())
+    .then(data => {
+        allCoordinators = data.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at)); // Ordena los coordinadores por fecha de actualización más reciente
+        displayCoordinators(allCoordinators); 
+    });
 
     document.getElementById('search').addEventListener('keyup', function(e) {
         currentSearch = e.target.value.toLowerCase();
