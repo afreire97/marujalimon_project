@@ -170,7 +170,7 @@
                                     </div>
                                 </div>
                                 <div class="d-grid gap-2">
-                                    <button type="submit" class="btn btn-primary">Calcular horas por mes</button>
+                                    <button onclick="cargarDatosEnGrafico()" class="btn btn-primary">Calcular horas por mes</button>
                                 </div>
                             </form>
 
@@ -206,7 +206,9 @@
 
 
             <script>
-                document.getElementById('calcularHorasForm').addEventListener('submit', function(event) {
+
+                function cargarDatosEnGrafico(){
+
                     // Evitar el envío del formulario
                     event.preventDefault();
 
@@ -272,7 +274,10 @@
                         .catch(error => {
                             console.error('Error al obtener los datos de horas por mes:', error);
                         });
-                });
+
+                }
+
+
             </script>
 
 
