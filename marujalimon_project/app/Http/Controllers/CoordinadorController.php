@@ -40,10 +40,11 @@ class CoordinadorController extends Controller
 
 
         $voluntarios=$coordinadore->voluntarios;
+        $lugares=$coordinadore->lugares;
 
 
 
-        return view('coordinadores.show', ['coordinador' => $coordinadore,'voluntarios' => $voluntarios]);
+        return view('coordinadores.show', ['coordinador' => $coordinadore,'voluntarios' => $voluntarios, 'lugares' => $lugares]);
 
 
     }
