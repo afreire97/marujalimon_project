@@ -63,7 +63,16 @@ class LugaresController extends Controller
                 ->where('COO_LUG_coordinador_id', $coordinador->COO_id)
                 ->latest('created_at')
                 ->value('created_at');
-            Log::info('fecha' . $fechaAsociacion);
+
+
+            if ($fechaAsociacion == null) {
+
+                $fechaAsociacion = $coordinador->created_at;
+
+            }
+
+
+
             $fechasAsociacion[$coordinador->COO_id] = $fechaAsociacion;
         }
         foreach ($tareasLugar as $tarea) {
@@ -249,11 +258,11 @@ class LugaresController extends Controller
 
         if ($user->is_coordinador) {
 
-            $coordinador = $user->coordinador;
+            $coordinadores = $user->coordinador;
 
 
 
-            $coordinadorId = $coordinador->COO_id;
+            $coordinadorId = $coordinadores->COO_id;
 
         } elseif ($user->is_admin) {
             $coordinadorId = $request->input('COO_id');
@@ -263,17 +272,71 @@ class LugaresController extends Controller
 
         // Verificar si el coordinador ya está asociado al lugar
         $lugar = Lugar::find($lugarId);
-        if ($lugar->coordinadores->contains('COO_id', $coordinadorId)) {
-            $message = 'El coordinador ya está asignado a este lugar.';
+
+        if ($lugar->coordinadores()->where('COO_id', $coordinadorId)->exists()) {
+
+
+
+            $coordinador = Coordinador::find($coordinadorId);
+
+            if(!count($coordinador)>1){
+                $message = 'El coordinador ' . $coordinador->first()->COO_name . ' ya ha sido asignado al lugar: ' . $lugar->LUG_nombre;
+
+            }
+            else  $message = 'Los coordinadores seleccionados ya han sido asignados al lugar.';
+
+
+
+
+            Log::info($message);
             $success = false;
         } else {
-            $coordinador = Coordinador::find($coordinadorId);
+            $coordinadores = Coordinador::find($coordinadorId);
+
 
 
             $now = now();
-            $lugar->coordinadores()->attach($coordinador, ['created_at' => $now, 'updated_at' => $now]);
+            $lugar->coordinadores()->attach($coordinadores, ['created_at' => $now, 'updated_at' => $now]);
+
+            $listaVoluntarios = [];
+
+            $tareas = $lugar->tareas;
+            if (!$tareas->isEmpty()) {
+
+                foreach ($tareas as $tarea) {
+
+                    $horas = $tarea->horas;
+
+                    if (!$horas->isEmpty()) {
+
+                        foreach ($horas as $hora) {
+                            $voluntarioID = $hora->voluntario->VOL_id;
+                            $voluntario = $hora->voluntario;
 
 
+                            if (!in_array($voluntarioID, $listaVoluntarios)) {
+                                $listaVoluntarios[] = $voluntario->VOL_id;
+                            }
+
+                        }
+
+                    }
+
+
+                }
+                if (count($listaVoluntarios) > 0) {
+
+
+
+                    foreach ($coordinadores as $c) {
+
+
+                        $c->voluntarios()->attach($listaVoluntarios);
+
+                    }
+                }
+
+            }
 
             $message = 'Coordinador asignado correctamente al lugar.';
             $success = true;
@@ -290,8 +353,8 @@ class LugaresController extends Controller
 
 
 
-            $coordinador = $user->coordinador;
-            $lugares = $coordinador->lugares;
+            $coordinadores = $user->coordinador;
+            $lugares = $coordinadores->lugares;
             $lugaresAll = Lugar::all();
 
 

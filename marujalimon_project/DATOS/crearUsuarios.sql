@@ -1,3 +1,17 @@
+
+INSERT INTO users (name, email, password, is_voluntario)
+SELECT VOL_nombre, IFNULL(VOL_mail, CONCAT(VOL_dni, '@mail.com')), 'password', 1
+FROM voluntarios;
+
+INSERT INTO users (name, email, password, is_coordinador)
+SELECT COO_nombre, IFNULL(COO_mail, CONCAT(COO_dni, '@mail.com')), 'password', 1
+FROM coordinadores AS c
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM users AS u
+    WHERE u.email = IFNULL(c.COO_mail, CONCAT(c.COO_dni, '@mail.com'))
+);
+
 UPDATE lugares
 SET LUG_localidad = REPLACE(LUG_localidad, 'A CoruÃ±a', 'A Coruña'),
     LUG_provincia = REPLACE(LUG_provincia, 'A CoruÃ±a', 'A Coruña'),
@@ -81,3 +95,13 @@ UPDATE lugares
 SET LUG_localidad = REPLACE(LUG_localidad, 'SanguiÃ±eda-Mos', 'Sanguiñeda-Mos')
 WHERE 
     LUG_id > 0 AND LUG_localidad LIKE 'SanguiÃ±eda-Mos';
+    
+    
+UPDATE lugares
+SET LUG_direccion = 'No hay dirección'
+WHERE (LUG_direccion IS NULL OR LUG_direccion = '') 
+AND LUG_id > 0;
+
+
+
+

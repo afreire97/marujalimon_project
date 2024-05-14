@@ -13,18 +13,18 @@
         <a class="btn btn-success" href="{{ url()->previous() }}">Volver</a>
 
         <div style="flex-grow: 1; display: flex; justify-content: center;">
-            <div id="modeDisplay" style="color: white; font-size: 24px;">Voluntarios</div>
+            <div id="modeDisplay" style="color: white; font-size: 24px;">Voluntarios  en: {{$lugar->LUG_nombre}}</div>
         </div>
 
         <ul class="nav nav-pills mb-2">
             <li class="nav-item">
-                <a href="#nav-pills-tab-1" data-bs-toggle="tab" class="btn btn-info" onclick="changeMode('Voluntarios')">
+                <a href="#nav-pills-tab-1" data-bs-toggle="tab" class="btn btn-info" onclick="changeMode('Voluntarios en: {{$lugar->LUG_nombre}}')">
                     <span class="d-sm-none">Voluntarios</span>
                     <span class="d-sm-block d-none">Voluntarios</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#nav-pills-tab-2" data-bs-toggle="tab" class="btn btn-warning" onclick="changeMode('Coordinadores')">
+                <a href="#nav-pills-tab-2" data-bs-toggle="tab" class="btn btn-warning" onclick="changeMode('Coordinadores en: {{$lugar->LUG_nombre}}')">
                     <span class="d-sm-none">Coordinadores</span>
                     <span class="d-sm-block d-none">Coordinadores</span>
                 </a>
@@ -35,10 +35,7 @@
         <div class="row d-flex justify-content-center">
             <!-- Columna izquierda -->
             <div class="col-xl-6">
-                <!-- Pestañas de navegación -->
 
-
-                <!-- Contenido de las pestañas -->
                 <div class="tab-content p-3 rounded-top panel rounded-0 m-0">
                     <!-- Contenido de la pestaña de Voluntarios -->
                     <div class="tab-pane fade active show" id="nav-pills-tab-1">
@@ -75,7 +72,6 @@
 
                     </div>
 
-                    <!-- Contenido de la pestaña de Coordinadores -->
                     <div class="tab-pane fade" id="nav-pills-tab-2">
                         <div class="card-body">
                             <div id="tableView" class="table-responsive" style="display: block">

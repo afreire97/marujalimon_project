@@ -49,7 +49,7 @@
                 <div class="col-md-8" style="position: relative;"> <!-- Añade posición relativa aquí -->
                     <div class="card-body">
                         <h3 class="card-title">{{ $coordinador->COO_nombre }} {{ $coordinador->COO_apellidos }}</h3>
-                        
+
 
 
                         <div class="row">
@@ -124,6 +124,19 @@
                         <hr class="my-4">
                         <!-- Puedes usar un separador para distinguir claramente las secciones -->
 
+                        @if (!$lugares->isEmpty())
+                        <div class="mb-3">
+                            <i class="bi bi-geo-alt-fill me-2"></i><strong>Lugares asignados:</strong>
+
+                            @foreach ($lugares as $lugar)
+
+                            <a href="{{route('lugares.show', ['lugar' => $lugar])}}"> | {{$lugar->LUG_nombre}} </a>
+                            @endforeach
+
+
+                        </div>
+
+                        @endif
                     </div> <!-- Fin del div card-body -->
                     <div style="position: absolute; top: 0; right: 0; padding: 10px;">
                         <form id="deleteForm"
