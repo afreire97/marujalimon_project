@@ -84,6 +84,26 @@ class LugaresController extends Controller
         ]);
     }
 
+    public function api()
+    {
+        $lugares = Lugar::with('imagen')->get(); // Carga anticipada de la relación 'imagen'
+    
+        // Transformar los lugares para incluir la ruta de la imagen
+        $lugares = $lugares->map(function ($lugar) {
+            return [
+                'LUG_id' => $lugar->LUG_id,
+                'LUG_nombre' => $lugar->LUG_nombre,
+                'LUG_direccion' => $lugar->LUG_direccion,
+                'LUG_provincia' => $lugar->LUG_provincia,
+                'LUG_localidad' => $lugar->LUG_localidad,
+                'LUG_url_maps' => $lugar->LUG_url_maps,
+                'IMG_path' => $lugar->imagen ? $lugar->imagen->IMG_path : 'img/default_img/lugar.png' // Imagen o imagen por defecto
+            ];
+        });
+    
+        return response()->json($lugares);
+    }
+    
 
 
     public function create()

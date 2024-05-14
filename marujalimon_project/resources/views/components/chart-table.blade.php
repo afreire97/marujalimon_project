@@ -4,7 +4,7 @@
     </div>
     <div class="button-container d-flex justify-content-end align-items-center">
         <a href="#modal-dialog" class="btn btn-success" data-bs-toggle="modal" style="display: none;" id="demoButton">Añadir horas</a>
-        <button id="toggleViewButton" class="btn btn-danger">Cambiar a Tabla</button>
+        <button id="toggleViewButton" class="btn btn-danger">Vista administración</button>
     </div>
 </div>
 
@@ -416,10 +416,10 @@
 <script>
     document.getElementById("toggleViewButton").addEventListener("click", function() {
         var button = document.getElementById("toggleViewButton");
-        if (button.innerHTML === "Cambiar a Tabla") {
-            button.innerHTML = "Cambiar a Tarjetas";
+        if (button.innerHTML === "Vista administración") {
+            button.innerHTML = "Vista dinámica";
         } else {
-            button.innerHTML = "Cambiar a Tabla";
+            button.innerHTML = "Vista administración";
         }
     });
 </script>
@@ -488,8 +488,8 @@
                     <h5 class="volunteer-card-title"><i class="fas fa-user"></i> ${vol.VOL_nombre} ${vol.VOL_apellidos}</h5>
                     <p class="volunteer-card-text"><i class="fas fa-id-card"></i> DNI: ${vol.VOL_dni}</p>
                     <div class="volunteer-card-buttons">
-                        <a href="/voluntarios/${vol.VOL_id}" class="volunteer-info btn btn-primary">Más información</a>
-                        <a href="/voluntarios/${vol.VOL_id}/edit" class="volunteer-modify btn btn-primary">Modificar</a>
+                        <a href="/voluntarios/${vol.VOL_id}" class="volunteer-info btn btn-primary"><i class="fas fa-info-circle"></i> Más información</a>
+                        <a href="/voluntarios/${vol.VOL_id}/edit" class="volunteer-modify btn btn-primary"><i class="fas fa-edit"></i> Modificar</a>
                     </div>
                 </div>
             </div>

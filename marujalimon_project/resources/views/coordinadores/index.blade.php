@@ -25,7 +25,7 @@
 
 
 
-    <button id="toggleViewButton" class="btn btn-danger">Cambiar a Tabla</button>
+    <button id="toggleViewButton" class="btn btn-info">Vista administración</button>
 </div>
 
 
@@ -69,10 +69,10 @@
     @endif
 
     <div id="tableView" class="table-responsive " style="display: none;">
-        <!-- Contenido de la vista de tabla -->
-        <div class="table-responsive">
-            <table id="data-table-default" width="100%" class="table table-bordered align-middle text-nowrap">
-                <thead>
+    <!-- Contenido de la vista de tabla -->
+    <div class="table-responsive">
+        <table id="data-table-default" width="100%" class="table table-bordered align-middle text-nowrap table-striped">
+            <thead style="background-color: #40E0D0;">
                     <tr>
                         <th width="1%">ID</th>
                         <th width="1%">Nombre</th>
@@ -138,14 +138,14 @@
     </script>
     <script src="{{ asset('js/card-table/switchCardTable.js') }}"></script>
     <script>
-document.getElementById("toggleViewButton").addEventListener("click", function() {
-    var button = document.getElementById("toggleViewButton");
-    if (button.innerHTML === "Cambiar a Tabla") {
-        button.innerHTML = "Cambiar a Tarjetas";
-    } else {
-        button.innerHTML = "Cambiar a Tabla";
-    }
-});
+    document.getElementById("toggleViewButton").addEventListener("click", function() {
+        var button = document.getElementById("toggleViewButton");
+        if (button.innerHTML === "Vista administración") {
+            button.innerHTML = "Vista dinámica";
+        } else {
+            button.innerHTML = "Vista administración";
+        }
+    });
 </script>
 <script>
 // Selecciona el botón y el elemento de entrada
@@ -207,12 +207,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     <a href="/coordinadores/${coordinator.COO_id}">
                         <img src="${imageUrl}" class="card-img-top" alt="Imagen de perfil del coordinador">
                     </a>
-                    <div class="card-body">
+                    <div class="volunteer-card-body">
                         <h5 class="card-title"><i class="fa fa-user-tie"></i> ${coordinator.COO_nombre} ${coordinator.COO_apellidos}</h5>
                         <p class="card-text"> <i class="fas fa-id-card"></i> DNI: ${coordinator.COO_dni}</p>
-                        <div class="volunteer-card-buttons d-flex justify-content-center mt-3">
-                            <a href="/coordinadores/${coordinator.COO_id}" class="coordinator-info btn btn-primary">Más información</a>
-                            <a href="/coordinadores/${coordinator.COO_id}/edit" class="coordinator-modify btn btn-primary">Modificar</a>
+                        <div class="volunteer-card-buttons">
+                            <a href="/coordinadores/${coordinator.COO_id}" class="volunteer-info btn btn-primary"><i class="fas fa-info-circle"></i> Más información</a>
+                            <a href="/coordinadores/${coordinator.COO_id}/edit" class="volunteer-modify btn btn-primary"><i class="fas fa-edit"></i> Modificar</a>
                         </div>
                     </div>
                 </div>
