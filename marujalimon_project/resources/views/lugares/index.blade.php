@@ -23,40 +23,47 @@
 
     <input type="text" id="search" placeholder="Buscar por nombre de lugar, dirección, provincia o localidad.">
     <style>
-    #search {
-        width: 24%; /* Ajusta el tamaño de la barra de búsqueda */
-        margin-left: auto; /* Centra la barra de búsqueda a la izquierda */
-        margin-right: auto; /* Centra la barra de búsqueda a la izquierda */
-        margin-top: 0.5rem; /* Reduce el margen superior de la barra de búsqueda */
-    }
-    #cardView {
-        margin-top: 0; /* Elimina el margen superior de las tarjetas */
-    }
-</style>
+        #search {
+            width: 24%;
+            /* Ajusta el tamaño de la barra de búsqueda */
+            margin-left: auto;
+            /* Centra la barra de búsqueda a la izquierda */
+            margin-right: auto;
+            /* Centra la barra de búsqueda a la izquierda */
+            margin-top: 0.5rem;
+            /* Reduce el margen superior de la barra de búsqueda */
+        }
+
+        #cardView {
+            margin-top: 0;
+            /* Elimina el margen superior de las tarjetas */
+        }
+    </style>
 
 
     <div id="cardView" class="row mt-5">
-    <!-- Las tarjetas de los lugares se cargarán aquí dinámicamente -->
-</div>
+        <!-- Las tarjetas de los lugares se cargarán aquí dinámicamente -->
+    </div>
 
-<div id="pagination" class="pagination-controls">
-    <button id="prevPage">Anterior</button>
-    <span id="pageInfo"></span>
-    <button id="nextPage">Siguiente</button>
-</div>
+    <div id="pagination" class="pagination-controls">
+        <button id="prevPage">Anterior</button>
+        <span id="pageInfo"></span>
+        <button id="nextPage">Siguiente</button>
+    </div>
 
 
 
 
     <!-- Tarjetas de lugares con nuevo estilo -->
-    
+
 
 
     {{-- MODAL PARA AÑADIR COORDINADORES A UN LUGAR --}}
     <div class="modal fade" id="modal-dialog-tarea">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-header" style="background-color: #008080; display: flex; justify-content: center; align-items: center;">
+                <div class="modal-header"
+                    style="background-color: #008080; display: flex; justify-content: center; align-items: center;">
                     <h4 class="modal-title">Asignar cordinador/es a un lugar</h4>
                 </div>
                 <div class="modal-body">
@@ -154,7 +161,8 @@
                             location.reload();
                         });
                         $('#modal-dialog').modal('hide');
-                    } if(!data.success) {
+                    }
+                    if (!data.success) {
                         swal({
                             title: 'Error',
                             text: data.message,
@@ -171,25 +179,25 @@
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-    let allPlaces = [];
-    let currentPage = 1;
-    const placesPerPage = 32;
-    const cardsContainer = document.getElementById('cardView');
-    let currentSearch = ''; // Almacena la búsqueda actual
-    let abortController = new AbortController(); // Controlador para abortar fetch
+            let allPlaces = [];
+            let currentPage = 1;
+            const placesPerPage = 32;
+            const cardsContainer = document.getElementById('cardView');
+            let currentSearch = ''; // Almacena la búsqueda actual
+            let abortController = new AbortController(); // Controlador para abortar fetch
 
-    async function displayPlaces(places) {
-        const startIndex = (currentPage - 1) * placesPerPage;
-        const endIndex = startIndex + placesPerPage;
-        const placesToShow = places.slice(startIndex, endIndex);
+            async function displayPlaces(places) {
+                const startIndex = (currentPage - 1) * placesPerPage;
+                const endIndex = startIndex + placesPerPage;
+                const placesToShow = places.slice(startIndex, endIndex);
 
-        cardsContainer.innerHTML = ''; // Limpia el contenedor
+                cardsContainer.innerHTML = ''; // Limpia el contenedor
 
-        for (const place of placesToShow) {
-            const imagePath = place.IMG_path ? place.IMG_path : 'img/default_img/lugar.png';
-            const placeCard = document.createElement('div');
-            placeCard.className = 'col col-custom mb-4';
-            placeCard.innerHTML = `
+                for (const place of placesToShow) {
+                    const imagePath = place.IMG_path ? place.IMG_path : 'img/default_img/lugar.png';
+                    const placeCard = document.createElement('div');
+                    placeCard.className = 'col col-custom mb-4';
+                    placeCard.innerHTML = `
             <div class="card h-100 border-0 shadow-sm" id="cardViewLugar">
                     <a href="/lugares/${place.LUG_id}">
                         <img src="${imagePath}" class="volunteer-card-img" alt="Imagen del lugar">
@@ -211,58 +219,63 @@
                     </div>
                 </div>
             `;
-            cardsContainer.appendChild(placeCard);
-        }
+                    cardsContainer.appendChild(placeCard);
+                }
 
-        updatePaginationControls(places.length);
-    }
+                updatePaginationControls(places.length);
+            }
 
-    function updatePaginationControls(totalPlaces) {
-        const pageInfo = document.getElementById('pageInfo');
-        const totalPages = Math.ceil(totalPlaces / placesPerPage);
-        pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
-        document.getElementById('prevPage').disabled = currentPage === 1;
-        document.getElementById('nextPage').disabled = currentPage === totalPages;
-    }
+            function updatePaginationControls(totalPlaces) {
+                const pageInfo = document.getElementById('pageInfo');
+                const totalPages = Math.ceil(totalPlaces / placesPerPage);
+                pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+                document.getElementById('prevPage').disabled = currentPage === 1;
+                document.getElementById('nextPage').disabled = currentPage === totalPages;
+            }
 
-    document.getElementById('prevPage').addEventListener('click', function() {
-        if (currentPage > 1) {
-            currentPage--;
-            displayPlaces(currentSearch ? filteredPlaces : allPlaces);
-        }
-    });
+            document.getElementById('prevPage').addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayPlaces(currentSearch ? filteredPlaces : allPlaces);
+                }
+            });
 
-    document.getElementById('nextPage').addEventListener('click', function() {
-        if (currentPage * placesPerPage < allPlaces.length) {
-            currentPage++;
-            displayPlaces(currentSearch ? filteredPlaces : allPlaces);
-        }
-    });
+            document.getElementById('nextPage').addEventListener('click', function() {
+                if (currentPage * placesPerPage < allPlaces.length) {
+                    currentPage++;
+                    displayPlaces(currentSearch ? filteredPlaces : allPlaces);
+                }
+            });
 
-    fetch('/api/lugares')
-        .then(response => response.json())
-        .then(data => {
-            allPlaces = data; // Asumiendo que la API devuelve un arreglo de lugares
-            displayPlaces(allPlaces);
+            fetch('/api/lugares')
+                .then(response => response.json())
+                .then(data => {
+                    allPlaces = data; // Asumiendo que la API devuelve un arreglo de lugares
+                    displayPlaces(allPlaces);
+                });
+
+            document.getElementById('search').addEventListener('keyup', function(e) {
+
+
+                currentSearch = e.target.value.toLowerCase();
+                // Filtra los lugares basándose en múltiples campos
+
+
+                const filteredPlaces = allPlaces.filter(place =>
+                    place.LUG_nombre.toLowerCase().includes(currentSearch) ||
+                    place.LUG_direccion.toLowerCase().includes(currentSearch) ||
+                    (place.LUG_provincia && place.LUG_provincia.toLowerCase().includes(
+                    currentSearch)) ||
+                    (place.LUG_localidad && place.LUG_localidad.toLowerCase().includes(currentSearch))
+                );
+                currentPage = 1;
+                abortController.abort(); // Cancela cualquier solicitud fetch en progreso
+                abortController =
+            new AbortController(); // Crea un nuevo controlador para futuras solicitudes
+                displayPlaces(filteredPlaces);
+            });
+
         });
-
-        document.getElementById('search').addEventListener('keyup', function(e) {
-    currentSearch = e.target.value.toLowerCase();
-    // Filtra los lugares basándose en múltiples campos
-    const filteredPlaces = allPlaces.filter(place =>
-        place.LUG_nombre.toLowerCase().includes(currentSearch) ||
-        place.LUG_direccion.toLowerCase().includes(currentSearch) ||
-        (place.LUG_provincia && place.LUG_provincia.toLowerCase().includes(currentSearch)) ||
-        (place.LUG_localidad && place.LUG_localidad.toLowerCase().includes(currentSearch))
-    );
-    currentPage = 1;
-    abortController.abort(); // Cancela cualquier solicitud fetch en progreso
-    abortController = new AbortController(); // Crea un nuevo controlador para futuras solicitudes
-    displayPlaces(filteredPlaces);
-});
-
-});
-
     </script>
 
 

@@ -95,3 +95,13 @@ UPDATE lugares
 SET LUG_localidad = REPLACE(LUG_localidad, 'SanguiÃ±eda-Mos', 'Sanguiñeda-Mos')
 WHERE 
     LUG_id > 0 AND LUG_localidad LIKE 'SanguiÃ±eda-Mos';
+    
+    
+UPDATE lugares
+SET LUG_direccion = 'No hay dirección'
+WHERE (LUG_direccion IS NULL OR LUG_direccion = '') 
+AND LUG_id > 0;
+
+
+
+
