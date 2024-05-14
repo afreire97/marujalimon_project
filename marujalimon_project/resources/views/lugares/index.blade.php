@@ -83,14 +83,12 @@
     </div>
 
 
-
-
-    {{-- MODAL PARA AÑADIR TAREA --}}
+    {{-- MODAL PARA AÑADIR COORDINADORES A UN LUGAR --}}
     <div class="modal fade" id="modal-dialog-tarea">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Añadir lugar de trabajo</h4>
+                <div class="modal-header" style="background-color: #008080; display: flex; justify-content: center; align-items: center;">
+                    <h4 class="modal-title">Asignar cordinador/es a un lugar</h4>
                 </div>
                 <div class="modal-body">
                     <!-- Formulario de añadir tarea -->
@@ -187,25 +185,19 @@
                             location.reload();
                         });
                         $('#modal-dialog').modal('hide');
-                    } else {
+                    } if(!data.success) {
                         swal({
                             title: 'Error',
                             text: data.message,
                             icon: 'error',
                             button: 'Ok'
+                        }).then(function() {
+                            // Cuando el usuario haga clic en el botón "OK", recargar la página
+                            location.reload();
                         });
                     }
-                })
-                .catch(function(error) {
-                    // Si hay un error en la solicitud, muestra un mensaje de error
-                    console.error('Error:', error);
-                    swal({
-                        title: 'Error',
-                        text: 'Hubo un problema al añadir el lugar de trabajo a este cordinador',
-                        icon: 'error',
-                        button: 'Ok'
-                    });
                 });
+
         }
     </script>
 

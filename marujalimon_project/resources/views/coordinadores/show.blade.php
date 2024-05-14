@@ -129,7 +129,8 @@
                             <i class="bi bi-geo-alt-fill me-2"></i><strong>Lugares asignados:</strong>
 
                             @foreach ($lugares as $lugar)
-                            <p>{{$lugar->LUG_nombre}}</p>
+
+                            <a href="{{route('lugares.show', ['lugar' => $lugar])}}"> | {{$lugar->LUG_nombre}} </a>
                             @endforeach
 
 
