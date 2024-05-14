@@ -21,66 +21,35 @@
         </div>
     </div>
 
+    <input type="text" id="search" placeholder="Buscar por nombre de lugar, dirección, provincia o localidad.">
+    <style>
+    #search {
+        width: 24%; /* Ajusta el tamaño de la barra de búsqueda */
+        margin-left: auto; /* Centra la barra de búsqueda a la izquierda */
+        margin-right: auto; /* Centra la barra de búsqueda a la izquierda */
+        margin-top: 0.5rem; /* Reduce el margen superior de la barra de búsqueda */
+    }
+    #cardView {
+        margin-top: 0; /* Elimina el margen superior de las tarjetas */
+    }
+</style>
 
+
+    <div id="cardView" class="row mt-5">
+    <!-- Las tarjetas de los lugares se cargarán aquí dinámicamente -->
+</div>
+
+<div id="pagination" class="pagination-controls">
+    <button id="prevPage">Anterior</button>
+    <span id="pageInfo"></span>
+    <button id="nextPage">Siguiente</button>
+</div>
 
 
 
 
     <!-- Tarjetas de lugares con nuevo estilo -->
-    <div id="cardView" class="row mt-5">
-
-        @if ($lugares)
-
-            @foreach ($lugares as $lugar)
-                <div class="col col-custom mb-4">
-                    <div class="card h-100 border-0 shadow-sm" id="cardViewLugar">
-                        <!-- Start of clickable image -->
-                        <a href="{{ route('lugares.show', ['lugar' => $lugar]) }}">
-                            <img src="{{ optional($lugar->imagen)->IMG_path ? $lugar->imagen->IMG_path : asset('img/default_img/lugar.png') }}"
-                                class="volunteer-card-img">
-
-                        </a>
-                        <!-- End of clickable image -->
-
-                        <div class="volunteer-card-body">
-                            <h5 class="volunteer-card-title mt-3">
-                                <i class="fas fa-user"></i> {{ $lugar->LUG_nombre }}
-                            </h5>
-
-                            <p></p>
-                            @if ($lugar->LUG_direccion)
-                                <p class="text-break">
-                                    <i class="fas fa-id-card"></i> Dirección: {{ $lugar->LUG_direccion }}
-                                </p>
-                            @endif
-
-                            @if ($lugar->LUG_provincia)
-                                <p class="text-break">
-                                    <i class="fas fa-id-card"></i> Provincia: {{ $lugar->LUG_provincia }}
-                                </p>
-                            @endif
-
-                            @if ($lugar->LUG_localidad)
-                                <p class="text-break">
-                                    <i class="fas fa-id-card"></i> Localidad: {{ $lugar->LUG_localidad }}
-                                </p>
-                            @endif
-                            <p>
-                                <a target="_blank" href="{{ $lugar->LUG_url_maps }}">Visitar sitio</a>
-                            </p>
-                            <div class="volunteer-card-buttons">
-                                <a href="{{ route('lugares.show', ['lugar' => $lugar]) }}"
-                                    class="volunteer-info btn btn-primary">Más información</a>
-                                <a href="{{ route('lugares.edit', ['lugar' => $lugar]) }}"
-                                    class="volunteer-modify btn btn-primary">Modificar</a>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        @endif
-    </div>
+    
 
 
     {{-- MODAL PARA AÑADIR COORDINADORES A UN LUGAR --}}
@@ -199,6 +168,101 @@
                 });
 
         }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    let allPlaces = [];
+    let currentPage = 1;
+    const placesPerPage = 32;
+    const cardsContainer = document.getElementById('cardView');
+    let currentSearch = ''; // Almacena la búsqueda actual
+    let abortController = new AbortController(); // Controlador para abortar fetch
+
+    async function displayPlaces(places) {
+        const startIndex = (currentPage - 1) * placesPerPage;
+        const endIndex = startIndex + placesPerPage;
+        const placesToShow = places.slice(startIndex, endIndex);
+
+        cardsContainer.innerHTML = ''; // Limpia el contenedor
+
+        for (const place of placesToShow) {
+            const imagePath = place.IMG_path ? place.IMG_path : 'img/default_img/lugar.png';
+            const placeCard = document.createElement('div');
+            placeCard.className = 'col col-custom mb-4';
+            placeCard.innerHTML = `
+            <div class="card h-100 border-0 shadow-sm" id="cardViewLugar">
+                    <a href="/lugares/${place.LUG_id}">
+                        <img src="${imagePath}" class="volunteer-card-img" alt="Imagen del lugar">
+                    </a>
+                    <div class="volunteer-card-body">
+                        <h5 class="volunteer-card-title mt-3">
+                            <i class="fas fa-map-marker-alt"></i> ${place.LUG_nombre}
+                        </h5>
+                        <p class="text-break"><i class="fas fa-map-signs"></i> Dirección: ${place.LUG_direccion}</p>
+                        ${place.LUG_provincia ? `<p class="text-break"><i class="fas fa-location-arrow"></i> Provincia: ${place.LUG_provincia}</p>` : ''}
+                        ${place.LUG_localidad ? `<p class="text-break"><i class="fas fa-city"></i> Localidad: ${place.LUG_localidad}</p>` : ''}
+                        <p>
+                            <a target="_blank" href="${place.LUG_url_maps}"><i class="fas fa-external-link-alt"></i> Visitar en Maps</a>
+                        </p>
+                        <div class="volunteer-card-buttons">
+                            <a href="/lugares/${place.LUG_id}" class="volunteer-info btn btn-primary"><i class="fas fa-info-circle"></i> Más información</a>
+                            <a href="/lugares/${place.LUG_id}/edit" class="volunteer-modify btn btn-primary"><i class="fas fa-edit"></i> Modificar</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            cardsContainer.appendChild(placeCard);
+        }
+
+        updatePaginationControls(places.length);
+    }
+
+    function updatePaginationControls(totalPlaces) {
+        const pageInfo = document.getElementById('pageInfo');
+        const totalPages = Math.ceil(totalPlaces / placesPerPage);
+        pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+        document.getElementById('prevPage').disabled = currentPage === 1;
+        document.getElementById('nextPage').disabled = currentPage === totalPages;
+    }
+
+    document.getElementById('prevPage').addEventListener('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            displayPlaces(currentSearch ? filteredPlaces : allPlaces);
+        }
+    });
+
+    document.getElementById('nextPage').addEventListener('click', function() {
+        if (currentPage * placesPerPage < allPlaces.length) {
+            currentPage++;
+            displayPlaces(currentSearch ? filteredPlaces : allPlaces);
+        }
+    });
+
+    fetch('/api/lugares')
+        .then(response => response.json())
+        .then(data => {
+            allPlaces = data; // Asumiendo que la API devuelve un arreglo de lugares
+            displayPlaces(allPlaces);
+        });
+
+        document.getElementById('search').addEventListener('keyup', function(e) {
+    currentSearch = e.target.value.toLowerCase();
+    // Filtra los lugares basándose en múltiples campos
+    const filteredPlaces = allPlaces.filter(place =>
+        place.LUG_nombre.toLowerCase().includes(currentSearch) ||
+        place.LUG_direccion.toLowerCase().includes(currentSearch) ||
+        (place.LUG_provincia && place.LUG_provincia.toLowerCase().includes(currentSearch)) ||
+        (place.LUG_localidad && place.LUG_localidad.toLowerCase().includes(currentSearch))
+    );
+    currentPage = 1;
+    abortController.abort(); // Cancela cualquier solicitud fetch en progreso
+    abortController = new AbortController(); // Crea un nuevo controlador para futuras solicitudes
+    displayPlaces(filteredPlaces);
+});
+
+});
+
     </script>
 
 
