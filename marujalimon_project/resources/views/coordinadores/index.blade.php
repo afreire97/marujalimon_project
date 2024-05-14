@@ -182,49 +182,48 @@ document.addEventListener("DOMContentLoaded", function() {
     let abortController = new AbortController();
 
     async function displayCoordinators(coordinators) {
-    const startIndex = (currentPage - 1) * coordinatorsPerPage;
-    const endIndex = startIndex + coordinatorsPerPage;
-    const coordinatorsToShow = coordinators.slice(startIndex, endIndex);
+        const startIndex = (currentPage - 1) * coordinatorsPerPage;
+        const endIndex = startIndex + coordinatorsPerPage;
+        const coordinatorsToShow = coordinators.slice(startIndex, endIndex);
 
-    cardsContainer.innerHTML = '';
+        const fragment = document.createDocumentFragment(); // Usar fragmento para reducir reflows
 
-    for (const coordinator of coordinatorsToShow) {
-        // URL por defecto (placeholder)
-        let imageUrl = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
-        try {
-            const response = await fetch(`/coordinador/${coordinator.COO_id}/imagen-perfil`);
-            const data = await response.json();
-            if (response.ok && data.success) {
-                imageUrl = data.imagenPerfil.IMG_path; // Usando la propiedad IMG_path que contiene la URL de la imagen
+        for (const coordinator of coordinatorsToShow) {
+            let imageUrl = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
+            try {
+                const response = await fetch(`/coordinador/${coordinator.COO_id}/imagen-perfil`, { signal: abortController.signal });
+                const data = await response.json();
+                if (response.ok && data.success && currentSearch === document.getElementById('search').value.toLowerCase()) {
+                    imageUrl = data.imagenPerfil.IMG_path;
+                }
+            } catch (error) {
+                console.error('Failed to fetch profile image:', error);
             }
-        } catch (error) {
-            console.error('Failed to fetch profile image:', error);
-        }
 
-        const cardHTML = `
-        <div class="col col-custom mb-4">
-            <div class="card h-100 border-0 shadow-sm card-coordinador">
-                <a href="/coordinadores/${coordinator.COO_id}">
-                    <img src="${imageUrl}" class="card-img-top" alt="Imagen de perfil del coordinador">
-                </a>
-                <div class="card-body">
-                    <h5 class="card-title"><i class="fa fa-user-tie"></i> ${coordinator.COO_nombre} ${coordinator.COO_apellidos}</h5>
-                    <p class="card-text"> <i class="fas fa-id-card"></i> DNI: ${coordinator.COO_dni}</p>
-                    <div class="volunteer-card-buttons d-flex justify-content-center mt-3">
-                        <a href="/coordinadores/${coordinator.COO_id}" class="coordinator-info btn btn-primary">Más información</a>
-                        <a href="/coordinadores/${coordinator.COO_id}/edit" class="coordinator-modify btn btn-primary">Modificar</a>
+            const cardElement = document.createElement('div');
+            cardElement.className = 'col col-custom mb-4';
+            cardElement.innerHTML = `
+                <div class="card h-100 border-0 shadow-sm card-coordinador">
+                    <a href="/coordinadores/${coordinator.COO_id}">
+                        <img src="${imageUrl}" class="card-img-top" alt="Imagen de perfil del coordinador">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fa fa-user-tie"></i> ${coordinator.COO_nombre} ${coordinator.COO_apellidos}</h5>
+                        <p class="card-text"> <i class="fas fa-id-card"></i> DNI: ${coordinator.COO_dni}</p>
+                        <div class="volunteer-card-buttons d-flex justify-content-center mt-3">
+                            <a href="/coordinadores/${coordinator.COO_id}" class="coordinator-info btn btn-primary">Más información</a>
+                            <a href="/coordinadores/${coordinator.COO_id}/edit" class="coordinator-modify btn btn-primary">Modificar</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        `;
-        cardsContainer.innerHTML += cardHTML;
+            `;
+            fragment.appendChild(cardElement);
+        }
+
+        cardsContainer.innerHTML = ''; // Limpia una vez
+        cardsContainer.appendChild(fragment); // Añade todos los elementos de una vez
+        updatePaginationControls(coordinators); // Actualizar controles de paginación
     }
-
-    updatePaginationControls(coordinators);
-}
-
-
 
     function updatePaginationControls(coordinators) {
         const totalPages = Math.ceil(coordinators.length / coordinatorsPerPage);
@@ -249,23 +248,29 @@ document.addEventListener("DOMContentLoaded", function() {
     fetch('/api/coordinadores')
     .then(response => response.json())
     .then(data => {
-        allCoordinators = data.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at)); // Ordena los coordinadores por fecha de actualización más reciente
+        allCoordinators = data.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
         displayCoordinators(allCoordinators);
     });
 
     document.getElementById('search').addEventListener('keyup', function(e) {
-        currentSearch = e.target.value.toLowerCase();
-        const filteredCoordinators = allCoordinators.filter(coordinator =>
-            coordinator.COO_nombre.toLowerCase().includes(currentSearch) ||
-            coordinator.COO_apellidos.toLowerCase().includes(currentSearch) ||
-            coordinator.COO_dni.toLowerCase().includes(currentSearch)
-        );
-        currentPage = 1;
-        abortController.abort();
-        abortController = new AbortController();
-        displayCoordinators(filteredCoordinators);
+    currentSearch = e.target.value.trim().toLowerCase();
+    const searchTerms = currentSearch.split(/\s+/); // Divide la búsqueda en términos basados en uno o más espacios.
+
+    const filteredCoordinators = allCoordinators.filter(coordinator => {
+        // Construye una cadena única con nombre, apellido y DNI para la búsqueda.
+        const fullName = `${coordinator.COO_nombre.toLowerCase()} ${coordinator.COO_apellidos.toLowerCase()}`;
+        const dni = coordinator.COO_dni.toLowerCase();
+        return searchTerms.every(term => fullName.includes(term) || dni.includes(term));
     });
+
+    currentPage = 1;
+    abortController.abort(); // Aborta las solicitudes fetch anteriores
+    abortController = new AbortController(); // Reinicia el abortController para nuevas solicitudes
+    displayCoordinators(filteredCoordinators);
 });
+
+});
+
 </script>
 
 
